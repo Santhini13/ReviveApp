@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:revive/Screens/User/myjournal.dart';
+
 class AddDiaryEntryScreen extends StatefulWidget {
   @override
   _AddDiaryEntryScreenState createState() => _AddDiaryEntryScreenState();
@@ -13,17 +14,26 @@ class _AddDiaryEntryScreenState extends State<AddDiaryEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Diary Entry'),
+       appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title: Text('Add Diary Entry',style:TextStyle(color:Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: Icon(Icons.save,color:Colors.white),
             onPressed: () {
               _saveDiaryEntry(context);
             },
           ),
         ],
-      ),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

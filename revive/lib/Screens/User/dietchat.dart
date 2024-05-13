@@ -59,12 +59,18 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Healthy Meal Bot',
-          style: TextStyle(color: Color(0xff881736)),
-        ),
-      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Healthy Meal Bot',style:TextStyle(color:Colors.white),),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

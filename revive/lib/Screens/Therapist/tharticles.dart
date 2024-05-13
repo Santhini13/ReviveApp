@@ -20,15 +20,18 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Article'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _saveArticle,
-          ),
-        ],
-      ),
+       appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Add Your Article',style:TextStyle(color:Colors.white),),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -63,6 +66,17 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
+            SizedBox(height: 20,),
+             Center(
+               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff881736),
+                  //maximumSize: Size(10, 10),
+                ),
+                onPressed: (){},
+                child: Text('Save',style:TextStyle(color:Colors.white)),
+                           ),
+             ),
           ],
         ),
       ),

@@ -5,11 +5,20 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Privacy Policy'),
-      ),
+     appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Privacy Policy',style:TextStyle(color:Colors.white),),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -100,7 +109,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'If you have any questions or concerns about our Privacy Policy or our data practices, please contact us at privacy@example.com.',
+              'If you have any questions or concerns about our Privacy Policy or our data practices, please contact us at privacy@revive.com.',
               style: TextStyle(fontSize: 16),
             ),
           ],

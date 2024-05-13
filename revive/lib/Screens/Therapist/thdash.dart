@@ -1,127 +1,105 @@
+
 import 'package:flutter/material.dart';
 
-class Appointment {
-  final String patientName;
-  final DateTime appointmentTime;
-
-  Appointment({required this.patientName, required this.appointmentTime});
-}
-
-
-class ThDashboard extends StatefulWidget {
-  @override
-  State<ThDashboard> createState() => _ThDashboardState();
-}
-
-class _ThDashboardState extends State<ThDashboard> {
- final List<Appointment> appointments = [
-    Appointment(patientName: 'Alice', appointmentTime: DateTime.now().add(Duration(hours: 1))),
-    Appointment(patientName: 'Bob', appointmentTime: DateTime.now().add(Duration(days: 1))),
-    Appointment(patientName: 'Charlie', appointmentTime: DateTime.now().add(Duration(days: 1, hours: 2))),
-    Appointment(patientName: 'David', appointmentTime: DateTime.now().add(Duration(days: 2))),
-  ];
-
+class ThDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Group appointments by date
-    Map<DateTime, List<Appointment>> groupedAppointments = {};
-    for (var appointment in appointments) {
-      final date = DateTime(appointment.appointmentTime.year, appointment.appointmentTime.month, appointment.appointmentTime.day);
-      groupedAppointments[date] = [...(groupedAppointments[date] ?? []), appointment];
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Therapist Dashboard'),
-      ),
-      body: ListView(
-        children: [
-          for (var date in groupedAppointments.keys.toList()..sort((a, b) => a.compareTo(b)))
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '${date.year}-${date.month}-${date.day}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ...groupedAppointments[date]!.map((appointment) => AppointmentTile(appointment: appointment)).toList(),
-                Divider(),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            _buildSectionTitle('Your Appointments'),
+            _buildAppointmentSection(
+              context,
+              ['Patient 1', 'Patient 2'], // Video call patients
+              ['Patient 3', 'Patient 4'], // Call patients
+              ['Patient 5', 'Patient 6'], // Chat group session patients
             ),
-          SizedBox(height: 20),
-          Text(
-            'Mental Health Community Groups',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          Column(
-            children: [
-              ListTile(
-                title: Text('Anxiety Support Group'),
-                onTap: () {
-                  //Navigator.pushNamed(context, '/chat');
-                  // Navigate to the anxiety support group chat
-                },
-              ),
-              ListTile(
-                title: Text('Depression Support Group'),
-                onTap: () {
-                  // Navigate to the depression support group chat
-                },
-              ),
-              ListTile(
-                title: Text('Stress Management Group'),
-                onTap: () {
-                  // Navigate to the stress management group chat
-                },
-              ),
-              // Add more mental health community groups as needed
-            ],
-          ),
-        ],
+            _buildSectionTitle('Activities'),
+            _buildActivitiesSection(),
+          ],
+        ),
       ),
     );
   }
-}
 
-class AppointmentTile extends StatelessWidget {
-  final Appointment appointment;
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Color(0xff881736),),
+      ),
+    );
+  }
 
-  AppointmentTile({required this.appointment});
+  Widget _buildAppointmentSection(BuildContext context, List<String> videoCallPatients, List<String> callPatients, List<String> chatPatients) {
+    return ExpansionTile(
+      title: Text('Your Appointments'),
+      children: [
+        _buildAppointmentList(context, 'Video Call', videoCallPatients),
+        _buildAppointmentList(context, 'Call', callPatients),
+        _buildAppointmentList(context, 'Chat ', chatPatients),
+      ],
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildAppointmentList(BuildContext context, String sessionType, List<String> patients) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(sessionType),
+          subtitle: Text('Patients booked for $sessionType session'),
+        ),
+        for (var patient in patients)
+          ListTile(
+            title: Text(patient),
+            trailing: ElevatedButton(
+              onPressed: () {
+                _startSession(context, sessionType);
+              },
+              child: Text('Start Session'),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildActivitiesSection() {
     return ListTile(
-      title: Text(appointment.patientName),
-      subtitle: Text('${appointment.appointmentTime.hour}:${appointment.appointmentTime.minute}'),
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              width:double.infinity,
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Patient: ${appointment.patientName}'),
-                  Text('Time: ${appointment.appointmentTime}'),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Start session logic here
-                      Navigator.pop(context);
-                    },
-                    child: Text('Start Session'),
-                  ),
-                ],
-              ),
-            );
-          },
+      title: Text('Activities'),
+      // Implement your activities here
+    );
+  }
+
+
+  void _startSession(BuildContext context, String sessionType) {
+    // Show a dialog to start the session based on the session type
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Start Session'),
+          content: Text('Start $sessionType session?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Start session logic goes here
+                Navigator.of(context).pop();
+              },
+              child: Text('Start'),
+            ),
+          ],
         );
       },
     );
   }
 }
+

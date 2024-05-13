@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:revive/Screens/Therapist/thnavbar.dart';
 
 class ThProfile extends StatelessWidget {
-  int _selectedIndex=3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Profile'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -75,6 +70,14 @@ class ThProfile extends StatelessWidget {
                             showBottomSheet(context, 'Add Certification');
                           }, icon: Icons.add,
                         ),
+                         ProfileTile(
+                          title: 'Feedback',
+                          icon: Icons.star_border_outlined,
+                          onTap: () {
+                            // Show modal screen for viewing appointment schedules
+                            showBottomSheet(context, 'View Appointment Schedules');
+                          }, 
+                        ),
                         ProfileTile(
                           title: 'Add Video',
                           onTap: () {
@@ -121,14 +124,7 @@ class ThProfile extends StatelessWidget {
                       },
                     ),
           
-                        // ProfileTile(
-                        //   title: 'View Appointment Schedules',
-                        //   //Icon: Icon(Icons.calendar_month),
-                        //   onTap: () {
-                        //     // Show modal screen for viewing appointment schedules
-                        //     showBottomSheet(context, 'View Appointment Schedules');
-                        //   }, icon: Icons.calendar_month,
-                        // ),
+                       
                         // ProfileTile(
                         //   title: 'Settings',
                         //   onTap: () {
@@ -140,7 +136,6 @@ class ThProfile extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: thnavBar(selectedIndex: _selectedIndex,),
     );
   }
   void _showConfirmationDialog(

@@ -14,9 +14,18 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Explore'),
-      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Explore',style:TextStyle(color:Colors.white),),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,30 +67,30 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
             ),
             SizedBox(height: 50),
-             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Courses',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            //  Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Text(
+            //     'Courses',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: 50),
-             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Community',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            // Scrollable row with video items goes here
-            SizedBox(height: 20),
+            //  Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Text(
+            //     'Community',
+            //     style: TextStyle(
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
+            // // Scrollable row with video items goes here
+            // SizedBox(height: 20),
         
           ],
         ),

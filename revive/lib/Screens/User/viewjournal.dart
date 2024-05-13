@@ -13,61 +13,85 @@ class _DiaryEntriesScreenState extends State<DiaryEntriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Journals'),
-      ),
-      body: Center(
-        child: _diaryEntries.isEmpty
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.book, size: 100),
-                  SizedBox(height: 20),
-                  Text('Start writing your diary entries!'),
-                ],
-              )
-            : Padding(
-              padding: const EdgeInsets.only(left: 5,right: 1),
-              child: ListView.builder(
-                  itemCount: _diaryEntries.length,
-                  itemBuilder: (context, index) {
-                    DiaryEntry entry = _diaryEntries[index];
-                     String formattedDate = _getFormattedDate(entry.dateTime);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: ListTile(
-                        title: Text(entry.title),
-                        leading: Container(
-                          //height: 80,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color:Color(0xff881736),
-                           // borderRadius:BorderRadius.all(Radius.circular(20))
-                          ),
-                          child: Column(
-                            children: [
-                              Text('${entry.dateTime.day}',style: TextStyle(color: Colors.white),),
-                              Text(formattedDate,style: TextStyle(color: Colors.white)),
-                              Text('${entry.dateTime.year}',style: TextStyle(color: Colors.white))
-                            ],
-                            
-                          ),
-                        ),
-                      
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            _deleteEntry(index);
-                          },
-                        ),
-                         onTap: () {
-                                      _showFullEntry(context, entry);}
-                                              
-                      ),
-                    );
-                  },
-                ),
+      body: Stack(
+        children: [
+           Container(width: double.infinity,
+          height: 200,
+           decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
             ),
+          child:  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                            'Write Up Your Daily\n Thoughts',
+                            style: TextStyle(fontSize: 20,color:Colors.white),
+                          ),
+                          Image.asset(
+                        'assets/icons/diary.png',
+                        width: 150,
+                        height: 150,
+                      ),
+              ],
+            ),
+          ),),
+          Center(
+            child: _diaryEntries.isEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.book, size: 100),
+                      SizedBox(height: 20),
+                      Text('Start writing your diary entries!'),
+                    ],
+                  )
+                : Padding(
+                  padding: const EdgeInsets.only(left: 5,right: 1,top: 200),
+                  child: ListView.builder(
+                      itemCount: _diaryEntries.length,
+                      itemBuilder: (context, index) {
+                        DiaryEntry entry = _diaryEntries[index];
+                         String formattedDate = _getFormattedDate(entry.dateTime);
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: ListTile(
+                            title: Text(entry.title),
+                            leading: Container(
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color:Color(0xff881736),
+                               borderRadius:BorderRadius.all(Radius.circular(10))
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(formattedDate,style: TextStyle(color: Colors.white,)),
+                                  Text('${entry.dateTime.day}',style: TextStyle(color: Colors.white,fontSize:14),),
+                                  Text('${entry.dateTime.year}',style: TextStyle(color: Colors.white))
+                                ],
+                                
+                              ),
+                            ),
+                          
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _deleteEntry(index);
+                              },
+                            ),
+                             onTap: () {
+                                          _showFullEntry(context, entry);}
+                                                  
+                          ),
+                        );
+                      },
+                    ),
+                ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

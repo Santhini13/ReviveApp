@@ -27,7 +27,7 @@ class _UserLoginState extends State<UserLogin> {
         //   MaterialPageRoute(builder: (context) => Home()),
         // );
       } else if (isTherapist) {
-        Navigator.pushNamed(context, '/thhome');
+        Navigator.pushNamed(context, '/thonboard');
       } else {
         Navigator.pushNamed(context, '/adboard');
       }

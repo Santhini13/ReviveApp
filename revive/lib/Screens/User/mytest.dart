@@ -15,9 +15,18 @@ class _MyTestState extends State<MyTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Self Assesment Test'),
-      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Self Assessment Test',style:TextStyle(color:Colors.white),),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: Stack(
         children: [
           Container(
@@ -82,7 +91,7 @@ class _MyTestState extends State<MyTest> {
                     SizedBox(height: 20),
                     ListTileCard(
                       onTap: () {
-                        Navigator.pushNamed(context, '/viewtherapist');
+                        Navigator.pushNamed(context, '/therapist');
                       },
                       title: 'Others',
                       subtitle: 'If you dont know the issue, take direct therapy.',

@@ -17,7 +17,11 @@ class _myCareState extends State<myCare> {
         children: [
            Container(width: double.infinity,
           height: 200,
-          color: Color(0xff881736),
+           decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),
           child:  Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

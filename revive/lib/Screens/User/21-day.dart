@@ -11,11 +11,33 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Challenges'),
-      ),
+
       body: Stack(
         children: [
+          Container(width: double.infinity,
+          height: 200,
+           decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),
+          child:  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                            'Do It for 21-Days\n Find A New You',
+                            style: TextStyle(fontSize: 20,color:Colors.white),
+                          ),
+                          Image.asset(
+                        'assets/icons/goals.png',
+                        width: 150,
+                        height: 150,
+                      ),
+              ],
+            ),
+          ),),
           Container(
              decoration: BoxDecoration(
                       color: Colors.white,

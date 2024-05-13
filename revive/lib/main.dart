@@ -9,10 +9,12 @@ import 'package:revive/Screens/Admin/confirmtherapist.dart';
 import 'package:revive/Screens/Admin/viewarticle.dart';
 import 'package:revive/Screens/Admin/viewfeedback.dart';
 import 'package:revive/Screens/Admin/viewtherapist.dart';
+import 'package:revive/Screens/Admin/viewuser.dart';
 import 'package:revive/Screens/Therapist/tharticles.dart';
 import 'package:revive/Screens/Therapist/thdash.dart';
 import 'package:revive/Screens/Therapist/thedit.dart';
 import 'package:revive/Screens/Therapist/thhome.dart';
+import 'package:revive/Screens/Therapist/thonboard.dart';
 import 'package:revive/Screens/Therapist/thprofile.dart';
 import 'package:revive/Screens/User/assesmentreport.dart';
 import 'package:revive/Screens/User/editprofile.dart';
@@ -103,9 +105,11 @@ class MyApp extends StatelessWidget {
         '/adconfirm':(context)=>ConfirmRequestScreen(),
         '/adarticle':(context) => ViewArticleScreen(),
         '/adfeedback':(context)=>ViewFeedbackScreen(),
+        '/viewuser':(context)=>ViewUserScreen(),
         //therapist
         '/thedit':(context)=>ThEditProfile(),
-        '/tharticle':(context) => AddArticleScreen()
+        '/tharticle':(context) => AddArticleScreen(),
+        '/thonboard':(context)=>TherapistOnboardingScreen()
        },
        
     ); 

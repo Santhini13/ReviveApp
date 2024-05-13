@@ -29,11 +29,12 @@ class AdminOnboard extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Icon(
-                Icons.admin_panel_settings,
-                size: 100,
-                color:Colors.white // Customize icon color as needed
-              ),
+              Image.asset('assets/images/logo.png',height:120),
+              // Icon(
+              //   Icons.admin_panel_settings,
+              //   size: 100,
+              //   color:Colors.white // Customize icon color as needed
+              // ),
               SizedBox(height: 40),
               ElevatedButton.icon(
                 onPressed: () {

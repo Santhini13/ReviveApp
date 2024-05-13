@@ -20,111 +20,135 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Awareness'),
-      ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40))),
-            height: double.infinity,
-            width: double.infinity,
-            child: _selectedInfo.isNotEmpty
-                ? SingleChildScrollView(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          _selectedTitle,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
+          Container(width: double.infinity,
+          height: 200,
+           decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),
+          child:  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                            'Read and Learn About \nMental Health',
+                            style: TextStyle(fontSize: 20,color:Colors.white),
                           ),
-                        ),
-                        SizedBox(height: 12.0),
-                        Text(
-                          _selectedInfo,
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                        SizedBox(height: 20.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedTitle = '';
-                              _selectedInfo = '';
-                            });
-                          },
-                          child: Text('Back'),
-                        ),
-                      ],
+                          Image.asset(
+                        'assets/icons/aware.png',
+                        width: 150,
+                        height: 150,
+                      ),
+              ],
+            ),
+          ),),
+          Padding(
+            padding: const EdgeInsets.only(top:200.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              height: double.infinity,
+              width: double.infinity,
+              child: _selectedInfo.isNotEmpty
+                  ? SingleChildScrollView(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            _selectedTitle,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 12.0),
+                          Text(
+                            _selectedInfo,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          SizedBox(height: 20.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedTitle = '';
+                                _selectedInfo = '';
+                              });
+                            },
+                            child: Text('Back'),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => _showInformation(
+                                'Stress', 'Stress information goes here.'),
+                            child: Container(
+                              padding: EdgeInsets.all(12.0),
+                              color: Colors.blue,
+                              child: Center(
+                                child: Text(
+                                  'Stress',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 12.0),
+                          GestureDetector(
+                            onTap: () => _showInformation(
+                                'Anxiety', 'Anxiety information goes here.'),
+                            child: Container(
+                              padding: EdgeInsets.all(12.0),
+                              color: Colors.green,
+                              child: Center(
+                                child: Text(
+                                  'Anxiety',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 12.0),
+                          GestureDetector(
+                            onTap: () => _showInformation('Depression',
+                                'Depression information goes here.'),
+                            child: Container(
+                              padding: EdgeInsets.all(12.0),
+                              color: Colors.orange,
+                              child: Center(
+                                child: Text(
+                                  'Depression',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                : SingleChildScrollView(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () => _showInformation(
-                              'Stress', 'Stress information goes here.'),
-                          child: Container(
-                            padding: EdgeInsets.all(12.0),
-                            color: Colors.blue,
-                            child: Center(
-                              child: Text(
-                                'Stress',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 12.0),
-                        GestureDetector(
-                          onTap: () => _showInformation(
-                              'Anxiety', 'Anxiety information goes here.'),
-                          child: Container(
-                            padding: EdgeInsets.all(12.0),
-                            color: Colors.green,
-                            child: Center(
-                              child: Text(
-                                'Anxiety',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 12.0),
-                        GestureDetector(
-                          onTap: () => _showInformation('Depression',
-                              'Depression information goes here.'),
-                          child: Container(
-                            padding: EdgeInsets.all(12.0),
-                            color: Colors.orange,
-                            child: Center(
-                              child: Text(
-                                'Depression',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            ),
           ),
         ],
       ),

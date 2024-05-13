@@ -16,7 +16,7 @@ class _AnxietyTestState extends State<AnxietyTest> {
         children: [
            Container(
         height: double.infinity,
-        width: double.infinity,
+        
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: 
           [
@@ -25,27 +25,30 @@ class _AnxietyTestState extends State<AnxietyTest> {
           ])
         ),
          child: Padding(
-          padding: const EdgeInsets.all(70.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [ 
-              Text('Anxiety',style: TextStyle(fontSize: 35,color: Colors.white)),
-            Text('Select the answer that best suits your current feelings',style: TextStyle(fontSize: 16,color: Colors.white),textAlign:TextAlign.center,),
-            ],
-          ),
-        ),
-      ),
-       Text('Over the last 2 weeks, how often have you been bothered by the following problems?'),
+           padding: const EdgeInsets.all(8.0),
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.center,
+             children: [ 
+               Row(
+               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+               children: [
+                 Text('Anxiety',style: TextStyle(fontSize: 35,color: Colors.white)),
+                           Image.asset(
+                         'assets/images/anxietyIcon.png',
+                         width: 150,
+                         height: 150,
+                       ),
+               ],
+             ),
+             Text('Select the answer that best suits your current feelings',style: TextStyle(fontSize: 15,color: Colors.white),
+            ),],
+           ),
+         ),
+      ), 
       Padding(
         padding: const EdgeInsets.only(top:220.0),
         child: Container(
-          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40)
-            )
-          ),
           height: double.infinity,
           width: double.infinity,
           child: Padding(
@@ -83,7 +86,6 @@ class _AnxietyTestState extends State<AnxietyTest> {
             ],),
           )
         )),
-        
         ])
     ); 
   }

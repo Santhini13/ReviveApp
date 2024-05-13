@@ -100,7 +100,7 @@ class _AdHomeState extends State<AdHome> {
       text: 'View Users',
       onTap: () {
         // Add logic for viewing users
-        print('View Users');
+        Navigator.pushNamed(context, '/viewuser');
       },
     );
   }

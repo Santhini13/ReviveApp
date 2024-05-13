@@ -26,22 +26,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
+    appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Edit Profile',style:TextStyle(color:Colors.white),),
+          actions: [
+            IconButton(
+            icon: Icon(Icons.save,color:Colors.white),
             onPressed: () {
               // Save profile changes
-              String name = _nameController.text;
+               String name = _nameController.text;
               String email = _emailController.text;
               String phone = _phoneController.text;
-              String password = _passwordController.text;
               // Perform actions with the entered data
             },
           ),
         ],
-      ),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
+      
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -53,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 radius: 50.0,
                 backgroundImage: _image != null
                     ? FileImage(File(_image!.path))
-                    : AssetImage('assets/placeholder.jpg') as ImageProvider,
+                    : AssetImage('assets/images/user.png') as ImageProvider,
                 child: _image == null ? Icon(Icons.add_a_photo) : null,
               ),
             ),
@@ -74,10 +83,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               keyboardType: TextInputType.phone,
             ),
             SizedBox(height: 20.0),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Update Password'),
-              obscureText: true,
+           ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xff881736),
+                minimumSize: Size(60, 50),
+              ),
+              onPressed: () => _showPasswordChangeDialog(context),
+              child: Text('Update Password',style:TextStyle(color:Colors.white)),
             ),
           ],
         ),
@@ -85,3 +97,75 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
+ void _showPasswordChangeDialog(BuildContext context) {
+    TextEditingController _oldPasswordController = TextEditingController();
+    TextEditingController _newPasswordController = TextEditingController();
+    TextEditingController _confirmPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Password'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _oldPasswordController,
+                  decoration: InputDecoration(labelText: 'Old Password'),
+                  obscureText: true,
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _newPasswordController,
+                  decoration: InputDecoration(labelText: 'New Password'),
+                  obscureText: true,
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(labelText: 'Confirm Password'),
+                  obscureText: true,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Update password logic
+                if (_newPasswordController.text == _confirmPasswordController.text) {
+                  // Passwords match, update password
+                  // Show snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Password updated successfully.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                  Navigator.pop(context); // Close dialog
+                } else {
+                  // Passwords don't match, show error
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Passwords do not match.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }

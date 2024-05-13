@@ -72,9 +72,11 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-        title: Text('Find Your Therapist'),
-        actions: [
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        child: AppBar(
+          title:Text('Find Your Therapist',style:TextStyle(color:Colors.white),),
+           actions: [
           IconButton(
             onPressed: () {
               showSearch(
@@ -85,7 +87,7 @@ void initState() {
                 ),
               );
             },
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search,color: Colors.white),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
@@ -109,12 +111,19 @@ void initState() {
                   },
                 );
               },
-              icon: Icon(Icons.filter_list_sharp),
+              icon: Icon(Icons.filter_list_sharp,color:Colors.white),
             ),
           ),
           
         ],
-      ),
+          backgroundColor: Colors.transparent, // Transparent background
+          automaticallyImplyLeading: false, // Removes the back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff881736), Color(0xff281537)],
+              ),
+            ),))),
       body: ListView.builder(
         itemCount: therapists.length,
         itemBuilder: (BuildContext context, int index) {
@@ -134,9 +143,9 @@ void initState() {
             },
             child: Card(
               margin: EdgeInsets.all(16.0),
-              color: Color(0xff881736),
+             // color: Color(0xff881736),
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(10.0),
                 child: Row(
                   children: [
                     Container(
@@ -158,20 +167,20 @@ void initState() {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Color(0xff881736),
                             ),
                           ),
                           Text(
                             therapist.qualification,
-                            style: TextStyle(fontSize: 14, color: Colors.white),
+                            style: TextStyle(fontSize: 14, color: Color(0xff881736)),
                           ),
                           Text(
                             therapist.specialization,
-                            style: TextStyle(fontSize: 14, color: Colors.white),
+                            style: TextStyle(fontSize: 14, color: Color(0xff881736)),
                           ),
                           Text(
                             therapist.experience,
-                            style: TextStyle(fontSize: 14, color: Colors.white),
+                            style: TextStyle(fontSize: 14, color: Color(0xff881736)),
                           ),
                         ],
                       ),

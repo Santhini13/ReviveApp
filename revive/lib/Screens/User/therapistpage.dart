@@ -33,48 +33,59 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
       //   title: Text(widget.therapist.name,style: TextStyle(color: Colors.white),),
       // ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-             Image.asset(
-              widget.therapist.photo,
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.therapist.name,
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      Icon(Icons.favorite_outline)
-                    ],
+          child: Column(
+        children: [
+          Image.asset(
+            widget.therapist.photo,
+            width: double.infinity,
+            height: 300,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.therapist.name,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    Row(children:[
+                      Icon(Icons.favorite_outline),
+                    IconButton(
+                      onPressed: () {
+                        _showFeedbackDialog(context, widget.therapist.name);
+                      },
+                      icon: Icon(Icons.star_outline),
+                    ),
+                    ])
+                  ],
+                ),
+                Text(
+                  widget.therapist.qualification,
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
-                  Text(
-                    widget.therapist.qualification,
-                    style: TextStyle(fontSize: 16,),
-                  ),
-                  Text(
-                    widget.therapist.specialization,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Description:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    widget.therapist.description,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 20), 
-                  Text(
+                ),
+                Text(
+                  widget.therapist.specialization,
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Description:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  widget.therapist.description,
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 20),
+                Text(
                   'Choose Date',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -87,15 +98,15 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                   onDateSelected: (date) {
                     setState(() {
                       selectedDate = date;
-                       _handleDateSelection(context, date);
+                      _handleDateSelection(context, date);
                     });
                   },
                   leftMargin: 20,
                   monthColor: Colors.grey,
-                  dayColor:  Color(0xff281537).withOpacity(0.9),
+                  dayColor: Color(0xff281537).withOpacity(0.9),
                   activeDayColor: Colors.white,
-                  activeBackgroundDayColor:  Color(0xff881736),
-                  dotsColor:Colors.white,
+                  activeBackgroundDayColor: Color(0xff881736),
+                  dotsColor: Colors.white,
                   selectableDayPredicate: (date) => true,
                 ),
                 SizedBox(height: 20),
@@ -119,7 +130,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                             border: Border.all(
                               width: 2,
                               color: selectedTimeSlot == timeSlot
-                                  ?  Color(0xff881736)
+                                  ? Color(0xff881736)
                                   : Colors.grey,
                             ),
                             borderRadius: BorderRadius.circular(8),
@@ -186,10 +197,10 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                     ],
                   ),
               ],
-                      ),
             ),
-          ],
-        )),
+          ),
+        ],
+      )),
     );
   }
 
@@ -223,4 +234,65 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
       ),
     );
   }
+}
+void _showFeedbackDialog(BuildContext context, String therapistName) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      String feedbackDescription = '';
+      int rating = 0;
+
+      return AlertDialog(
+        title: Text('Feedback for $therapistName'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Enter your feedback here...',
+              ),
+              onChanged: (value) {
+                feedbackDescription = value;
+              },
+            ),
+            SizedBox(height:10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Rate: '),
+                for (int i = 1; i <= 5; i++)
+                  IconButton(
+                    icon: Icon(
+                      i <= rating ? Icons.star : Icons.star_border,
+                      color: Colors.orange,
+                    ),
+                    onPressed: () {
+                      // setState(() {
+                      //   rating = i;
+                      // });
+                    },
+                  ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              // Submit feedback
+              _submitFeedback(context, rating, feedbackDescription);
+            },
+            child: Text('Submit'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _submitFeedback(
+    BuildContext context, int rating, String description) {
+  // Implement logic to submit feedback
+  // You can send the rating and description to the backend or perform any other action
+  Navigator.pop(context); // Close the dialog
 }
