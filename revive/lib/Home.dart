@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: [
-                                    Image.asset('assets/icons/profile/aware.png'),
+                                    Image.asset('assets/icons/aware.png'),
                                     SizedBox(height: 5,),
                                     Text('Awareness',)
                                   ],
@@ -288,102 +288,13 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         height: 10,
                       ),
-                      //  CustomContainer(ontap: (){},
-                      // height: 200,
-                      // width: double.infinity,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(20),
-                      //   gradient:LinearGradient(colors: [Color(0xff281537).withOpacity(0.5),Color(0xff881736),])
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(left:15.0),
-                      //         child: Image.asset('assets/icons/diary.png',height:170),
-                      //       ),
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(top:30,right: 20),
-                      //         child: Column(
-                      //           children: [
-                      //             Text('Journaling',style: TextStyle(color: Colors.white,fontSize: 20),),
-                      //             SizedBox(height: 5),
-                      //             Text('Write down your thoughts and \nfeelings to understand \nthem more clearly.',style: TextStyle(color: Colors.white,fontSize: 10),textAlign: TextAlign.center,),
-                      //              SizedBox(height: 25),
-                      //             AppButton(onTap: (){
-                      //               Navigator.pushNamed(context, '/myjournal');
-                      //             }, child: Text('Write',style: TextStyle(color: Colors.white),),color:Color(0xff281537),width: 100,height: 40,)
-                      //           ],
-                      //         ),
-                      //       ),
-            
-                      //     ],
-                      //   ),
-                      // ),
-                      // SizedBox(height: 20,),
-                      //  CustomContainer(ontap: (){},
-                      // height: 200,
-                      // width: double.infinity,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(20),
-                      //   gradient:LinearGradient(colors: [Color(0xff881736), Color(0xff281537).withOpacity(0.5)])
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(left:20.0,top:30),
-                      //         child: Column(
-                      //           children: [
-                      //             Text('Self-Care Tips',style: TextStyle(color: Colors.white,fontSize: 20),),
-                      //             SizedBox(height: 5),
-                      //             Text('Get your mind and body ready \nfor the day.',style: TextStyle(color: Colors.white,fontSize: 10),textAlign: TextAlign.center,),
-                      //              SizedBox(height: 25),
-                      //             AppButton(onTap: (){
-                      //               Navigator.pushNamed(context, '/mycare');
-                      //             }, child: Text('Start',style: TextStyle(color: Colors.white),),color:Color(0xff281537),width: 100,height: 40,)
-                      //           ],
-                      //         ),
-                      //       ),
-                      //       Image.asset('assets/icons/girl.png')
-                      //     ],
-                      //   ),
-                      // ),
-                      // SizedBox(height: 20,),
-                      //  CustomContainer(ontap: (){},
-                      // height: 200,
-                      // width: double.infinity,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(20),
-                      //   gradient:LinearGradient(colors: [Color(0xff281537).withOpacity(0.5),Color(0xff881736),])
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Image.asset('assets/icons/goals.png'),
-                      //       Padding(
-                      //         padding: const EdgeInsets.only(top:30,right: 20),
-                      //         child: Column(
-                      //           children: [
-                      //             Text('21-Days Challenge',style: TextStyle(color: Colors.white,fontSize: 20),),
-                      //             SizedBox(height: 5),
-                      //             Text('Practice for 21 days, make it a habit\nand build you.',style: TextStyle(color: Colors.white,fontSize: 10),textAlign: TextAlign.center,),
-                      //              SizedBox(height: 25),
-                      //             AppButton(onTap: (){}, child: Text('Start',style: TextStyle(color: Colors.white),),color:Color(0xff281537),width: 100,height: 40,)
-                      //           ],
-                      //         ),
-                      //       ),
-            
-                      //     ],
-                      //   ),
-                      // ),
                     ]),
                   ),
                 )),
           )
         ]),
       ),
-      bottomNavigationBar: navBar(selectedIndex: _selectedIndex),
+      bottomNavigationBar: NavBar(selectedIndex: _selectedIndex, userRole: UserRole.User,),
     );
   }
 }

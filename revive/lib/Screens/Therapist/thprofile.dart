@@ -12,173 +12,132 @@ class ThProfile extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left side: Image
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/doc1.jpg'), // Placeholder image
-                      fit: BoxFit.fill,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Left side: Image
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/doc1.jpg'), // Placeholder image
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(width: 20),
-                // Right side: Qualifications and Experience
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Dr. Emily Smith',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Licensed Clinical Psychologist',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                      // Sections
-                      
-                  ),
-                ),
-              ],
-            ),
-            // Row(
-            //   children: [
-            //     SizedBox(height: 20),
-            //           Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
-            //               Text(
-            //                 'Qualifications:',
-            //                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            //               ),
-            //               Text(
-            //             '- Ph.D. in Clinical Psychology',
-            //             style: TextStyle(fontSize: 12),
-            //           ),
-            //           Text(
-            //             '- Master of Social Work (MSW)',
-            //             style: TextStyle(fontSize: 12),
-            //           ),
-            //           SizedBox(height: 20),
-            //             ],
-            //           ),
-            //           Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
+                  SizedBox(width: 20),
+                  // Right side: Qualifications and Experience
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dr. Emily Smith',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Licensed Clinical Psychologist',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                        // Sections
                         
-            //                Text(
-            //             'Experience:',
-            //             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            //           ),
-            //           Text(
-            //             '10 years of experience in \nindividual and group therapy.',
-            //             style: TextStyle(fontSize: 12),
-            //           ),
-            //           SizedBox(height: 20),
-            //             ],
-            //           ),
-                     
-                    
-                      
-                      
-
-            //   ],
-            // ),
-            SizedBox(height: 20,),
-            ProfileTile(
-                        title: 'Edit Profile',
-                        onTap: () {
-                          // Show modal screen for editing profile
-                          showBottomSheet(context, 'Edit Profile');
-                        }, 
-                        icon: Icons.edit,
-                      ),
-                      ProfileTile(
-                        title: 'View Profile',
-                        onTap: () {
-                          // Show modal screen for adding certification
-                          showBottomSheet(context, 'Add Certification');
-                        }, icon: Icons.view_agenda_outlined,
-                      ),
-                      ProfileTile(
-                        title: 'Add Certification',
-                        onTap: () {
-                          // Show modal screen for adding certification
-                          showBottomSheet(context, 'Add Certification');
-                        }, icon: Icons.add,
-                      ),
-                      ProfileTile(
-                        title: 'Add Video',
-                        onTap: () {
-                          // Show modal screen for adding video
-                          showBottomSheet(context, 'Add Video');
-                        }, icon: Icons.video_chat,
-                      ),
-                      ProfileTile(
-                        title: 'Add Article',
-                        onTap: () {
-                          // Show modal screen for adding article
-                          showBottomSheet(context, 'Add Article');
-                        }, icon: Icons.article,
-                      ),
-                       ProfileTile(
-                    icon: Icons.article_outlined,
-                    title: 'Terms & Conditions', 
-                    onTap: () { 
-                      Navigator.pushNamed(context, '/terms');
-                     },
+                    ),
                   ),
-                  ProfileTile(
-                    icon: Icons.privacy_tip,
-                    title: 'Privacy & Policy', 
-                    onTap: () { 
-                      Navigator.pushNamed(context, '/privacy');
-                     },
-                  ),
-                 
-                  ProfileTile(
-                    icon: Icons.logout,
-                    title: 'Log Out',
-                    onTap: () {
-                      _showConfirmationDialog(context, 'Log Out',
-                          'Are you sure you want to log out?');
-                    },
-                  ),
-                  ProfileTile(
-                    icon: Icons.delete,
-                    title:'Delete Account',
-                    onTap: () {
-                      _showConfirmationDialog(context, 'Delete Account',
-                          'Are you sure you want to delete your account?');
-                    },
-                  ),
-
-                      // ProfileTile(
-                      //   title: 'View Appointment Schedules',
-                      //   //Icon: Icon(Icons.calendar_month),
-                      //   onTap: () {
-                      //     // Show modal screen for viewing appointment schedules
-                      //     showBottomSheet(context, 'View Appointment Schedules');
-                      //   }, icon: Icons.calendar_month,
-                      // ),
-                      // ProfileTile(
-                      //   title: 'Settings',
-                      //   onTap: () {
-                      //     // Show modal screen for settings
-                      //     showBottomSheet(context, 'Settings');
-                      //   }, icon: Icons.settings,
-                      // ),
-          ],
+                ],
+              ),
+              SizedBox(height: 20,),
+              ProfileTile(
+                          title: 'Edit Profile',
+                          onTap: () {
+                            // Show modal screen for editing profile
+                            Navigator.pushNamed(context, '/thedit');
+                          }, 
+                          icon: Icons.edit,
+                        ),
+                        ProfileTile(
+                          title: 'View Profile',
+                          onTap: () {
+                            // Show modal screen for adding certification
+                            showBottomSheet(context, 'Add Certification');
+                          }, icon: Icons.view_agenda_outlined,
+                        ),
+                        ProfileTile(
+                          title: 'Add Certification',
+                          onTap: () {
+                            // Show modal screen for adding certification
+                            showBottomSheet(context, 'Add Certification');
+                          }, icon: Icons.add,
+                        ),
+                        ProfileTile(
+                          title: 'Add Video',
+                          onTap: () {
+                            // Show modal screen for adding video
+                            showBottomSheet(context, 'Add Video');
+                          }, icon: Icons.video_chat,
+                        ),
+                        ProfileTile(
+                          title: 'Add Article',
+                          onTap: () {
+                            // Show modal screen for adding article
+                            Navigator.pushNamed(context, '/tharticle');
+                          }, icon: Icons.article,
+                        ),
+                         ProfileTile(
+                      icon: Icons.article_outlined,
+                      title: 'Terms & Conditions', 
+                      onTap: () { 
+                        Navigator.pushNamed(context, '/terms');
+                       },
+                    ),
+                    ProfileTile(
+                      icon: Icons.privacy_tip,
+                      title: 'Privacy & Policy', 
+                      onTap: () { 
+                        Navigator.pushNamed(context, '/privacy');
+                       },
+                    ),
+                   
+                    ProfileTile(
+                      icon: Icons.logout,
+                      title: 'Log Out',
+                      onTap: () {
+                        _showConfirmationDialog(context, 'Log Out',
+                            'Are you sure you want to log out?');
+                      },
+                    ),
+                    ProfileTile(
+                      icon: Icons.delete,
+                      title:'Delete Account',
+                      onTap: () {
+                        _showConfirmationDialog(context, 'Delete Account',
+                            'Are you sure you want to delete your account?');
+                      },
+                    ),
+          
+                        // ProfileTile(
+                        //   title: 'View Appointment Schedules',
+                        //   //Icon: Icon(Icons.calendar_month),
+                        //   onTap: () {
+                        //     // Show modal screen for viewing appointment schedules
+                        //     showBottomSheet(context, 'View Appointment Schedules');
+                        //   }, icon: Icons.calendar_month,
+                        // ),
+                        // ProfileTile(
+                        //   title: 'Settings',
+                        //   onTap: () {
+                        //     // Show modal screen for settings
+                        //     showBottomSheet(context, 'Settings');
+                        //   }, icon: Icons.settings,
+                        // ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: thnavBar(selectedIndex: _selectedIndex,),
@@ -261,10 +220,18 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      leading:Icon(icon),
-      onTap: onTap,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black,width: 0.2)
+        ),
+        child: ListTile(
+          title: Text(title,style: TextStyle(color: Color(0xff881736),),),
+          leading:Icon(icon,size: 18,color: Color(0xff881736),),
+          onTap: onTap,
+        ),
+      ),
     );
   }
 }

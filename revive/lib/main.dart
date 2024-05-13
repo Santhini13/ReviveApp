@@ -3,12 +3,23 @@ import 'package:revive/Models/appointment.dart';
 import 'package:revive/Models/awareness.dart';
 import 'package:revive/Models/chatlist.dart';
 import 'package:revive/Models/communitychat.dart';
-import 'package:revive/Screens/Admin/addashboard.dart';
+import 'package:revive/Screens/Admin/adonboard.dart';
 import 'package:revive/Screens/Admin/adhome.dart';
+import 'package:revive/Screens/Admin/confirmtherapist.dart';
+import 'package:revive/Screens/Admin/viewarticle.dart';
+import 'package:revive/Screens/Admin/viewfeedback.dart';
+import 'package:revive/Screens/Admin/viewtherapist.dart';
+import 'package:revive/Screens/Therapist/tharticles.dart';
 import 'package:revive/Screens/Therapist/thdash.dart';
+import 'package:revive/Screens/Therapist/thedit.dart';
 import 'package:revive/Screens/Therapist/thhome.dart';
 import 'package:revive/Screens/Therapist/thprofile.dart';
+import 'package:revive/Screens/User/assesmentreport.dart';
+import 'package:revive/Screens/User/editprofile.dart';
+import 'package:revive/Screens/User/exercise1.dart';
 import 'package:revive/Screens/User/explore.dart';
+import 'package:revive/Screens/User/favourite.dart';
+import 'package:revive/Screens/User/history.dart';
 import 'package:revive/Screens/User/userdashboard.dart';
 import 'package:revive/login.dart';
 import 'package:revive/Screens/User/21-day.dart';
@@ -53,7 +64,7 @@ class MyApp extends StatelessWidget {
         //'/login':(context) => Login(),
         //'/register':(context) => Register(),
         '/home':(context) => Home(),
-        '/mycare':(context) => myCare(),
+        '/mycare':(context) => myCare(),  
         '/mytest':(context) => MyTest(),
         '/myjournal':(context) => DiaryEntriesScreen(),
         //'/viewjournal':(context) => viewJournal(),
@@ -68,19 +79,33 @@ class MyApp extends StatelessWidget {
         '/aware':(context)=>AwarenessScreen(),
         '/challenge':(context) => ChallengeScreen(),
         '/schedules':(context)=>DoctorAppointmentsPage(),
-        '/privacy':(context) => PrivacyPolicyScreen(),
-        '/terms':(context) => TermsAndConditionsScreen(),
         '/explore':(context) => ExplorePage(),
         '/therapist':(context) => TherapistListScreen(),
         '/diet':(context) => DietingScreen(),
+        '/exercise':(context)=>ExerciseListScreen(),
         '/thhome':(context)=>TherapistHome(),
         '/thprofile':(context)=>ThProfile(),
         '/userdash':(context)=>UserDashboard(),
-        '/adhome':(context)=>AdHome(),
-        '/addash':(context)=>AdminDashboard(),
         '/thdash':(context)=>ThDashboard(),
         '/communitychat':(context)=>CommunityChatScreen(),
-        '/chat':(context) => ChatRoomScreen()
+        '/chat':(context) => ChatRoomScreen(),
+        //userProfile
+        '/edituser':(context)=>EditProfileScreen(),
+        '/userhistory':(context)=>UserHistory(),
+        '/reportcard':(context)=>AssessmentReportScreen(),
+        '/favorite':(context)=>MyFavoritesScreen(),
+        //general
+        '/privacy':(context) => PrivacyPolicyScreen(),
+        '/terms':(context) => TermsAndConditionsScreen(),
+        '/adhome':(context)=>AdHome(),
+        '/adboard':(context)=>AdminOnboard(),
+        '/adtherapist':(context)=>ViewTherapistScreen(),
+        '/adconfirm':(context)=>ConfirmRequestScreen(),
+        '/adarticle':(context) => ViewArticleScreen(),
+        '/adfeedback':(context)=>ViewFeedbackScreen(),
+        //therapist
+        '/thedit':(context)=>ThEditProfile(),
+        '/tharticle':(context) => AddArticleScreen()
        },
        
     ); 

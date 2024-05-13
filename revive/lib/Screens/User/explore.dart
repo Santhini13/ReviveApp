@@ -82,11 +82,11 @@ class _ExplorePageState extends State<ExplorePage> {
             SizedBox(height: 10),
             // Scrollable row with video items goes here
             SizedBox(height: 20),
-
+        
           ],
         ),
       ),
-      bottomNavigationBar: navBar(selectedIndex: _selectedIndex),
+      bottomNavigationBar: NavBar(selectedIndex: _selectedIndex, userRole: UserRole.User,),
     );
   }
 }

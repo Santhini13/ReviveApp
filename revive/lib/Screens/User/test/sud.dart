@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/testcard.dart';
+import 'package:revive/Models/test.dart';
 
 class SudTest extends StatefulWidget {
   const SudTest({super.key});
@@ -50,46 +50,46 @@ class _SudTestState extends State<SudTest> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0,right:20,top: 10),
-            child: QuestionWidget(questions: [
+            child: SudQuestionWidget(questions: [
               {
                 'question':'Have you used drugs other than those required for medical reasons?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'Do you abuse more than one drug at a time?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'Are you always able to stop using drugs when you want to? (if never use drugs, answer “yes”)',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':' Have you had “blackouts” or “flashbacks” as a result of drug use?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'Do you ever feel bad or guilty about your drug use? If never use drugs, choose “no.”',
-                'options':['Yes','No']
+               'options':['No','Yes']
               },
               {
                 'question':'Does your spouse (or parent) ever complain about your involvement with drugs',
-               'options':['Yes','No']
+               'options':['No','Yes']
               },
                {
                 'question':'Have you neglected your family because of your use of drugs?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'Have you engaged in illegal activities in order to obtain drugs?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'Have you ever experienced withdrawal symptoms (felt sick) when you stopped taking drugs?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
               {
                 'question':'. Have you had medical problems as a result of your drug use (e.g., memory loss, hepatitis, convulsions, bleeding, etc.)?',
-                'options':['Yes','No']
+                'options':['No','Yes']
               },
             
             ],),

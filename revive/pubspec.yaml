@@ -35,7 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  intl: ^0.19.0
+  intl: ^0.18.0
   flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
@@ -43,6 +43,9 @@ dev_dependencies:
     sdk: flutter
   table_calendar: ^3.0.1
   percent_indicator: ^4.0.1
+  image_picker: ^1.1.1
+  calendar_timeline: ^1.1.2
+  flutter_timeline_calendar: ^1.0.9
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -68,24 +71,11 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/logo.png
-    - assets/icons/profile/bell.png
-    - assets/icons/profile/calendar.png
-    - assets/icons/profile/smile.png
-    - assets/icons/profile/note.png
-    - assets/icons/profile/rating.png
-    - assets/icons/profile/setting.png
-    - assets/icons/profile/web.png
     - assets/icons/goals.png
     - assets/icons/girl.png
     - assets/icons/diary.png
     - assets/icons/plan.png
-    - assets/icons/gym.png
-    - assets/icons/busy.png
-    - assets/icons/keto.png
-    - assets/icons/clock.png
-    - assets/icons/awareness.png
-    - assets/icons/profile/aware.png
-    - assets/images/AnxIcon.png
+    - assets/icons/aware.png
     - assets/images/anxietyIcon.png
     - assets/images/StressIcon.png
     - assets/images/sudIcon.png
@@ -99,13 +89,18 @@ flutter:
     - assets/icons/emoji5.png
     - assets/images/fyt.png
     - assets/images/checklist.png
-    - assets/images/note-book.png
-    - assets/images/mentalhealth.png
-    - assets/images/studying.png
     - assets/images/user.png
     - assets/images/doc1.jpg
     - assets/images/doc2.jpg
-    
+    - assets/icons/meditation.png
+    - assets/icons/walking.png
+    - assets/icons/runing.png
+    - assets/icons/cycling.png
+    - assets/icons/exercisep1.png
+    - assets/icons/exercisep2.png
+    - assets/icons/care1.png
+    - assets/icons/care2.png
+    - assets/icons/arrow.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

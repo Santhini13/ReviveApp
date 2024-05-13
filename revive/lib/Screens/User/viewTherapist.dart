@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:revive/Screens/User/navbar.dart';
 import 'package:revive/Screens/User/therapistpage.dart';
+
+class Therapist {
+  final String name;
+  final String photo;
+  final String qualification;
+  final String specialization;
+  final String experience;
+  final String description;
+  final List<String> timeSlots;
+  final List<String> appointmentTypes;
+
+  Therapist({
+    required this.name,
+    required this.photo,
+    required this.qualification,
+    required this.specialization,
+    required this.experience,
+    required this.description,
+    required this.timeSlots,
+    required this.appointmentTypes
+  });
+}
 
 class TherapistListScreen extends StatefulWidget {
   @override
@@ -9,67 +29,90 @@ class TherapistListScreen extends StatefulWidget {
 }
 
 class _TherapistListScreenState extends State<TherapistListScreen> {
-  int _selectedIndex=1;
-
-  final List<Map<String, String>> therapists = [
-    {
-      'photo': 'assets/images/doc2.jpg',
-      'name': 'Dr. John Doe',
-      'qualification': 'Psychologist',
-      'specification': 'Anxiety, Depression',
-      'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-      'photo': 'assets/images/doc1.jpg',
-      'name': 'Dr. Jane Smith',
-      'qualification': 'Counselor',
-      'specification': 'Stress Management',
-      'description':
-          'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
-     {
-      'photo': 'assets/images/doc1.jpg',
-      'name': 'Dr. Ann Smith',
-      'qualification': 'Counselor',
-      'specification': 'Stress Management',
-      'description':
-          'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    },
+  late List<Therapist> filteredTherapists;
+  final TextEditingController _searchController = TextEditingController();
+  final List<Therapist> therapists = [
+    Therapist(
+      name: 'Dr. John Doe',
+      photo: 'assets/images/doc2.jpg',
+      qualification: 'Psychologist',
+      specialization: 'Anxiety, Depression',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      experience: '4 years',
+      timeSlots: ['10:00 AM', '11:00 AM', '02:00 PM'],
+      appointmentTypes: ['Chat', 'Call', 'Video'],
+    ),
+    Therapist(
+      name: 'Dr. Jane Smith',
+      photo: 'assets/images/doc1.jpg',
+      qualification: 'Counselor',
+      specialization: 'Stress Management',
+      description:'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      experience: '3 years',
+      timeSlots: ['01:00 PM', '03:00 PM', '05:00 PM','08:00 PM'],
+      appointmentTypes: ['Chat', 'Video'],
+    ),
     // Add more therapist details as needed
   ];
+void initState() {
+    super.initState();
+    filteredTherapists = therapists; // Initialize with all therapists
+  }
+
+  void _filterTherapists(String query) {
+    setState(() {
+      filteredTherapists = therapists.where((therapist) {
+        final nameLower = therapist.name.toLowerCase();
+        final queryLower = query.toLowerCase();
+        return nameLower.contains(queryLower);
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+       appBar: AppBar(
         title: Text('Find Your Therapist'),
         actions: [
           IconButton(
             onPressed: () {
               showSearch(
-                  context: context,
-                  delegate: TherapistSearchDelegate(therapists: therapists));
+                context: context,
+                delegate: TherapistSearchDelegate(
+                  therapists: therapists,
+                  filterTherapists: _filterTherapists,
+                ),
+              );
             },
             icon: Icon(Icons.search),
           ),
-          PopupMenuButton(
-            onSelected: (value) {
-              // Handle filter
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry>[
-                PopupMenuItem(
-                  value: 'option1',
-                  child: Text('Filter Option 1'),
-                ),
-                PopupMenuItem(
-                  value: 'option2',
-                  child: Text('Filter Option 2'),
-                ),
-                // Add more filter options as needed
-              ];
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Filter by'),
+                      content: Text('Add your filter options here'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Close'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              icon: Icon(Icons.filter_list_sharp),
+            ),
           ),
+          
         ],
       ),
       body: ListView.builder(
@@ -81,14 +124,16 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      TherapistDetailScreen(therapist: therapist),
+                  builder: (context) => TherapistDetailScreen(
+                    therapist: therapist,
+                    appointmentTypes: therapist.appointmentTypes,
+                    timeSlots: therapist.timeSlots,
+                  ),
                 ),
               );
             },
             child: Card(
               margin: EdgeInsets.all(16.0),
-              //shadowColor: Color(0xff281537).withOpacity(0.2),
               color: Color(0xff881736),
               child: Padding(
                 padding: EdgeInsets.all(16.0),
@@ -96,7 +141,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                   children: [
                     Container(
                       child: Image.asset(
-                        therapist['photo']!,
+                        therapist.photo,
                         width: 150,
                         height: 130,
                         fit: BoxFit.cover,
@@ -109,26 +154,24 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            therapist['name']!,
+                            therapist.name,
                             style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                           Text(
-                            therapist['qualification']!,
+                            therapist.qualification,
                             style: TextStyle(fontSize: 14, color: Colors.white),
                           ),
                           Text(
-                            therapist['specification']!,
+                            therapist.specialization,
                             style: TextStyle(fontSize: 14, color: Colors.white),
                           ),
-                          SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle booking
-                            },
-                            child: Text('Book Now'),
+                          Text(
+                            therapist.experience,
+                            style: TextStyle(fontSize: 14, color: Colors.white),
                           ),
                         ],
                       ),
@@ -140,25 +183,37 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
           );
         },
       ),
-      bottomNavigationBar: navBar(selectedIndex: _selectedIndex),
     );
   }
 }
-
 class TherapistSearchDelegate extends SearchDelegate {
-  final List<Map<String, dynamic>> therapists;
+  final List<Therapist> therapists;
+  final Function(String) filterTherapists;
 
-  TherapistSearchDelegate({required this.therapists});
+  TherapistSearchDelegate({
+    required this.therapists,
+    required this.filterTherapists,
+  });
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [IconButton(icon: Icon(Icons.clear), onPressed: () => query = '')];
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+          filterTherapists(query);
+        },
+      ),
+    ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.arrow_back), onPressed: () => close(context, null));
+      icon: Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
   }
 
   @override
@@ -169,20 +224,14 @@ class TherapistSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty
-        ? therapists
-        : therapists
-            .where((therapist) =>
-                therapist['name'].toLowerCase().contains(query.toLowerCase()))
-            .toList();
-
     return ListView.builder(
-      itemCount: suggestionList.length,
+      itemCount: therapists.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(suggestionList[index]['name']),
+          title: Text(therapists[index].name),
           onTap: () {
             // Handle suggestion selection
+            close(context, null);
           },
         );
       },

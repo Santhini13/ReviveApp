@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:revive/Screens/User/navbar.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -10,9 +11,10 @@ class UserDashboard extends StatefulWidget {
 class _UserDashboardState extends State<UserDashboard> {
   int _selectedIndex = 3;
   final List<DashboardItem> items = [
-    DashboardItem(title: 'Courses', progress: 0.6, daysLeft: 14),
-    DashboardItem(title: 'Exercises', progress: 0.8, daysLeft: 7),
+    //DashboardItem(title: 'Courses', progress: 0.6, daysLeft: 14),
+    DashboardItem(title: 'Exercises', progress: 0.8, daysLeft: 2),
     DashboardItem(title: '21-Day Challenge', progress: 0.4, daysLeft: 10),
+    
   ];
 
   final List<Appointment> appointments = [
@@ -46,18 +48,21 @@ class _UserDashboardState extends State<UserDashboard> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 20.0,
-                mainAxisSpacing: 20.0,
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                ),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return _buildDashboardItem(items[index]);
+                },
+                shrinkWrap: true,
+               // physics: NeverScrollableScrollPhysics(),
               ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return _buildDashboardItem(items[index]);
-              },
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
             ),
             SizedBox(height: 40),
             Text(
@@ -76,7 +81,7 @@ class _UserDashboardState extends State<UserDashboard> {
           ],
         ),
       ),
-      bottomNavigationBar: navBar(selectedIndex: _selectedIndex),
+     bottomNavigationBar: NavBar(selectedIndex: _selectedIndex, userRole: UserRole.User,),
     );
   }
 
@@ -112,9 +117,10 @@ class _UserDashboardState extends State<UserDashboard> {
 
   Widget _buildCircularProgressIndicator(double progress) {
     return SizedBox(
-      width: 80,
-      height: 80,
+      width: 90,
+      height: 90,
       child: CircularProgressIndicator(
+        color:Color(0xff881736),
         value: progress,
         strokeWidth: 5,
       ),

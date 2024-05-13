@@ -29,7 +29,7 @@ class _UserLoginState extends State<UserLogin> {
       } else if (isTherapist) {
         Navigator.pushNamed(context, '/thhome');
       } else {
-        Navigator.pushNamed(context, '/adhome');
+        Navigator.pushNamed(context, '/adboard');
       }
     }
   }
