@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/testcard.dart';
+import 'package:revive/general/testcard.dart';
+
 
 class stressTest extends StatefulWidget {
   const stressTest({super.key});

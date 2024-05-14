@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/test.dart';
+import 'package:revive/general/test.dart';
 import 'package:revive/Screens/User/navbar.dart';
-
+import 'package:revive/constants/myAppbar.dart';
 class ExplorePage extends StatefulWidget {
   @override
   State<ExplorePage> createState() => _ExplorePageState();
@@ -14,18 +14,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
-        child: AppBar(
-          title:Text('Explore',style:TextStyle(color:Colors.white),),
-          backgroundColor: Colors.transparent, // Transparent background
-          automaticallyImplyLeading: false, // Removes the back button
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff881736), Color(0xff281537)],
-              ),
-            ),))),
+      appBar: MyAppBar(title:'Explore'),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
-class AdminOnboard extends StatelessWidget {
-  const AdminOnboard({Key? key}) : super(key: key);
+class UserOnboard extends StatelessWidget {
+  const UserOnboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class AdminOnboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome Admin',
+                'Welcome UserName',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -41,7 +40,7 @@ class AdminOnboard extends StatelessWidget {
               iconSize: 40,
               color: Colors.white, 
               onPressed: () { 
-                Navigator.pushNamed(context,'/adhome');
+                Navigator.pushNamed(context,'/home');
                },
             ),
             ],

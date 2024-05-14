@@ -85,6 +85,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class ViewUserScreen extends StatelessWidget {
   const ViewUserScreen({Key? key}) : super(key: key);
@@ -92,9 +93,7 @@ class ViewUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('View Users'),
-      ),
+      appBar: MyAppBar(title: 'View User'), 
       body: ListView.builder(
         itemCount: 5, // Placeholder for user list
         itemBuilder: (context, index) {

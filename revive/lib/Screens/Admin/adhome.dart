@@ -141,13 +141,13 @@ class _AdHomeState extends State<AdHome> {
              Navigator.pushNamed(context, '/adfeedback');
           },
         ),
-        // CardItem(
-        //   text: 'Update Questionnaire',
-        //   onTap: () {
-        //     // Add logic for updating questionnaire
-        //     print('Update Questionnaire');
-        //   },
-        // ),
+        CardItem(
+          text: 'View Payment',
+          onTap: () {
+            // Add logic for updating questionnaire
+            Navigator.pushNamed(context, '/viewPayment');
+          },
+        ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class MyFavoritesScreen extends StatelessWidget {
   final List<Therapist> favoriteTherapists = [
@@ -9,18 +10,7 @@ class MyFavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
-        child: AppBar(
-          title:Text('My Favourites',style:TextStyle(color:Colors.white),),
-          backgroundColor: Colors.transparent, // Transparent background
-          automaticallyImplyLeading: false, // Removes the back button
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff881736), Color(0xff281537)],
-              ),
-            ),))),
+     appBar: MyAppBar(title:'My Favourites'),
       body: favoriteTherapists.isEmpty
           ? Center(
               child: Column(

@@ -1,4 +1,5 @@
  import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
  class ViewTherapistScreen extends StatefulWidget {
   @override
   _ViewTherapistScreenState createState() => _ViewTherapistScreenState();
@@ -25,9 +26,7 @@ class _ViewTherapistScreenState extends State<ViewTherapistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('View Therapists'),
-      ),
+      appBar: MyAppBar(title: 'View Therapist'), 
       body: ListView.builder(
         itemCount: therapists.length,
         itemBuilder: (context, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class FeedbackViewScreen extends StatelessWidget {
   final String feedback;
@@ -8,8 +9,8 @@ class FeedbackViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Feedback'),
+      appBar: MyAppBar(
+        title: 'Feedback',
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

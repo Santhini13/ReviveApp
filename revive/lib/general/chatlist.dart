@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/chatgroup.dart';
+import 'package:revive/general/chatgroup.dart';
 
 class ChatRoomScreen extends StatelessWidget {
   @override

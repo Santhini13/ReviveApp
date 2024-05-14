@@ -141,8 +141,12 @@ void initState() {
                 ),
               );
             },
-            child: Card(
+            child: Container(
               margin: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(20)
+              ),
              // color: Color(0xff881736),
               child: Padding(
                 padding: EdgeInsets.all(10.0),
@@ -158,7 +162,7 @@ void initState() {
                     ),
                     SizedBox(width: 10),
                     Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 30),
+                      padding: const EdgeInsets.only(left: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

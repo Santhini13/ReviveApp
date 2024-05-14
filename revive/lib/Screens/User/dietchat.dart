@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -59,18 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
-        child: AppBar(
-          title:Text('Healthy Meal Bot',style:TextStyle(color:Colors.white),),
-          backgroundColor: Colors.transparent, // Transparent background
-          automaticallyImplyLeading: false, // Removes the back button
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff881736), Color(0xff281537)],
-              ),
-            ),))),
+      appBar:MyAppBar(title: 'Healthy Meal Bot'),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

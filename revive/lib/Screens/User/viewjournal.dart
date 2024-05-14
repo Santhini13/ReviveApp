@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:revive/Models/itemNote.dart';
+import 'package:revive/general/itemNote.dart';
 
 class DiaryEntriesScreen extends StatefulWidget {
   @override

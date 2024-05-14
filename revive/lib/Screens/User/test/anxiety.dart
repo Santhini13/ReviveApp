@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/testcard.dart';
+import 'package:revive/general/testcard.dart';
+
 
 class AnxietyTest extends StatefulWidget {
   const AnxietyTest({super.key});

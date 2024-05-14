@@ -208,21 +208,64 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
     // You can show additional information or logic here based on the selected date
     // For example, you can update the list of available time slots and appointment types
   }
-
-  void _showPaymentDialog(BuildContext context) {
-    if (selectedDate != null &&
-        selectedTimeSlot != null &&
-        selectedAppointmentType != null) {
-      // Proceed with booking
-      _showConfirmationMessage(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please select date, time slot, and appointment type.'),
-        ),
-      );
-    }
+void _showPaymentDialog(BuildContext context) {
+  if (selectedDate != null &&
+      selectedTimeSlot != null &&
+      selectedAppointmentType != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Payment"),
+          content: Text("Please proceed with the payment to book your appointment."),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Pay"),
+              onPressed: () {
+                // Perform payment logic here
+                _performPayment(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please select date, time slot, and appointment type.'),
+      ),
+    );
   }
+}
+
+void _performPayment(BuildContext context) {
+  // Perform payment logic here
+  // Once payment is successful, show confirmation message
+  _showConfirmationMessage(context);
+}
+
+  // void _showPaymentDialog(BuildContext context) {
+  //   if (selectedDate != null &&
+  //       selectedTimeSlot != null &&
+  //       selectedAppointmentType != null) {
+  //     // Proceed with booking
+  //     _showConfirmationMessage(context);
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Please select date, time slot, and appointment type.'),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _showConfirmationMessage(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate!);

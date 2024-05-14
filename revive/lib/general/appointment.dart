@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Models/appointmentdetails.dart';
+import 'package:revive/general/appointmentdetails.dart';
 
 class DoctorAppointmentsPage extends StatelessWidget {
   // Dummy list of appointments

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:revive/Screens/Therapist/thappointmanage.dart';
-
-
 
 class Appointment {
   final String patientName;

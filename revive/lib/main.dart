@@ -1,13 +1,15 @@
+
 import 'package:flutter/material.dart';
-import 'package:revive/Models/appointment.dart';
-import 'package:revive/Models/awareness.dart';
-import 'package:revive/Models/chatlist.dart';
-import 'package:revive/Models/communitychat.dart';
+import 'package:revive/general/appointment.dart';
+import 'package:revive/general/awareness.dart';
+import 'package:revive/general/chatlist.dart';
+import 'package:revive/general/communitychat.dart';
 import 'package:revive/Screens/Admin/adonboard.dart';
 import 'package:revive/Screens/Admin/adhome.dart';
 import 'package:revive/Screens/Admin/confirmtherapist.dart';
 import 'package:revive/Screens/Admin/viewarticle.dart';
 import 'package:revive/Screens/Admin/viewfeedback.dart';
+import 'package:revive/Screens/Admin/viewpayment.dart';
 import 'package:revive/Screens/Admin/viewtherapist.dart';
 import 'package:revive/Screens/Admin/viewuser.dart';
 import 'package:revive/Screens/Therapist/tharticles.dart';
@@ -16,6 +18,8 @@ import 'package:revive/Screens/Therapist/thedit.dart';
 import 'package:revive/Screens/Therapist/thhome.dart';
 import 'package:revive/Screens/Therapist/thonboard.dart';
 import 'package:revive/Screens/Therapist/thprofile.dart';
+import 'package:revive/Screens/User/21first.dart';
+import 'package:revive/Screens/User/Useronboard.dart';
 import 'package:revive/Screens/User/assesmentreport.dart';
 import 'package:revive/Screens/User/editprofile.dart';
 import 'package:revive/Screens/User/exercise1.dart';
@@ -24,7 +28,6 @@ import 'package:revive/Screens/User/favourite.dart';
 import 'package:revive/Screens/User/history.dart';
 import 'package:revive/Screens/User/userdashboard.dart';
 import 'package:revive/login.dart';
-import 'package:revive/Screens/User/21-day.dart';
 import 'package:revive/Screens/User/mycare.dart';
 import 'package:revive/Screens/User/mytest.dart';
 import 'package:revive/privacy.dart';
@@ -42,14 +45,19 @@ import 'package:revive/Screens/User/diet.dart';
 import 'package:revive/home.dart';
 import 'package:revive/Screens/User/viewTherapist.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:revive/firebase_options.dart';
 
-void main() {
+
+Future<void> main() async {
+
+  await WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform,);
   runApp(const MyApp());
 }
- 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -73,13 +81,14 @@ class MyApp extends StatelessWidget {
         '/register':(context)=>UserRegister(),
         '/login':(context) => UserLogin(),
         '/uprofile':(context) => userProfile(),
+        '/uonboard':(context)=>UserOnboard(),
         '/anxiety':(context) => AnxietyTest(),
         '/stress':(context) => stressTest(),
         '/depression':(context) => depressionTest(),
         '/relations':(context) => relatioTest(),
         '/SUD':(context) => SudTest(),
         '/aware':(context)=>AwarenessScreen(),
-        '/challenge':(context) => ChallengeScreen(),
+        '/challenge':(context) =>ChallengeFirstScreen(),
         '/schedules':(context)=>DoctorAppointmentsPage(),
         '/explore':(context) => ExplorePage(),
         '/therapist':(context) => TherapistListScreen(),
@@ -106,6 +115,7 @@ class MyApp extends StatelessWidget {
         '/adarticle':(context) => ViewArticleScreen(),
         '/adfeedback':(context)=>ViewFeedbackScreen(),
         '/viewuser':(context)=>ViewUserScreen(),
+        '/viewPayment':(context) => ViewPayment(),
         //therapist
         '/thedit':(context)=>ThEditProfile(),
         '/tharticle':(context) => AddArticleScreen(),

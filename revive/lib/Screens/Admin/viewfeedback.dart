@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class ViewFeedbackScreen extends StatefulWidget {
   @override
@@ -29,9 +30,7 @@ class _ViewFeedbackScreenState extends State<ViewFeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('View Feedback'),
-      ),
+      appBar: MyAppBar(title: 'View Feedback'), 
       body: ListView.builder(
         itemCount: feedbacks.length,
         itemBuilder: (context, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class ViewArticleScreen extends StatefulWidget {
   @override
@@ -26,9 +27,7 @@ class _ViewArticleScreenState extends State<ViewArticleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('View Articles'),
-      ),
+      appBar: MyAppBar(title: 'View Articles'), 
       body: ListView.builder(
         itemCount: articles.length,
         itemBuilder: (context, index) {

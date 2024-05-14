@@ -21,7 +21,7 @@ class _UserLoginState extends State<UserLogin> {
       _formKey.currentState!.save();
       if (isUser) {
         // Navigate to user page
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/uonboard');
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => Home()),

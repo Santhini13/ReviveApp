@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/constants/myAppbar.dart';
 
 class ConfirmRequestScreen extends StatefulWidget {
   @override
@@ -43,9 +44,7 @@ class _ConfirmRequestScreenState extends State<ConfirmRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Confirm Request'),
-      ),
+      appBar: MyAppBar(title: 'Confirm Request'), 
       body: ListView(
         children: [
           _buildConfirmRequestsList(),
