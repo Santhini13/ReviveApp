@@ -35,7 +35,7 @@
 //         Navigator.pushNamed(context, '/adminhome');
 //       }
 //     }
-//   }
+//   } 
 
 //   @override
 //   void dispose() {
@@ -294,6 +294,7 @@
 //     ]));
 //   }
 // }
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -325,11 +326,11 @@ class _UserRegisterState extends State<UserRegister> {
 
         // Navigate to the home screen or appropriate screen after registration
         if (isUser) {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/uonboard');
         } else if (isTherapist) {
-          Navigator.pushNamed(context, '/thhome');
+          Navigator.pushNamed(context, '/thonboard');
         } else {
-          Navigator.pushNamed(context, '/adminhome');
+          Navigator.pushNamed(context, '/adboard');
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
