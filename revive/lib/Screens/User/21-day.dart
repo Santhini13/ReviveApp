@@ -6,6 +6,30 @@ class ChallengeScreen extends StatefulWidget {
 }
 
 class _ChallengeScreenState extends State<ChallengeScreen> {
+  List<Map<String, dynamic>> _activities = [
+  {'name': 'Go to bed one hour earlier than usual', 'image': 'assets/images/21-days/Day1.png'},
+  {'name': 'Journal ten things you’re grateful for', 'image': 'assets/images/21-days/Day2.png'},
+  {'name': 'Take a walk outdoors', 'image': 'assets/images/21-days/Day3.png'},
+  {'name': 'Call someone you love', 'image': 'assets/images/21-days/Day4.png'},
+  {'name': 'De-clutter your room or desk', 'image': 'asassets/images/21-days/Day5.png'},
+   {'name': 'Take a break from social media', 'image': 'assets/images/21-days/Day6.png'},
+  {'name': 'Make a list of short-term goals', 'image':'assets/images/21-days/Day7.png'},
+  {'name': 'Make the most epic, creative salad or healthy dish you can think of', 'image': 'assets/images/21-days/Day8.png'},
+  {'name': 'Slow down. Sit and watch the sunset or sunrise', 'image': 'assets/images/21-days/Day9.png'},
+  {'name': 'Get rid of five things you never use', 'image': 'assets/images/21-days/Day10.png'},
+  {'name': 'Enjoy the sun and eat lunch outside', 'image': 'assets/images/21-days/Day11.png'},
+  {'name': 'Unsubscribe from unnecessary emails', 'image': 'assets/images/21-days/Day12.png'},
+  {'name': 'Send an encouraging text to five people', 'image': 'assets/images/21-days/Day13.png'},
+  {'name': 'Wake up thirty minutes earlier to pray or meditate', 'image': 'assets/images/21-days/Day14.png'},
+  {'name': 'Plan a tea or smoothie date with a friend', 'image': 'assets/images/21-days/Day15.png'},
+  {'name': 'Go the entire day without complaining', 'image': 'assets/images/21-days/Day16.png'},
+  {'name': 'Buy yourself flowers', 'image': 'assets/images/21-days/Day17.png'},
+  {'name': 'Make time for a wholesome breakfast', 'image': 'assets/images/21-days/Day18.png'},
+  {'name': 'Do one thing you’ve been putting off', 'image': 'assets/images/21-days/Day19.png'},
+  {'name': 'Don’t overthink. Practice being present', 'image': 'assets/images/21-days/Day20.png'},
+  {'name': 'Say ‘no’ to that extra commitment', 'image': 'assets/images/21-days/Day21.png'},
+];
+
   List<bool> _isDayCompleted = List.generate(21, (index) => false);
 
   @override
@@ -80,10 +104,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text('Day ${index + 1}'),
+                                    Text(_activities[index]['name']), // Display activity name
                                     SizedBox(height: 10),
-                                    Image.network(
-                                      'https://via.placeholder.com/150',
+                                    Image.asset(
+                                      _activities[index]['image'], // Display associated image
                                       height: 100,
                                       width: 100,
                                     ),

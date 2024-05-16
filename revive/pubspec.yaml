@@ -108,6 +108,7 @@ flutter:
     - assets/icons/care1.png
     - assets/icons/care2.png
     - assets/icons/arrow.png
+    - assets/images/21-days
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
