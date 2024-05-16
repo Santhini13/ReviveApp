@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/general/testcard.dart';
+import 'package:revive/screens/general/testcard.dart';
 
 class depressionTest extends StatefulWidget {
   const depressionTest({super.key});

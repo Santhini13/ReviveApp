@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/general/test.dart';
-
+import 'package:revive/Screens/general/test.dart';
 
 class SudTest extends StatefulWidget {
   const SudTest({super.key});

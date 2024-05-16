@@ -91,7 +91,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                 ),
                 SizedBox(height: 10),
                 CalendarTimeline(
-                  initialDate: DateTime.now(),
+                  initialDate: selectedDate ?? DateTime.now(),
                   firstDate: DateTime(2020, 1, 1),
                   lastDate: DateTime(2025, 12, 31),
                   //onDateSelected: (date) => _handleDateSelection(context, date),
@@ -107,7 +107,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                   activeDayColor: Colors.white,
                   activeBackgroundDayColor: Color(0xff881736),
                   dotsColor: Colors.white,
-                  selectableDayPredicate: (date) => true,
+                  selectableDayPredicate: (date) => date.isAfter(DateTime.now().subtract(Duration(days: 1))),
                 ),
                 SizedBox(height: 20),
                 Text(
@@ -217,7 +217,7 @@ void _showPaymentDialog(BuildContext context) {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Payment"),
-          content: Text("Please proceed with the payment to book your appointment."),
+          content: Text("Pay "),
           actions: <Widget>[
             TextButton(
               child: Text("Cancel"),

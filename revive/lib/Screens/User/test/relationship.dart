@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/general/testcard.dart';
+import 'package:revive/Screens/general/testcard.dart';
 
 class relatioTest extends StatefulWidget {
   const relatioTest({super.key});

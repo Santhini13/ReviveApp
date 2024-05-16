@@ -33,6 +33,14 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text('Hello UserName',style: TextStyle(fontSize: 24, color:Color(0xff881736)),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(onPressed: (){
+              Navigator.pushNamed(context, '/notification');
+            }, icon: Icon(Icons.notifications,color:Color(0xff881736))),
+          )
+        ],
 
       ),
       //drawer: Drawer(),

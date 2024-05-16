@@ -35,17 +35,8 @@ class _Splash2State extends State<Splash2> {
             Navigator.pushNamed(context, '/login');
           }, child: Text('Get Started',style: TextStyle(fontSize: 20,color: Colors.white),),height: 50,width:300,color:  Color.fromARGB(255, 0, 0, 0).withOpacity(0.4)),
          SizedBox(height: 20,),
-         AppButton(onTap: (){}, child: Text('Terms & Condition',style: TextStyle(fontSize: 10,color: Colors.white),))
         ],),
       )
     );
   }
 }
-//  decoration: BoxDecoration(
-//           gradient: LinearGradient(
-//             colors: [Color.fromARGB(255, 231, 133, 4),
-//             Color.fromARGB(255, 255, 251, 0)],
-//             begin: Alignment.bottomLeft,
-//             end: Alignment.topRight
-//           )
-//         ),

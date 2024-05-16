@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:revive/general/appointment.dart';
-import 'package:revive/general/awareness.dart';
-import 'package:revive/general/chatlist.dart';
-import 'package:revive/general/communitychat.dart';
+import 'package:revive/Screens/Therapist/viewprofile.dart';
+import 'package:revive/Screens/features/notifications.dart';
+import 'package:revive/screens/general/appointment.dart';
+import 'package:revive/screens/general/awareness.dart';
 import 'package:revive/Screens/Admin/adonboard.dart';
 import 'package:revive/Screens/Admin/adhome.dart';
 import 'package:revive/Screens/Admin/confirmtherapist.dart';
@@ -98,8 +98,6 @@ class MyApp extends StatelessWidget {
         '/thprofile':(context)=>ThProfile(),
         '/userdash':(context)=>UserDashboard(),
         '/thdash':(context)=>ThDashboard(),
-        '/communitychat':(context)=>CommunityChatScreen(),
-        '/chat':(context) => ChatRoomScreen(),
         //userProfile
         '/edituser':(context)=>EditProfileScreen(),
         '/userhistory':(context)=>UserHistory(),
@@ -119,8 +117,9 @@ class MyApp extends StatelessWidget {
         //therapist
         '/thedit':(context)=>ThEditProfile(),
         '/tharticle':(context) => AddArticleScreen(),
-        '/thonboard':(context)=>TherapistOnboardingScreen()
-       },
+        '/thonboard':(context)=>TherapistOnboardingScreen(),
+        '/notification':(context)=>NotificationScreen(),
+       }, 
        
     ); 
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revive/constants/myAppbar.dart';
+import 'package:revive/Screens/constants/myAppbar.dart';
 
 class MyFavoritesScreen extends StatelessWidget {
   final List<Therapist> favoriteTherapists = [

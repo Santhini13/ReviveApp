@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revive/general/test.dart';
 import 'package:revive/Screens/User/navbar.dart';
-import 'package:revive/constants/myAppbar.dart';
+import 'package:revive/Screens/constants/myAppbar.dart';
 class ExplorePage extends StatefulWidget {
   @override
   State<ExplorePage> createState() => _ExplorePageState();

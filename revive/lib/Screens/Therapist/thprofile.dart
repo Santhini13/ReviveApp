@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ThProfile extends StatelessWidget {
   @override
@@ -63,26 +64,18 @@ class ThProfile extends StatelessWidget {
                             showBottomSheet(context, 'Add Certification');
                           }, icon: Icons.view_agenda_outlined,
                         ),
-                        ProfileTile(
-                          title: 'Add Certification',
-                          onTap: () {
-                            // Show modal screen for adding certification
-                            showBottomSheet(context, 'Add Certification');
-                          }, icon: Icons.add,
-                        ),
-                         ProfileTile(
-                          title: 'Feedback',
-                          icon: Icons.star_border_outlined,
-                          onTap: () {
-                            // Show modal screen for viewing appointment schedules
-                            showBottomSheet(context, 'View Appointment Schedules');
-                          }, 
-                        ),
+                        // ProfileTile(
+                        //   title: 'Add Certification',
+                        //   onTap: () {
+                        //     // Show modal screen for adding certification
+                        //     showBottomSheet(context, 'Add Certification');
+                        //   }, icon: Icons.add,
+                        // ),
                         ProfileTile(
                           title: 'Add Video',
                           onTap: () {
                             // Show modal screen for adding video
-                            showBottomSheet(context, 'Add Video');
+                            showUploadVideoBottomSheet(context);
                           }, icon: Icons.video_chat,
                         ),
                         ProfileTile(
@@ -91,6 +84,14 @@ class ThProfile extends StatelessWidget {
                             // Show modal screen for adding article
                             Navigator.pushNamed(context, '/tharticle');
                           }, icon: Icons.article,
+                        ),
+                         ProfileTile(
+                          title: 'Feedback',
+                          icon: Icons.star_border_outlined,
+                          onTap: () {
+                            // Show modal screen for viewing appointment schedules
+                            showBottomSheet(context, 'View Appointment Schedules');
+                          }, 
                         ),
                          ProfileTile(
                       icon: Icons.article_outlined,
@@ -229,4 +230,56 @@ class ProfileTile extends StatelessWidget {
       ),
     );
   }
+}
+void showUploadVideoBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Upload Video',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  // Add logic to select video from device
+                  final pickedFile = await ImagePicker().pickVideo(
+                    source: ImageSource.gallery,
+                    // Restrict to videos only
+                    // Set the max duration if needed
+                    // maxDuration: Duration(seconds: 60),
+                  );
+
+                  if (pickedFile != null) {
+                    // Handle the picked video
+                    // You can display the video preview or save the file path
+                    print('Video path: ${pickedFile.path}');
+                  }
+                },
+                child: Text('Select Video'),
+              ),
+              SizedBox(height: 20),
+              // Add more UI elements for video upload as needed
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Close'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
