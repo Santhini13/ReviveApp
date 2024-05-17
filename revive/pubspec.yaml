@@ -52,7 +52,7 @@ dev_dependencies:
   image_picker: ^1.1.1
   calendar_timeline: ^1.1.2
   flutter_timeline_calendar: ^1.0.9
-  flutter_webrtc: ^0.10.6
+ 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -108,7 +108,27 @@ flutter:
     - assets/icons/care1.png
     - assets/icons/care2.png
     - assets/icons/arrow.png
-    - assets/images/21-days
+    - assets/images/21-days/Day1.png
+    - assets/images/21-days/Day2.png
+    - assets/images/21-days/Day3.png
+    - assets/images/21-days/Day4.png
+    - assets/images/21-days/Day5.png
+    - assets/images/21-days/Day6.png
+    - assets/images/21-days/Day7.png
+    - assets/images/21-days/Day8.png
+    - assets/images/21-days/Day9.png
+    - assets/images/21-days/Day10.png
+    - assets/images/21-days/Day11.png
+    - assets/images/21-days/Day12.png
+    - assets/images/21-days/Day13.png
+    - assets/images/21-days/Day14.png
+    - assets/images/21-days/Day15.png
+    - assets/images/21-days/Day16.png
+    - assets/images/21-days/Day17.png
+    - assets/images/21-days/Day18.png
+    - assets/images/21-days/Day19.png
+    - assets/images/21-days/Day20.png
+    - assets/images/21-days/Day21.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
