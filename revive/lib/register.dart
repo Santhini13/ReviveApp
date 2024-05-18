@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:revive/Models/UserModal.dart';
 import 'package:revive/utils/appbutton.dart';
+import 'package:revive/Services/UserService.dart';
 
 class UserRegister extends StatefulWidget {
   @override
@@ -17,6 +20,8 @@ class _UserRegisterState extends State<UserRegister> {
   //late String _selectedRole;
   bool isUser = false;
   bool isTherapist = false;
+  final FirebaseService _firebaseService=FirebaseService();
+  final _userservice =FirebaseService();
 
   void handleLogin() {
     if (_formKey.currentState!.validate()) {
@@ -24,13 +29,13 @@ class _UserRegisterState extends State<UserRegister> {
       _formKey.currentState!.save();
       if (isUser) {
         // Navigate to user page
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/uonboard');
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(builder: (context) => Home()),
         // );
       } else if (isTherapist) {
-        Navigator.pushNamed(context, '/thhome');
+        Navigator.pushNamed(context, '/thonboard');
       } else {
         Navigator.pushNamed(context, '/adminhome');
       }
@@ -44,6 +49,31 @@ class _UserRegisterState extends State<UserRegister> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+  Future<void>_register() async{
+    if(_formKey.currentState!.validate()){
+      String role = isUser ? 'User' : 'Therapist';
+      Users user =Users(
+        username:_usernameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        phoneNumber:_phoneNumberController.text, 
+        role: role,
+
+      );
+      try{
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        await _firebaseService.registerUser(user);
+        handleLogin();
+      } 
+      catch(e){
+        print('Error user: $e');
+      }
+    }
   }
 
   @override
@@ -235,12 +265,12 @@ class _UserRegisterState extends State<UserRegister> {
                     SizedBox(height: 20),
                     AppButton(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
+                        _register();
                           // Validated successfully, handle registration logic here
                           // For example, you can navigate to the next screen
-                          print(
-                              'Username: ${_usernameController.text}, Phone: ${_phoneNumberController.text}, Email: ${_emailController.text}, Password: ${_passwordController.text}');
-                        }
+                          // print(
+                          //     'Username: ${_usernameController.text}, Phone: ${_phoneNumberController.text}, Email: ${_emailController.text}, Password: ${_passwordController.text}');
+                        
                       },
                       child: Text(
                         'Register',
@@ -314,35 +344,35 @@ class _UserRegisterState extends State<UserRegister> {
 
 //   void handleRegistration() async {
 //     if (_formKey.currentState!.validate()) {
-//       try {
-//         UserCredential userCredential =
-//             await FirebaseAuth.instance.createUserWithEmailAndPassword(
-//           email: _emailController.text,
-//           password: _passwordController.text,
-//         );
+  //     try {
+  //       UserCredential userCredential =
+  //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //         email: _emailController.text,
+  //         password: _passwordController.text,
+  //       );
 
-//         // User registration successful, now save additional user information if needed
-//         // For example, you can save username, phone number, and role to Firebase Firestore
+  //       // User registration successful, now save additional user information if needed
+  //       // For example, you can save username, phone number, and role to Firebase Firestore
 
-//         // Navigate to the home screen or appropriate screen after registration
-//         if (isUser) {
-//           Navigator.pushNamed(context, '/uonboard');
-//         } else if (isTherapist) {
-//           Navigator.pushNamed(context, '/thonboard');
-//         } else {
-//           Navigator.pushNamed(context, '/adboard');
-//         }
-//       } on FirebaseAuthException catch (e) {
-//         if (e.code == 'weak-password') {
-//           print('The password provided is too weak.');
-//         } else if (e.code == 'email-already-in-use') {
-//           print('The account already exists for that email.');
-//         }
-//       } catch (e) {
-//         print(e);
-//       }
-//     }
-//   }
+  //       // Navigate to the home screen or appropriate screen after registration
+  //       if (isUser) {
+  //         Navigator.pushNamed(context, '/uonboard');
+  //       } else if (isTherapist) {
+  //         Navigator.pushNamed(context, '/thonboard');
+  //       } else {
+  //         Navigator.pushNamed(context, '/adboard');
+  //       }
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'weak-password') {
+  //         print('The password provided is too weak.');
+  //       } else if (e.code == 'email-already-in-use') {
+  //         print('The account already exists for that email.');
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   }
+  // }
 
 //   @override
 //   void dispose() {

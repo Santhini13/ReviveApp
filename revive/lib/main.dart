@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
         '/home':(context) => Home(),
         '/mycare':(context) => myCare(),  
         '/mytest':(context) => MyTest(),
-        '/myjournal':(context) => DiaryEntriesScreen(),
+        '/myjournal':(context) => DiaryEntriesScreen(), 
         //'/viewjournal':(context) => viewJournal(),
         '/register':(context)=>UserRegister(),
         '/login':(context) => UserLogin(),

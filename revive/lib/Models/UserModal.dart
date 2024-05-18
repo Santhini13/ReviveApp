@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
-
-class User {
+class Users {
   final String username;
   final String phoneNumber;
   final String email;
   final String password;
   final String role;
 
-  User({
+  Users({
     required this.username,
     required this.phoneNumber,
     required this.email,
@@ -20,7 +18,6 @@ class User {
       'username': username,
       'phoneNumber': phoneNumber,
       'email': email,
-      //'password': password,
       'role': role,
     };
   }
