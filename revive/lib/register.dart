@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:revive/Models/UserModal.dart';
 import 'package:revive/utils/appbutton.dart';
 import 'package:revive/Services/UserService.dart';
@@ -21,26 +19,30 @@ class _UserRegisterState extends State<UserRegister> {
   bool isUser = false;
   bool isTherapist = false;
   final FirebaseService _firebaseService=FirebaseService();
-  final _userservice =FirebaseService();
 
-  void handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      //Save form state
-      _formKey.currentState!.save();
-      if (isUser) {
-        // Navigate to user page
-        Navigator.pushNamed(context, '/uonboard');
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Home()),
-        // );
-      } else if (isTherapist) {
-        Navigator.pushNamed(context, '/thonboard');
-      } else {
-        Navigator.pushNamed(context, '/adminhome');
-      }
-    }
-  } 
+
+  // void handleLogin() {
+  //   if (_formKey.currentState!.validate()) {
+  //     //Save form state
+  //     _formKey.currentState!.save();
+      // if (isUser) {
+      //   // Navigate to user page
+      //   Navigator.pushNamed(context, '/uonboard');
+      //   // Navigator.push(
+      //   //   context,
+      //   //   MaterialPageRoute(builder: (context) => Home()),
+      //   // );
+      // } else if (isTherapist) {
+      //   Navigator.pushNamed(context, '/thonboard');
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //             SnackBar(
+      //               content: Text('Choose any one of the role'),
+      //             ),
+      //           );
+      // }
+  //   }
+  // } 
 
   @override
   void dispose() {
@@ -58,17 +60,14 @@ class _UserRegisterState extends State<UserRegister> {
         email: _emailController.text,
         password: _passwordController.text,
         phoneNumber:_phoneNumberController.text, 
-        role: role,
+        role: role, uid: '',
 
       );
       try{
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+
         await _firebaseService.registerUser(user);
-        handleLogin();
+        Navigator.pushNamed(context,'/login');
+        //handleLogin();
       } 
       catch(e){
         print('Error user: $e');
@@ -234,34 +233,6 @@ class _UserRegisterState extends State<UserRegister> {
                         Text('Therapist'),
                       ],
                     ),
-                    // DropdownButtonFormField(
-                    //   decoration: InputDecoration(
-                    //     border: OutlineInputBorder(),
-                    //     hintText: 'Select your role',
-                    //   ),
-                    //   value: _selectedRole,
-                    //   onChanged: (value) {
-                    //     setState(() {
-                    //       _selectedRole = value!;
-                    //     });
-                    //   },
-                    //   items: [
-                    //     DropdownMenuItem(
-                    //       value: 'user',
-                    //       child: Text('User'),
-                    //     ),
-                    //     DropdownMenuItem(
-                    //       value: 'therapist',
-                    //       child: Text('Therapist'),
-                    //     ),
-                    //   ],
-                    //   validator: (value) {
-                    //     if (value == null) {
-                    //       return 'Please select your role';
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
                     SizedBox(height: 20),
                     AppButton(
                       onTap: () {
@@ -344,35 +315,35 @@ class _UserRegisterState extends State<UserRegister> {
 
 //   void handleRegistration() async {
 //     if (_formKey.currentState!.validate()) {
-  //     try {
-  //       UserCredential userCredential =
-  //           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: _emailController.text,
-  //         password: _passwordController.text,
-  //       );
+//       try {
+//         UserCredential userCredential =
+//             await FirebaseAuth.instance.createUserWithEmailAndPassword(
+//           email: _emailController.text,
+//           password: _passwordController.text,
+//         );
+ 
+//         // User registration successful, now save additional user information if needed
+//         // For example, you can save username, phone number, and role to Firebase Firestore
 
-  //       // User registration successful, now save additional user information if needed
-  //       // For example, you can save username, phone number, and role to Firebase Firestore
-
-  //       // Navigate to the home screen or appropriate screen after registration
-  //       if (isUser) {
-  //         Navigator.pushNamed(context, '/uonboard');
-  //       } else if (isTherapist) {
-  //         Navigator.pushNamed(context, '/thonboard');
-  //       } else {
-  //         Navigator.pushNamed(context, '/adboard');
-  //       }
-  //     } on FirebaseAuthException catch (e) {
-  //       if (e.code == 'weak-password') {
-  //         print('The password provided is too weak.');
-  //       } else if (e.code == 'email-already-in-use') {
-  //         print('The account already exists for that email.');
-  //       }
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  // }
+//         // Navigate to the home screen or appropriate screen after registration
+//         if (isUser) {
+//           Navigator.pushNamed(context, '/uonboard');
+//         } else if (isTherapist) {
+//           Navigator.pushNamed(context, '/thonboard');
+//         } else {
+//           Navigator.pushNamed(context, '/adboard');
+//         }
+//       } on FirebaseAuthException catch (e) {
+//         if (e.code == 'weak-password') {
+//           print('The password provided is too weak.');
+//         } else if (e.code == 'email-already-in-use') {
+//           print('The account already exists for that email.');
+//         }
+//       } catch (e) {
+//         print(e);
+//       }
+//     }
+//   }
 
 //   @override
 //   void dispose() {

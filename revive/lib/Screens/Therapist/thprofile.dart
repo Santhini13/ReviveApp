@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ThProfile extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +91,7 @@ class ThProfile extends StatelessWidget {
                           icon: Icons.star_border_outlined,
                           onTap: () {
                             // Show modal screen for viewing appointment schedules
-                            showBottomSheet(context, 'View Appointment Schedules');
+                           _showFeedbackModalSheet(context);
                           }, 
                         ),
                          ProfileTile(
@@ -282,4 +283,49 @@ void showUploadVideoBottomSheet(BuildContext context) {
       );
     },
   );
+}
+void _showFeedbackModalSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        final List<Feedback> feedbacks = [
+    Feedback(message: 'Great service!', rating: 4.5),
+    Feedback(message: 'Very satisfied with the session.', rating: 5.0),
+    Feedback(message: 'Could be better.', rating: 3.0),
+    // Add more feedback items as needed
+  ];
+        return Container(
+          padding: EdgeInsets.all(20.0),
+          height: 400.0,
+          child: ListView.builder(
+            itemCount: feedbacks.length,
+            itemBuilder: (BuildContext context, int index) {
+              final feedback = feedbacks[index];
+              return ListTile(
+                title: Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    SizedBox(width: 5),
+                    Text(feedback.rating.toString()),
+                  ],
+                ),
+                subtitle: Text(feedback.message),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+class Feedback {
+  final String message;
+  final double rating;
+
+  Feedback({
+    required this.message,
+    required this.rating,
+  });
 }

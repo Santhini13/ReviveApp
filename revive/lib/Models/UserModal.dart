@@ -10,7 +10,7 @@ class Users {
     required this.phoneNumber,
     required this.email,
     required this.password,
-    required this.role,
+    required this.role, required String uid,
   });
 
   Map<String, dynamic> toJson() {

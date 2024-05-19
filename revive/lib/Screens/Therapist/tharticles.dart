@@ -9,11 +9,13 @@ class AddArticleScreen extends StatefulWidget {
 class _AddArticleScreenState extends State<AddArticleScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
+  String _selectedCategory = 'Awareness';
 
   void _saveArticle() {
     // Implement logic to save the article
     String title = _titleController.text;
     String content = _contentController.text;
+    String category = _selectedCategory;
     // Save the article to the database or perform any other action
     Navigator.pop(context);
   }
@@ -56,6 +58,24 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
+             Text(
+              'Category',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: _selectedCategory,
+              onChanged: (newValue) {
+                setState(() => _selectedCategory = newValue!);
+              },
+              items: <String>['Awareness', 'Diets'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 20),
             SizedBox(height: 20,),
              Center(
                child: ElevatedButton(
@@ -63,7 +83,7 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
                   backgroundColor: Color(0xff881736),
                   //maximumSize: Size(10, 10),
                 ),
-                onPressed: (){},
+                onPressed: _saveArticle,
                 child: Text('Save',style:TextStyle(color:Colors.white)),
                            ),
              ),

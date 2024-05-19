@@ -24,7 +24,7 @@ class TherapistOnboardingScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'Therapist Name:',
+              'Therapist Name: ',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.white
@@ -32,9 +32,6 @@ class TherapistOnboardingScreen extends StatelessWidget {
             ),
             SizedBox(height: 30,),
             Image.asset('assets/images/logo.png',height:120),
-            //  CircleAvatar(
-            //   radius: 40,
-            //   child: Icon(Icons.person,size: 50,),),
             SizedBox(height: 20),
             SizedBox(height: 20),
             IconButton(
