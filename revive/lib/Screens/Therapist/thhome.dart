@@ -4,6 +4,7 @@ import 'package:revive/Screens/Therapist/thprofile.dart';
 import 'package:revive/Screens/User/ads.dart';
 import 'package:revive/utils/appbutton.dart';
 import 'package:revive/utils/customcontainer.dart';
+import 'package:revive/Screens/general/awareness.dart';
 
 class TherapistHome extends StatefulWidget {
   const TherapistHome({Key? key}) : super(key: key);

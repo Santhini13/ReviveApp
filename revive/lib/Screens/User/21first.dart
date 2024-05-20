@@ -35,25 +35,39 @@ class _ChallengeFirstScreenState extends State<ChallengeFirstScreen> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChallengeScreen()),
-                );
-                if (result != null && result == 'back') {
-                  setState(() {
-                    buttonText = 'Continue';
-                  });
-                }
-              },
-              child: Text(buttonText), // Button text depends on the state
-            ),
-          ),
+          Center(child: _Start(context))
         ],
       ),
     );
   }
+}
+ Widget _Start(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+     Navigator.pushNamed(context, '/21day');
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: Color(0xff881736),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      width: 200,
+      height: 50,
+      child:  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Start',
+              style: TextStyle(fontSize:20,color: Colors.white),
+            ),
+            Icon(
+          Icons.arrow_forward,
+          color: Colors.white,
+          size: 30,
+        ),
+          ],
+        ),
+         
+      ),
+  );
 }

@@ -1,5 +1,9 @@
+
 import 'package:flutter/material.dart';
+import 'package:revive/Models/articleModal.dart';
 import 'package:revive/Screens/constants/myAppbar.dart';
+import 'package:revive/Services/articleService.dart';
+
 
 class AddArticleScreen extends StatefulWidget {
   @override
@@ -10,15 +14,38 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
   String _selectedCategory = 'Awareness';
+    final ArticleService _articleService = ArticleService();
 
-  void _saveArticle() {
-    // Implement logic to save the article
-    String title = _titleController.text;
-    String content = _contentController.text;
-    String category = _selectedCategory;
-    // Save the article to the database or perform any other action
-    Navigator.pop(context);
+  Future<void> _saveArticle() async {
+    if (_titleController.text.isEmpty || _contentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all fields.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      Article article = Article(
+        title: _titleController.text,
+        content: _contentController.text,
+        category: _selectedCategory,
+      );
+      await _articleService.registerArticle(article);
+      Navigator.pop(context);
+    } catch (e) {
+      print('Error saving article: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving article: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +85,8 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-             Text(
+            SizedBox(height: 20.0),
+            Text(
               'Category',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
@@ -76,17 +104,18 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
               }).toList(),
             ),
             SizedBox(height: 20),
-            SizedBox(height: 20,),
-             Center(
-               child: ElevatedButton(
+            Center(
+              child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff881736),
-                  //maximumSize: Size(10, 10),
                 ),
                 onPressed: _saveArticle,
-                child: Text('Save',style:TextStyle(color:Colors.white)),
-                           ),
-             ),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),

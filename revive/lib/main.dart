@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Screens/Therapist/viewprofile.dart';
+import 'package:revive/Screens/Therapist/yourActivity.dart';
+import 'package:revive/Screens/User/21-day.dart';
 import 'package:revive/Screens/features/notifications.dart';
 import 'package:revive/Services/authprovider.dart';
 import 'package:revive/screens/general/appointment.dart';
@@ -44,7 +46,7 @@ import 'package:revive/Screens/User/test/sud.dart';
 import 'package:revive/Screens/User/viewjournal.dart';
 import 'package:revive/Splash2.dart';
 import 'package:revive/Screens/User/diet.dart';
-import 'package:revive/home.dart';
+import 'package:revive/Home.dart';
 import 'package:revive/Screens/User/viewTherapist.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:revive/firebase_options.dart';
@@ -70,15 +72,17 @@ class MyApp extends StatelessWidget {
         home:AuthWrapper(),
         routes: {
           '/Splash2':(context) => Splash2(),
-          '/home':(context) => Home(),
+          '/home':(context) {
+            final authProvider = Provider.of<AuthProvider>(context, listen: false);
+            return Home(user: authProvider.user!);
+          },
           '/mycare':(context) => myCare(),  
           '/mytest':(context) => MyTest(),
           '/myjournal':(context) => DiaryEntriesScreen(), 
-          //'/viewjournal':(context) => viewJournal(),
           '/register':(context)=>UserRegister(),
           '/login':(context) => UserLogin(),
           '/uprofile':(context) => userProfile(),
-          '/uonboard':(context)=>UserOnboard(),
+         '/uonboard': (context) => UserOnboard(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/anxiety':(context) => AnxietyTest(),
           '/stress':(context) => stressTest(),
           '/depression':(context) => depressionTest(),
@@ -86,6 +90,7 @@ class MyApp extends StatelessWidget {
           '/SUD':(context) => SudTest(),
           '/aware':(context)=>AwarenessScreen(),
           '/challenge':(context) =>ChallengeFirstScreen(),
+          '/21day':(context)=>ChallengeScreen(),
           '/schedules':(context)=>DoctorAppointmentsPage(),
           '/explore':(context) => ExplorePage(),
           '/therapist':(context) => TherapistListScreen(),
@@ -104,7 +109,7 @@ class MyApp extends StatelessWidget {
           '/privacy':(context) => PrivacyPolicyScreen(),
           '/terms':(context) => TermsAndConditionsScreen(),
           '/adhome':(context)=>AdHome(),
-          '/adboard':(context)=>AdminOnboard(),
+          '/adboard':(context)=>AdminOnboard(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/adtherapist':(context)=>ViewTherapistScreen(),
           '/adconfirm':(context)=>ConfirmRequestScreen(),
           '/adarticle':(context) => ViewArticleScreen(),
@@ -114,8 +119,10 @@ class MyApp extends StatelessWidget {
           //therapist
           '/thedit':(context)=>ThEditProfile(),
           '/tharticle':(context) => AddArticleScreen(),
-          '/thonboard':(context)=>TherapistOnboardingScreen(),
+          '/uprofile':(context) => userProfile(),
+         '/thonboard': (context) => TherapistOnboardingScreen(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/notification':(context)=>NotificationScreen(),
+          '/yourActivity':(context)=>yourActivity()
          }, 
          
       ),
@@ -126,25 +133,17 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    print('-------------');
-    print(authProvider.user);
-     print('-------------');
 
     if (authProvider.user == null) {
       return Splash2();
-    } 
-    else if(authProvider.user!.role=='User') {
-        return UserOnboard();
-      } 
-      else if (authProvider.user!.role=='Therapist'){
-       return TherapistOnboardingScreen();
-      } 
-      else if(authProvider.user!.role=='Admin'){
-       return AdminOnboard();
-      }
-      else{
-        return Home();
-        
-      }
+    } else if (authProvider.user!.role == 'User') {
+      return UserOnboard(user:authProvider.user!);
+    } else if (authProvider.user!.role == 'Therapist') {
+      return TherapistOnboardingScreen(user:authProvider.user!);
+    } else if (authProvider.user!.role == 'Admin') {
+      return AdminOnboard(user:authProvider.user!);
+    } else {
+      return Home(user:authProvider.user!);
     }
+  }
 }

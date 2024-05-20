@@ -1,27 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Article {
+  String? id;
   String title;
   String content;
   String category;
+  DateTime? date;
 
   Article({
+    this.id,
     required this.title,
     required this.content,
     required this.category,
+    this.date,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) {
+  factory Article.fromMap(Map<String, dynamic> map) {
     return Article(
-      title: json['title'],
-      content: json['content'],
-      category: json['category'],
+      id: map['id'],
+      title: map['title'],
+      content: map['content'],
+      category: map['category'],
+      date: (map['date'] as Timestamp?)?.toDate(),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'title': title,
       'content': content,
       'category': category,
+      'date': date,
     };
   }
 }

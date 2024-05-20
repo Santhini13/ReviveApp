@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:revive/Models/articleModal.dart';
+import 'package:revive/Services/articleService.dart';
 
 class AwarenessScreen extends StatefulWidget {
   @override
@@ -9,51 +11,128 @@ class AwarenessScreen extends StatefulWidget {
 class _AwarenessScreenState extends State<AwarenessScreen> {
   String _selectedInfo = '';
   String _selectedTitle = '';
+ List<Article> _articles = [];
+  bool _isLoading = true;
 
-  void _showInformation(String title, String info) {
-    setState(() {
-      _selectedTitle = title;
-      _selectedInfo = info;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _fetchArticles();
   }
+
+  Future<void> _fetchArticles() async {
+    try {
+      final articles = await ArticleService().fetchArticles('Awareness');
+      setState(() {
+        _articles = articles;
+        _isLoading = false;
+      });
+      print('Fetched articles: $_articles');
+    } catch (e) {
+      print('Error fetching articles: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+ void _showInformation(String title, String content) {
+  setState(() {
+    _selectedTitle = title;
+    _selectedInfo = content;
+  });
+}
+
+
+  void _deleteArticle(Article article) async {
+    try {
+      await ArticleService().deleteArticle(article);
+      setState(() {
+        _articles.remove(article);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Article deleted successfully.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      print('Error deleting article: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error deleting article.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+
+  // void _deleteArticle(Article article) async {
+  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   try {
+  //     await ArticleService().deleteArticle(authProvider.uid, article);
+  //     setState(() {
+  //       _articles.remove(article);
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Article deleted successfully.'),
+  //         backgroundColor: Colors.green,
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     print('Error deleting article: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Error deleting article.'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Container(width: double.infinity,
-          height: 200,
-           decoration: BoxDecoration(
+          Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xff881736), Color(0xff281537)],
               ),
             ),
-          child:  Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                            'Read and Learn About \nMental Health',
-                            style: TextStyle(fontSize: 20,color:Colors.white),
-                          ),
-                          Image.asset(
-                        'assets/icons/aware.png',
-                        width: 150,
-                        height: 150,
-                      ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'Read and Learn About \nMental Health',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  Image.asset(
+                    'assets/icons/aware.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                ],
+              ),
             ),
-          ),),
+          ),
           Padding(
-            padding: const EdgeInsets.only(top:200.0),
+            padding: const EdgeInsets.only(top: 200.0),
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40))),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
+              ),
               height: double.infinity,
               width: double.infinity,
               child: _selectedInfo.isNotEmpty
@@ -87,67 +166,36 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
                         ],
                       ),
                     )
-                  : SingleChildScrollView(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => _showInformation(
-                                'Stress', 'Stress information goes here.'),
-                            child: Container(
-                              padding: EdgeInsets.all(12.0),
-                              color: Colors.blue,
-                              child: Center(
-                                child: Text(
-                                  'Stress',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.white,
+                  : _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : _articles.isEmpty
+                          ? Center(child: Text('No articles found.'))
+                          : ListView.builder(
+                              padding: EdgeInsets.all(16.0),
+                              itemCount: _articles.length,
+                              itemBuilder: (context, index) {
+                                final article = _articles[index];
+                                final randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+                                return Card(
+                                  color: randomColor,
+                                  child: ListTile(
+                                    title: Text(
+                                      article.title,
+                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      article.content,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onTap: () => _showInformation(article.title, article.content),
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.delete, color: Colors.white),
+                                      onPressed: () => _deleteArticle(article),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          ),
-                          SizedBox(height: 12.0),
-                          GestureDetector(
-                            onTap: () => _showInformation(
-                                'Anxiety', 'Anxiety information goes here.'),
-                            child: Container(
-                              padding: EdgeInsets.all(12.0),
-                              color: Colors.green,
-                              child: Center(
-                                child: Text(
-                                  'Anxiety',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 12.0),
-                          GestureDetector(
-                            onTap: () => _showInformation('Depression',
-                                'Depression information goes here.'),
-                            child: Container(
-                              padding: EdgeInsets.all(12.0),
-                              color: Colors.orange,
-                              child: Center(
-                                child: Text(
-                                  'Depression',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
             ),
           ),
         ],
@@ -155,165 +203,3 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
     );
   }
 }
-// class InformationScreen extends StatefulWidget {
-//   @override
-//   _InformationScreenState createState() => _InformationScreenState();
-// }
-
-// class _InformationScreenState extends State<InformationScreen> {
-//   String _selectedInfo = '';
-
-//   void _showInformation(String info) {
-//     setState(() {
-//       _selectedInfo = info;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Information Display'),
-//       ),
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: <Widget>[
-//             GestureDetector(
-//               onTap: () => _showInformation('Stress information'),
-//               child: Container(
-//                 padding: EdgeInsets.all(12.0),
-//                 color: Colors.blue,
-//                 child: Center(
-//                   child: Text(
-//                     'Stress',
-//                     style: TextStyle(
-//                       fontSize: 20.0,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(height: 12.0),
-//             GestureDetector(
-//               onTap: () => _showInformation('Anxiety information'),
-//               child: Container(
-//                 padding: EdgeInsets.all(12.0),
-//                 color: Colors.green,
-//                 child: Center(
-//                   child: Text(
-//                     'Anxiety',
-//                     style: TextStyle(
-//                       fontSize: 20.0,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(height: 12.0),
-//             GestureDetector(
-//               onTap: () => _showInformation('Depression information'),
-//               child: Container(
-//                 padding: EdgeInsets.all(12.0),
-//                 color: Colors.orange,
-//                 child: Center(
-//                   child: Text(
-//                     'Depression',
-//                     style: TextStyle(
-//                       fontSize: 20.0,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(height: 20.0),
-//             _selectedInfo.isNotEmpty
-//                 ? Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: <Widget>[
-//                       Text(
-//                         'Information:',
-//                         style: TextStyle(
-//                           fontSize: 24.0,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       SizedBox(height: 12.0),
-//                       Text(
-//                         _selectedInfo,
-//                         style: TextStyle(fontSize: 16.0),
-//                       ),
-//                     ],
-//                   )
-//                 : Container(),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class AnxietyInfoScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Anxiety Information'),
-//       ),
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: <Widget>[
-//             Text(
-//               'What is Anxiety?',
-//               style: TextStyle(
-//                 fontSize: 24.0,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             SizedBox(height: 12.0),
-//             Text(
-//               'Anxiety is a normal and often healthy emotion. However, when a person regularly feels disproportionate levels of anxiety, it might become a medical disorder.',
-//               style: TextStyle(fontSize: 16.0),
-//             ),
-//             SizedBox(height: 20.0),
-//             Text(
-//               'Causes of Anxiety:',
-//               style: TextStyle(
-//                 fontSize: 24.0,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             SizedBox(height: 12.0),
-//             Text(
-//               'Anxiety disorders are caused by a combination of factors, including genetics, brain chemistry, personality, and life events.',
-//               style: TextStyle(fontSize: 16.0),
-//             ),
-//             SizedBox(height: 20.0),
-//             Text(
-//               'How to Counter Anxiety:',
-//               style: TextStyle(
-//                 fontSize: 24.0,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             SizedBox(height: 12.0),
-//             Text(
-//               '1. Practice relaxation techniques like deep breathing, meditation, or yoga.\n'
-//               '2. Exercise regularly.\n'
-//               '3. Get enough sleep.\n'
-//               '4. Limit caffeine and alcohol intake.\n'
-//               '5. Seek professional help if needed.',
-//               style: TextStyle(fontSize: 16.0),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

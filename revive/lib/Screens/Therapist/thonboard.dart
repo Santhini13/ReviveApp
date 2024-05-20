@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:revive/Models/UserModal.dart';
 
 class TherapistOnboardingScreen extends StatelessWidget {
+   final Users user;
+  const TherapistOnboardingScreen({Key? key,required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class TherapistOnboardingScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'Therapist Name: ',
+              '${user.username}',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.white

@@ -6,13 +6,14 @@ import 'package:revive/Services/UserService.dart';
 class AuthProvider with ChangeNotifier {
   final FirebaseService _firebaseService = FirebaseService();
   Users? _user;
-
+String? _uid;
   Users? get user => _user;
+  String? get uid => _uid;
 
   AuthProvider() {
     _firebaseService.authStateChanges().listen((User? firebaseUser) {
       if (firebaseUser != null) {
-        _loadUserDetails(firebaseUser.uid,firebaseUser as UserCredential);
+        _loadUserDetails(firebaseUser.uid);
       } else {
         _user = null;
         notifyListeners();
@@ -20,9 +21,11 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  Future<void> _loadUserDetails(String uid,UserCredential firebaseUser) async {
+  get firebaseUser => null;
 
-    _user = await _firebaseService.getUserDetails(uid,firebaseUser);
+  Future<void> _loadUserDetails(String uid) async {
+    _user = await _firebaseService.getUserDetails(uid);
+    _uid = uid;
     notifyListeners();
   }
 

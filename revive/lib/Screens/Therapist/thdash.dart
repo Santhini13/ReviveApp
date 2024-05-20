@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:revive/Screens/Therapist/yourActivity.dart';
 import 'package:revive/Screens/features/audiocall.dart';
 import 'package:revive/Screens/features/chat.dart';
 import 'package:revive/Screens/features/videocall.dart';
@@ -16,12 +17,11 @@ class ThDashboard extends StatelessWidget {
             _buildSectionTitle('Your Appointments'),
             _buildAppointmentSection(
               context,
-              ['Patient 1', 'Patient 2'], // Video call patients
+              ['Patient 1', 'Patient 2',], // Video call patients
               ['Patient 3', 'Patient 4'], // Call patients
               ['Patient 5', 'Patient 6'], // Chat group session patients
             ),
-            _buildSectionTitle('Activities'),
-            _buildActivitiesSection(),
+            _buildActivitiesSection(context),
           ],
         ),
       ),
@@ -70,12 +70,32 @@ class ThDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildActivitiesSection() {
-    return ListTile(
-      title: Text('Activities'),
-      // Implement your activities here
-    );
-  }
+  Widget _buildActivitiesSection(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+     Navigator.pushNamed(context, '/yourActivity');
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff881736),
+          borderRadius: BorderRadius.circular(30)
+        ),
+        child: ListTile(
+          title: Text(
+            'Activities',
+            style: TextStyle(color: Colors.white),
+          ),
+          trailing: Icon(
+            Icons.arrow_forward,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 
   void _startSession(BuildContext context, String sessionType, Widget screen) {

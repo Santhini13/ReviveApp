@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Screens/User/ads.dart';
 import 'package:revive/Screens/User/navbar.dart';
 import 'package:revive/utils/appbutton.dart';
 import 'package:revive/utils/customcontainer.dart';
 
-
 class Home extends StatefulWidget {
-  const Home({super.key});
-
+  final Users user;
+  const Home({Key? key, required this.user}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
-  // static const List<Widget> _widgetOptions = <Widget>[
-  //   Text('Home Page'),
-  //   Text('Explore Page'),
-  //   Text('Profile Page'),
-  // ];
+  @override
+ void initState(){
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -32,7 +30,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Hello UserName',style: TextStyle(fontSize: 24, color:Color(0xff881736)),),
+        title: Text('Hello ${widget.user.username}',style: TextStyle(fontSize: 24, color:Color(0xff881736)),),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

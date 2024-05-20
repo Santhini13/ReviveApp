@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:revive/Models/UserModal.dart';
 
 
 class UserOnboard extends StatelessWidget {
-  const UserOnboard({Key? key}) : super(key: key);
-
+   final Users user;
+  const UserOnboard({Key? key,required this.user}) : super(key: key);
+   
   @override
   Widget build(BuildContext context) {
+    print(user);
     return Scaffold(
       body: Center(
         child: Container(
@@ -20,20 +23,22 @@ class UserOnboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome UserName',
+                'Welcome!',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white
                 ),
               ),
+              Text(
+              '${user.username}',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white
+              ),
+            ),
               SizedBox(height: 20),
               Image.asset('assets/images/logo.png',height:120),
-              // Icon(
-              //   Icons.admin_panel_settings,
-              //   size: 100,
-              //   color:Colors.white // Customize icon color as needed
-              // ),
               SizedBox(height: 40),
               IconButton(
               icon:Icon(Icons.arrow_circle_right_outlined),

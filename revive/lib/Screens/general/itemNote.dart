@@ -1,5 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:revive/Models/journalModal.dart';
+import 'package:revive/Services/authprovider.dart';
+import 'package:revive/Services/journalServices.dart';
 
 class AddDiaryEntryScreen extends StatefulWidget {
   @override
@@ -10,7 +14,30 @@ class _AddDiaryEntryScreenState extends State<AddDiaryEntryScreen> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   String _selectedMood = 'Neutral'; // Default mood
+  final JournalService _journalService=JournalService();
 
+  Future<void>_saveJournal()async{
+     Journal journal = Journal(
+        title: _titleController.text,
+        description: _descriptionController.text,
+        mood: _selectedMood,
+        date:DateTime.now()
+      );
+
+      
+    final authProvider=Provider.of<AuthProvider>(context,listen: false);
+      try{
+        print('register');
+        await _journalService.registerJournal(journal,authProvider.uid);
+        Navigator.pop(context);
+
+      }catch(e){
+        print(e);
+      }
+
+
+  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +49,7 @@ class _AddDiaryEntryScreenState extends State<AddDiaryEntryScreen> {
           IconButton(
             icon: Icon(Icons.save,color:Colors.white),
             onPressed: () {
-              _saveDiaryEntry(context);
+              _saveJournal();
             },
           ),
         ],
@@ -86,58 +113,54 @@ class _AddDiaryEntryScreenState extends State<AddDiaryEntryScreen> {
     );
   }
 
-  void _saveDiaryEntry(BuildContext context) {
-    String title = _titleController.text.trim();
-    String description = _descriptionController.text.trim();
-    String mood = _selectedMood;
-    DateTime dateTime = DateTime.now(); // Current date and time
+  // Future<void> _saveDiaryEntry() async {
+  //   String title = _titleController.text.trim();
+  //   String description = _descriptionController.text.trim();
+  //   String mood = _selectedMood;
+  //   DateTime dateTime = DateTime.now(); // Current date and time
 
-    // Validate and save the diary entry
-    if (title.isNotEmpty && description.isNotEmpty) {
-      // Save the diary entry
-      // You can save it to a list or a database
-      DiaryEntry diaryEntry = DiaryEntry(
-        title: title,
-        description: description,
-        mood: mood,
-        dateTime: dateTime,
-      );
+  //   // Validate and save the diary entry
+  //   if (title.isNotEmpty && description.isNotEmpty) {
+  //     // Save the diary entry
+  //     // You can save it to a list or a database
+    //   Journal journal = Journal(
+    //     title: title,
+    //     description: description,
+    //     mood: mood,
+    //     Date: dateTime,
+    //   );
+    // final authProvider=Provider.of<AuthProvider>(context);
+    //   try{
+    //     print('register');
+    //     await _journalService.registerJournal(journal,authProvider.uid);
 
-      // Navigate back to the diary entries screen and pass the new entry
-      Navigator.pop(context, diaryEntry);
-    } else {
-      // Show an error message if any field is empty
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Please fill all fields.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
+    //   }catch(e){
+    //     print(e);
+    //   }
+
+
+  //     // Navigate back to the diary entries screen and pass the new entry
+  //     //Navigator.pop(context, journal);
+  //   } else {
+  //     // Show an error message if any field is empty
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text('Error'),
+  //           content: Text('Please fill all fields.'),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Text('OK'),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 }
 
-class DiaryEntry {
-  final String title;
-  final String description;
-  final String mood;
-  final DateTime dateTime;
-
-  DiaryEntry({
-    required this.title,
-    required this.description,
-    required this.mood,
-    required this.dateTime,
-  });
-}
