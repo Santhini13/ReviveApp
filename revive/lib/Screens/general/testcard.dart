@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:revive/Services/assesmentService.dart';
+import 'package:revive/Services/authprovider.dart';
+import 'package:revive/Models/assesmentModal.dart';
 
 class QuestionWidget extends StatefulWidget {
   final List<Map<String, dynamic>> questions;
@@ -11,8 +15,70 @@ class QuestionWidget extends StatefulWidget {
 
 class _QuestionWidgetState extends State<QuestionWidget> {
   List<int> selectedOptions = List.filled(10, -1); // Initialize selectedOptions
-
+  final AssesmentService _assesmentService = AssesmentService();
   int totalScore = 0;
+
+  Future<void> computeScore() async {
+    totalScore = 0;
+    for (int i = 0; i < selectedOptions.length; i++) {
+      if (selectedOptions[i] != -1) {
+        totalScore += selectedOptions[i];
+      }
+    }
+
+    String riskLevel;
+    if (totalScore > 25) {
+      riskLevel = 'At Risk';
+    } else if (totalScore > 20) {
+      riskLevel = 'Moderate';
+    } else if (totalScore > 15) {
+      riskLevel = 'Mild';
+    } else if (totalScore > 10) {
+      riskLevel = 'Normal';
+    } else {
+      riskLevel = 'No Risk';
+    }
+
+    String message = 'Your score is $totalScore. Risk Level: $riskLevel';
+
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    Assessment assessment = Assessment(
+      title:'your score', // Change this as needed
+      score: totalScore,
+      date: DateTime.now(),
+    );
+
+    try {
+      await _assesmentService.registerAssesment(assessment, authProvider.uid);
+      print('score saved');
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Total Score'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +114,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                         value: selectedOptions[index] == optionIndex,
                         onChanged: (value) {
                           setState(() {
-                            selectedOptions[index] =
-                                value! ? optionIndex : -1;
+                            selectedOptions[index] = value! ? optionIndex : -1;
                           });
                         },
                       ),
@@ -79,48 +144,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
           ),
         ),
       ),
-    );
-  }
-
-  void computeScore() {
-    totalScore = 0;
-    for (int i = 0; i < selectedOptions.length; i++) {
-      if (selectedOptions[i] != -1) {
-        totalScore += selectedOptions[i];
-      }
-    }
-
-    String riskLevel;
-    if (totalScore > 25) {
-      riskLevel = 'At Risk';
-    } else if (totalScore > 20) {
-      riskLevel = 'Moderate';
-    } else if (totalScore > 15) {
-      riskLevel = 'Mild';
-    } else if (totalScore > 10) {
-      riskLevel = 'Normal';
-    } else {
-      riskLevel = 'No Risk';
-    }
-
-    String message = 'Your score is $totalScore. Risk Level: $riskLevel';
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Total Score'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

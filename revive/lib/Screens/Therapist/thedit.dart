@@ -186,6 +186,7 @@ class ThEditProfile extends StatefulWidget {
 class _ThEditProfileState extends State<ThEditProfile> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _descriptionController =TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
   TextEditingController _oldPasswordController = TextEditingController();
@@ -279,6 +280,11 @@ class _ThEditProfileState extends State<ThEditProfile> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Email'),
+            ),
+            SizedBox(height: 20.0),
+            TextField(
+              controller: _descriptionController,
+              decoration: InputDecoration(labelText: 'Description'),
             ),
             SizedBox(height: 20.0),
             TextField(

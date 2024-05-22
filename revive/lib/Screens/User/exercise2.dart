@@ -325,18 +325,14 @@ class _TimerAlertDialogState extends State<TimerAlertDialog> {
     _startTimer();
   }
 
-  void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_secondsLeft == 0) {
-        _timer.cancel();
-        setState(() {
-          _timerRunning = false;
-        });
-      } else {
-        setState(() {
-          _secondsLeft--;
-        });
-      }
+ void _startTimer() {
+    setState(() {
+      _timerRunning = true;
+    });
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        _secondsLeft--;
+      });
     });
   }
 

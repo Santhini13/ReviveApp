@@ -168,4 +168,8 @@ class Appointment {
     required this.specialization,
     required this.duration,
   });
+
+  get therapistName => null;
+
+  get dateTime => null;
 }

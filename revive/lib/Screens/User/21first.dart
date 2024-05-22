@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revive/Screens/User/21-day.dart';
+import 'package:revive/updateActivity.dart';
 
 class ChallengeFirstScreen extends StatefulWidget {
   @override
@@ -31,11 +32,16 @@ class _ChallengeFirstScreenState extends State<ChallengeFirstScreen> {
                     width: 150,
                     height: 150,
                   ),
+        //            SizedBox(height: 100,),
+        //    ElevatedButton(
+        //   onPressed: uploadActivities, // Call the function to upload activities
+        //   child: Text('Upload Activities'),
+        // ),
                 ],
               ),
             ),
           ),
-          Center(child: _Start(context))
+          Center(child: _Start(context)),
         ],
       ),
     );

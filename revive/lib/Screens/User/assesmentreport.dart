@@ -1,11 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:revive/Models/assesmentModal.dart';
+import 'package:revive/Services/assesmentService.dart';
+import 'package:revive/Services/authprovider.dart';
 
-class AssessmentReportScreen extends StatelessWidget {
-  final List<AssessmentScore> assessmentScores = [
-    AssessmentScore(title: 'Depression', score: 75),
-    AssessmentScore(title: 'Anxiety', score: 80),
-    AssessmentScore(title: 'Stress', score: 65),
-  ];
+class AssessmentReportScreen extends StatefulWidget {
+  @override
+  State<AssessmentReportScreen> createState() => _AssessmentReportScreenState();
+}
+
+class _AssessmentReportScreenState extends State<AssessmentReportScreen> {
+
+   final AssesmentService _assesmentService = AssesmentService();
+  List<Assessment> _assesmentScore = [];
+  bool _isLoading = true;
+  
+  @override
+  void initState() {
+    super.initState();
+    _fetchAssesment();
+  }
+
+
+  Future<void> _fetchAssesment() async {
+    print('fetchJournal123');
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    try {
+      List<Assessment> assesment = await _assesmentService.fetchAssesment(authProvider.uid);
+      setState(() {
+        _assesmentScore = assesment;
+        _isLoading=false;
+      });
+    } catch (e) {
+      print('Error fetching journals: $e');
+      _isLoading=false;
+    }
+  }
+  // Future<void> _deleteAssessment(String id) async {
+  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   try {
+  //     await _assesmentService.deleteAssessment(authProvider.uid, id);
+  //     setState(() {
+  //       _assesmentScore.removeWhere((assessment) => assessment.Assesid == id);
+  //     });
+  //   } catch (e) {
+  //     print('Error deleting assessment: $e');
+  //   }
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +64,9 @@ class AssessmentReportScreen extends StatelessWidget {
                 colors: [Color(0xff881736), Color(0xff281537)],
               ),
             ),))),
-      body: assessmentScores.isEmpty
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _assesmentScore.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +90,7 @@ class AssessmentReportScreen extends StatelessWidget {
           : Padding(
             padding: const EdgeInsets.only(top:20.0,right: 10,left:10),
             child: ListView.builder(
-                itemCount: assessmentScores.length,
+                itemCount: _assesmentScore.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -57,14 +101,14 @@ class AssessmentReportScreen extends StatelessWidget {
                       ),
                       child: ListTile(
                         title: Text(
-                          assessmentScores[index].title,
+                          _assesmentScore[index].title,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         onTap: () {
-                          _showAssessmentScoreDialog(context, assessmentScores[index]);
+                          _showAssessmentScoreDialog(context, _assesmentScore[index]);
                         },
                         leading: Container(
                           padding: EdgeInsets.all(8),
@@ -75,7 +119,7 @@ class AssessmentReportScreen extends StatelessWidget {
                           child: Icon(
                             Icons.assessment,
                             color: Colors.white,
-                          ),
+                          ),   
                         ),
                       ),
                     ),
@@ -86,13 +130,13 @@ class AssessmentReportScreen extends StatelessWidget {
     );
   }
 
-  void _showAssessmentScoreDialog(BuildContext context, AssessmentScore assessmentScore) {
+  void _showAssessmentScoreDialog(BuildContext context, Assessment _assesmentScore) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(assessmentScore.title),
-          content: Text('Score: ${assessmentScore.score}'),
+          title: Text(_assesmentScore.title),
+          content: Text('Score: ${_assesmentScore.score}'),
           actions: [
             TextButton(
               onPressed: () {
@@ -105,15 +149,5 @@ class AssessmentReportScreen extends StatelessWidget {
       },
     );
   }
-}
-
-class AssessmentScore {
-  final String title;
-  final int score;
-
-  AssessmentScore({
-    required this.title,
-    required this.score,
-  });
 }
 

@@ -14,12 +14,7 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
  List<Article> _articles = [];
   bool _isLoading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchArticles();
-  }
-
+  
   Future<void> _fetchArticles() async {
     try {
       final articles = await ArticleService().fetchArticles('Awareness');
@@ -66,6 +61,12 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
       );
     }
   }
+  @override
+  void initState() {
+    super.initState();
+    _fetchArticles();
+  }
+
 
 
   // void _deleteArticle(Article article) async {
@@ -188,10 +189,7 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     onTap: () => _showInformation(article.title, article.content),
-                                    trailing: IconButton(
-                                      icon: Icon(Icons.delete, color: Colors.white),
-                                      onPressed: () => _deleteArticle(article),
-                                    ),
+                                    
                                   ),
                                 );
                               },

@@ -1,18 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Services/UserService.dart';
 
 class ThProfile extends StatelessWidget {
   final FirebaseService _firebaseService = FirebaseService();
-  late final Users user;
-
-  @override
+  @override   
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+        child: SingleChildScrollView( 
           child: Column(
             children: [
               Row(
@@ -37,7 +35,7 @@ class ThProfile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${user.username}',
+                          ('username'),
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 10),
@@ -68,7 +66,7 @@ class ThProfile extends StatelessWidget {
               ProfileTile(
                 title: 'Add Video',
                 onTap: () {
-                  showUploadVideoBottomSheet(context);
+                  Navigator.pushNamed(context, '/uploadVideo');
                 },
                 icon: Icons.video_chat,
               ),
@@ -247,51 +245,51 @@ class ProfileTile extends StatelessWidget {
   }
 }
 
-void showUploadVideoBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Upload Video',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  final pickedFile = await ImagePicker().pickVideo(
-                    source: ImageSource.gallery,
-                  );
+// void showUploadVideoBottomSheet(BuildContext context) {
+//   showModalBottomSheet(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return Container(
+//         child: Padding(
+//           padding: const EdgeInsets.all(20.0),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 'Upload Video',
+//                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//               ),
+//               SizedBox(height: 20),
+//               ElevatedButton(
+//                 onPressed: () async {
+//                   final pickedFile = await ImagePicker().pickVideo(
+//                     source: ImageSource.gallery,
+//                   );
 
-                  if (pickedFile != null) {
-                    print('Video path: ${pickedFile.path}');
-                  }
-                },
-                child: Text('Select Video'),
-              ),
-              SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Close'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
+//                   if (pickedFile != null) {
+//                     print('Video path: ${pickedFile.path}');
+//                   }
+//                 },
+//                 child: Text('Select Video'),
+//               ),
+//               SizedBox(height: 20),
+//               Align(
+//                 alignment: Alignment.centerRight,
+//                 child: ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   child: Text('Close'),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 
 void _showFeedbackModalSheet(BuildContext context) {
   showModalBottomSheet(

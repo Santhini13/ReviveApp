@@ -10,12 +10,7 @@ class UserDashboard extends StatefulWidget {
 
 class _UserDashboardState extends State<UserDashboard> {
   int _selectedIndex = 3;
-  final List<DashboardItem> items = [
-    //DashboardItem(title: 'Courses', progress: 0.6, daysLeft: 14),
-    DashboardItem(title: 'Exercises', progress: 0.8, daysLeft: 2),
-    DashboardItem(title: '21-Day Challenge', progress: 0.4, daysLeft: 10),
-    
-  ];
+  final List<DashboardItem> items = [];
 
   final List<Appointment> appointments = [
     Appointment(
@@ -224,7 +219,7 @@ class DashboardItem {
   final double progress;
   final int daysLeft;
 
-  DashboardItem({required this.title, required this.progress, required this.daysLeft});
+  DashboardItem({required this.title, required this.progress, required this.daysLeft, required int markedDayCompleted});
 }
 
 class Appointment {
@@ -235,3 +230,5 @@ class Appointment {
 
   Appointment({required this.dateTime, required this.therapistName, required this.duration, required this.sessionOngoing});
 }
+
+

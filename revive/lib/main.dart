@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:revive/Screens/Therapist/uploadvideo.dart';
 import 'package:revive/Screens/Therapist/viewprofile.dart';
 import 'package:revive/Screens/Therapist/yourActivity.dart';
 import 'package:revive/Screens/User/21-day.dart';
@@ -122,7 +123,8 @@ class MyApp extends StatelessWidget {
           '/uprofile':(context) => userProfile(),
          '/thonboard': (context) => TherapistOnboardingScreen(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/notification':(context)=>NotificationScreen(),
-          '/yourActivity':(context)=>yourActivity()
+          '/yourActivity':(context)=>yourActivity(),
+          '/uploadVideo':(context)=>VideoUploadScreen()
          }, 
          
       ),
