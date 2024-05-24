@@ -4,22 +4,9 @@ import 'package:revive/Models/articleModal.dart';
 class ArticleService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Future<void> registerArticle(Article article) async {
-  //   try {
-  //     await _firestore.collection('articles').doc(article.category).collection('entries').add({
-  //       'title': article.title,
-  //       'content': article.content,
-  //       'category': article.category,
-  //       'date': FieldValue.serverTimestamp(),
-  //     });
-  //   } catch (e) {
-  //     print('Error registering Article: $e');
-  //     throw e;
-  //   }
-  // }
-  Future<void> registerArticle(Article article) async {
+  Future<void> registerArticle(String? uid,Article article) async {
     try {
-      await _firestore.collection('articles').add({
+      await _firestore.collection('articles').doc(uid).collection('article').add({
         'title': article.title,
         'content': article.content,
         'category': article.category,
@@ -30,12 +17,84 @@ class ArticleService {
       throw e;
     }
   }
-   Future<List<Article>> fetchArticles(String category) async {
+
+
+   Stream<List<Article>> fetchAllArticles() {
+    return _firestore.collectionGroup('article').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Article.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+//    Future<List<Article>> fetchallArticles() async {
+//     try {
+//       QuerySnapshot querySnapshot = await _firestore
+//           .collection('articles').get();
+// print('------------------------');
+// print(querySnapshot.docs.toList());
+//       if (querySnapshot.docs.isEmpty) {
+//         print('No articles found.');
+//         return [];
+//       } else {
+//         List<Article> articles = querySnapshot.docs.map((doc) {
+//           print('Document data: ${doc.data()}');
+//           return Article(
+//             title: doc['title'],
+//             content: doc['content'],
+//             category: doc['category'],
+//           );
+//         }).toList();
+//         print('Fetched ${articles.length} articles.');
+//         return articles;
+//       }
+//     } catch (e) {
+//       print('Error fetching Articles: $e');
+//       throw e;
+//     }
+//   }
+
+
+  // Future<List<Article>> fetchAllArticles() async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await _firestore.collection('articles').get();
+
+  //     List<Article> articles = [];
+
+  //     for (DocumentSnapshot userDoc in querySnapshot.docs) {
+  //       QuerySnapshot articleSnapshot = await userDoc.reference.collection('article').get();
+        
+  //       for (DocumentSnapshot articleDoc in articleSnapshot.docs) {
+  //         articles.add(Article.fromMap(articleDoc.data() as Map<String, dynamic>));
+  //       }
+  //     }
+
+  //     return articles;
+  //   } catch (e) {
+  //     print('Error fetching articles: $e');
+  //     throw e;
+  //   }
+  // }
+
+
+
+  // Stream<List<Article>> getAllArticles() {
+  //   return _firestore.collection('articles').snapshots().asyncMap((snapshot) async {
+  //     List<Article> articles = [];
+  //     for (var doc in snapshot.docs) {
+  //       QuerySnapshot articleSnapshot = await doc.reference.collection('article').get();
+  //       for (var articleDoc in articleSnapshot.docs) {
+  //         articles.add(Article.fromMap(articleDoc.data() as Map<String, dynamic>));
+  //       }
+  //     }
+  //     return articles;
+  //   });
+  // }
+
+
+     Future<List<Article>> fetchArticles(String? uid) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('articles')
-          .where('category', isEqualTo: category)
-          .get();
+          .collection('articles').doc(uid).collection('article').get();
 
       if (querySnapshot.docs.isEmpty) {
         print('No articles found.');
@@ -58,12 +117,13 @@ class ArticleService {
     }
   }
 
-  Future<void> deleteArticle(Article article) async {
+
+  Future<void> deleteArticle(Article article, String uid) async {
     try {
       await _firestore
           .collection('articles')
-          .where('title', isEqualTo: article.title)
-          .where('content', isEqualTo: article.content)
+          .doc(uid)
+          .collection('article')  
           .get()
           .then((querySnapshot) {
         querySnapshot.docs.forEach((doc) {

@@ -32,7 +32,7 @@ class _ChallengeFirstScreenState extends State<ChallengeFirstScreen> {
                     width: 150,
                     height: 150,
                   ),
-        //            SizedBox(height: 100,),
+                   SizedBox(height: 100,),
         //    ElevatedButton(
         //   onPressed: uploadActivities, // Call the function to upload activities
         //   child: Text('Upload Activities'),

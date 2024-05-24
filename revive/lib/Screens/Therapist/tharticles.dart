@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:revive/Models/articleModal.dart';
 import 'package:revive/Screens/constants/myAppbar.dart';
 import 'package:revive/Services/articleService.dart';
+import 'package:revive/Services/authprovider.dart';
 
 
 class AddArticleScreen extends StatefulWidget {
@@ -26,14 +28,15 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
       );
       return;
     }
-
+ final authProvider=Provider.of<AuthProvider>(context,listen: false);
+ String user=authProvider.uid!;
     try {
       Article article = Article(
         title: _titleController.text,
         content: _contentController.text,
         category: _selectedCategory,
       );
-      await _articleService.registerArticle(article);
+      await _articleService.registerArticle(user,article);
       Navigator.pop(context);
     } catch (e) {
       print('Error saving article: $e');
@@ -45,7 +48,6 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -1,39 +1,35 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Booking {
   String id;
-  String userId;
-  String therapistId;
-  DateTime bookingDate;
-  DateTime timeSlot;
-  String status;
+  String appointmentType;
+  String timeSlot;
+  DateTime date;
+  String? Paymentid;
 
   Booking({
     required this.id,
-    required this.userId,
-    required this.therapistId,
-    required this.bookingDate,
+    required this.appointmentType,
     required this.timeSlot,
-    required this.status,
+    required this.date,
   });
 
-  factory Booking.fromJson(Map<String, dynamic> json) {
+  factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
-      id: json['id'],
-      userId: json['userId'],
-      therapistId: json['therapistId'],
-      bookingDate: DateTime.parse(json['bookingDate']),
-      timeSlot: DateTime.parse(json['timeSlot']),
-      status: json['status'],
+      id: map['id'],
+      appointmentType: map['appointmentType'],
+      timeSlot: map['timeSlot'],
+      date: (map['date'] as Timestamp?)!.toDate(),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'userId': userId,
-      'therapistId': therapistId,
-      'bookingDate': bookingDate.toIso8601String(),
-      'timeSlot': timeSlot.toIso8601String(),
-      'status': status,
+      'appointmentType': appointmentType,
+      'timeSlot': timeSlot,
+      'date': date,
     };
   }
 }

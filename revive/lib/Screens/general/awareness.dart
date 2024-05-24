@@ -1,97 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:revive/Models/articleModal.dart';
+import 'package:revive/Screens/constants/myAppbar.dart';
 import 'package:revive/Services/articleService.dart';
 
-class AwarenessScreen extends StatefulWidget {
-  @override
-  _AwarenessScreenState createState() => _AwarenessScreenState();
-}
-
-class _AwarenessScreenState extends State<AwarenessScreen> {
-  String _selectedInfo = '';
-  String _selectedTitle = '';
- List<Article> _articles = [];
-  bool _isLoading = true;
-
-  
-  Future<void> _fetchArticles() async {
-    try {
-      final articles = await ArticleService().fetchArticles('Awareness');
-      setState(() {
-        _articles = articles;
-        _isLoading = false;
-      });
-      print('Fetched articles: $_articles');
-    } catch (e) {
-      print('Error fetching articles: $e');
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
- void _showInformation(String title, String content) {
-  setState(() {
-    _selectedTitle = title;
-    _selectedInfo = content;
-  });
-}
-
-
-  void _deleteArticle(Article article) async {
-    try {
-      await ArticleService().deleteArticle(article);
-      setState(() {
-        _articles.remove(article);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Article deleted successfully.'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      print('Error deleting article: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error deleting article.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-  @override
-  void initState() {
-    super.initState();
-    _fetchArticles();
-  }
-
-
-
-  // void _deleteArticle(Article article) async {
-  //   final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  //   try {
-  //     await ArticleService().deleteArticle(authProvider.uid, article);
-  //     setState(() {
-  //       _articles.remove(article);
-  //     });
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Article deleted successfully.'),
-  //         backgroundColor: Colors.green,
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     print('Error deleting article: $e');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Error deleting article.'),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   }
-  // }
+class AwarenessScreen extends StatelessWidget {
+  final ArticleService _articleService = ArticleService();
 
   @override
   Widget build(BuildContext context) {
@@ -136,64 +50,49 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
               ),
               height: double.infinity,
               width: double.infinity,
-              child: _selectedInfo.isNotEmpty
-                  ? SingleChildScrollView(
+              child: StreamBuilder<List<Article>>(
+                stream: _articleService.fetchAllArticles(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    List<Article> articles = snapshot.data ?? [];
+                    return ListView.builder(
                       padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            _selectedTitle,
-                            style: TextStyle(
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
+                      itemCount: articles.length,
+                      itemBuilder: (context, index) {
+                        final article = articles[index];
+                       final randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArticleDetailScreen(article: article),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            color: randomColor,
+                            child: ListTile(
+                              title: Text(
+                                article.title,
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              ),
+                              // subtitle: Text(
+                              //   article.content,
+                              //   style: TextStyle(color: Colors.white),
+                              // ),
                             ),
                           ),
-                          SizedBox(height: 12.0),
-                          Text(
-                            _selectedInfo,
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                          SizedBox(height: 20.0),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _selectedTitle = '';
-                                _selectedInfo = '';
-                              });
-                            },
-                            child: Text('Back'),
-                          ),
-                        ],
-                      ),
-                    )
-                  : _isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : _articles.isEmpty
-                          ? Center(child: Text('No articles found.'))
-                          : ListView.builder(
-                              padding: EdgeInsets.all(16.0),
-                              itemCount: _articles.length,
-                              itemBuilder: (context, index) {
-                                final article = _articles[index];
-                                final randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
-                                return Card(
-                                  color: randomColor,
-                                  child: ListTile(
-                                    title: Text(
-                                      article.title,
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Text(
-                                      article.content,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onTap: () => _showInformation(article.title, article.content),
-                                    
-                                  ),
-                                );
-                              },
-                            ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
@@ -201,3 +100,42 @@ class _AwarenessScreenState extends State<AwarenessScreen> {
     );
   }
 }
+
+class ArticleDetailScreen extends StatelessWidget {
+  final Article article;
+
+  ArticleDetailScreen({required this.article});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MyAppBar(
+        title: article.title
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width:double.infinity,
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  article.category,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  article.content,
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+

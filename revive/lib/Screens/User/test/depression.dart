@@ -55,7 +55,9 @@ class _depressionTestState extends State<depressionTest> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0,right:20,top: 10),
-            child: QuestionWidget(questions: [
+            child: QuestionWidget(
+              title:'Depression',
+              questions: [
               {
                 'question':'Little interest or pleasure in doing things',
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]

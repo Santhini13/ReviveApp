@@ -12,20 +12,7 @@ class _UserDashboardState extends State<UserDashboard> {
   int _selectedIndex = 3;
   final List<DashboardItem> items = [];
 
-  final List<Appointment> appointments = [
-    Appointment(
-      dateTime: DateTime.now().add(Duration(days: 1)),
-      therapistName: 'Dr. Smith',
-      duration: Duration(hours: 1),
-      sessionOngoing: false,
-    ),
-    Appointment(
-      dateTime: DateTime.now().add(Duration(days: 3)),
-      therapistName: 'Dr. Johnson',
-      duration: Duration(minutes: 45),
-      sessionOngoing: true,
-    ),
-  ];
+  final List<Appointment> appointments = [];
 
   @override
   Widget build(BuildContext context) {

@@ -93,7 +93,7 @@ class _stressTestState extends State<stressTest> {
                 'question':'Do you feel like withdrawing from family, friends, and isolating yourself? ',
                 'options':['Never','Sometimes','often','Almost always',]
               },
-            ],),
+            ], title: 'Stress',),
           )
         )),
       

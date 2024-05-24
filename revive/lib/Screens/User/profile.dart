@@ -194,14 +194,27 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Screens/User/navbar.dart';
 import 'package:revive/Screens/User/editprofile.dart';
 import 'package:revive/Services/UserService.dart';
 
-class userProfile extends StatelessWidget {
-  int _selectedIndex = 4;
-  final FirebaseService _firebaseService = FirebaseService(); // Initialize the FirebaseService
+class userProfile extends StatefulWidget {
+   final Users user;
+  const userProfile({Key? key, required this.user}) : super(key: key);
+  @override
+  State<userProfile> createState() => _userProfileState();
+}
 
+class _userProfileState extends State<userProfile> {
+  int _selectedIndex = 4;
+
+  final FirebaseService _firebaseService = FirebaseService(); 
+     @override
+ void initState(){
+    super.initState();
+  }
+ // Initialize the FirebaseService
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,7 +248,7 @@ class userProfile extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                'John Doe',
+                 widget.user.username,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

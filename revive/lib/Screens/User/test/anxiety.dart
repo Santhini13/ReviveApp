@@ -53,7 +53,9 @@ class _AnxietyTestState extends State<AnxietyTest> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0,right:20,top: 10),
-            child: QuestionWidget(questions: [
+            child: QuestionWidget(
+              title: 'Anxiety',
+              questions: [
               {
                 'question':' Feeling nervous, anxious, or on edge',
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
@@ -83,7 +85,7 @@ class _AnxietyTestState extends State<AnxietyTest> {
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
               },
             
-            ],),
+            ], ),
           )
         )),
         ])

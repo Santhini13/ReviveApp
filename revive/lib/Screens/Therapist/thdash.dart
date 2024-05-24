@@ -76,7 +76,7 @@ class ThDashboard extends StatelessWidget {
      Navigator.pushNamed(context, '/yourActivity');
     },
     child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
         decoration: BoxDecoration(
           color: Color(0xff881736),
@@ -84,7 +84,7 @@ class ThDashboard extends StatelessWidget {
         ),
         child: ListTile(
           title: Text(
-            'Activities',
+            'More',
             style: TextStyle(color: Colors.white),
           ),
           trailing: Icon(

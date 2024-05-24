@@ -1,10 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:revive/Services/UserService.dart';
 
-class ThProfile extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:revive/Services/UserService.dart';
+import 'dart:io';
+class ThProfile extends StatefulWidget {
+  //  final Users user;
+  // const ThProfile({Key? key, required this.user}) : super(key: key);
+  @override
+  State<ThProfile> createState() => _ThProfileState();
+}
+
+
+
+class _ThProfileState extends State<ThProfile> {
   final FirebaseService _firebaseService = FirebaseService();
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
+   Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = pickedFile;
+    });
+  }
+
+    @override
+ void initState(){
+    super.initState();
+  }
+
   @override   
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,17 +40,16 @@ class ThProfile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Left side: Image
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/doc1.jpg'), // Placeholder image
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
+                  GestureDetector(
+              onTap: _pickImage,
+              child: CircleAvatar(
+                radius: 50.0,
+                backgroundImage: _image != null
+                    ? FileImage(File(_image!.path))
+                    : AssetImage('assets/images/user.png') as ImageProvider,
+                child: _image == null ? Icon(Icons.add_a_photo) : null,
+              ),
+            ),
                   SizedBox(width: 20),
                   // Right side: Qualifications and Experience
                   Expanded(
@@ -35,7 +57,7 @@ class ThProfile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          ('username'),
+                          'helo',
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 10),
@@ -59,7 +81,7 @@ class ThProfile extends StatelessWidget {
               ProfileTile(
                 title: 'View Profile',
                 onTap: () {
-                  showBottomSheet(context, 'View Profile');
+                  Navigator.pushNamed(context, '/thedit');
                 },
                 icon: Icons.view_agenda_outlined,
               ),
@@ -244,52 +266,6 @@ class ProfileTile extends StatelessWidget {
     );
   }
 }
-
-// void showUploadVideoBottomSheet(BuildContext context) {
-//   showModalBottomSheet(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return Container(
-//         child: Padding(
-//           padding: const EdgeInsets.all(20.0),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 'Upload Video',
-//                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 20),
-//               ElevatedButton(
-//                 onPressed: () async {
-//                   final pickedFile = await ImagePicker().pickVideo(
-//                     source: ImageSource.gallery,
-//                   );
-
-//                   if (pickedFile != null) {
-//                     print('Video path: ${pickedFile.path}');
-//                   }
-//                 },
-//                 child: Text('Select Video'),
-//               ),
-//               SizedBox(height: 20),
-//               Align(
-//                 alignment: Alignment.centerRight,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: Text('Close'),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
 
 void _showFeedbackModalSheet(BuildContext context) {
   showModalBottomSheet(

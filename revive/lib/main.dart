@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Screens/Therapist/uploadvideo.dart';
+import 'package:revive/Screens/Therapist/view.dart';
 import 'package:revive/Screens/Therapist/viewprofile.dart';
 import 'package:revive/Screens/Therapist/yourActivity.dart';
 import 'package:revive/Screens/User/21-day.dart';
+import 'package:revive/Screens/User/feedbackform.dart';
 import 'package:revive/Screens/features/notifications.dart';
 import 'package:revive/Services/authprovider.dart';
 import 'package:revive/screens/general/appointment.dart';
@@ -82,7 +84,10 @@ class MyApp extends StatelessWidget {
           '/myjournal':(context) => DiaryEntriesScreen(), 
           '/register':(context)=>UserRegister(),
           '/login':(context) => UserLogin(),
-          '/uprofile':(context) => userProfile(),
+          '/uprofile':(context) {
+            final authProvider = Provider.of<AuthProvider>(context, listen: false);
+            return userProfile(user: authProvider.user!);
+          },
          '/uonboard': (context) => UserOnboard(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/anxiety':(context) => AnxietyTest(),
           '/stress':(context) => stressTest(),
@@ -93,7 +98,7 @@ class MyApp extends StatelessWidget {
           '/challenge':(context) =>ChallengeFirstScreen(),
           '/21day':(context)=>ChallengeScreen(),
           '/schedules':(context)=>DoctorAppointmentsPage(),
-          '/explore':(context) => ExplorePage(),
+          '/explore':(context) => VideoListPage(),
           '/therapist':(context) => TherapistListScreen(),
           '/diet':(context) => DietingScreen(),
           '/exercise':(context)=>ExerciseListScreen(),
@@ -120,11 +125,11 @@ class MyApp extends StatelessWidget {
           //therapist
           '/thedit':(context)=>ThEditProfile(),
           '/tharticle':(context) => AddArticleScreen(),
-          '/uprofile':(context) => userProfile(),
          '/thonboard': (context) => TherapistOnboardingScreen(user: Provider.of<AuthProvider>(context, listen: false).user!),
           '/notification':(context)=>NotificationScreen(),
-          '/yourActivity':(context)=>yourActivity(),
-          '/uploadVideo':(context)=>VideoUploadScreen()
+          '/yourActivity':(context)=>YourActivity(),
+          '/uploadVideo':(context)=>UploadVideoPage(),
+          
          }, 
          
       ),

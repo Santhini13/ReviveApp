@@ -173,10 +173,17 @@
 //     );
 //   }
 // }
+
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:provider/provider.dart';
+import 'package:revive/Models/therapistModal.dart';
+import 'package:revive/Services/authprovider.dart';
+import 'package:revive/Services/therapistService.dart';
+
 
 class ThEditProfile extends StatefulWidget {
   @override
@@ -185,7 +192,7 @@ class ThEditProfile extends StatefulWidget {
 
 class _ThEditProfileState extends State<ThEditProfile> {
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  TextEditingController _specializationController =TextEditingController();
   TextEditingController _descriptionController =TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
@@ -194,24 +201,38 @@ class _ThEditProfileState extends State<ThEditProfile> {
   TextEditingController _confirmPasswordController = TextEditingController();
   List<TextEditingController> _timeSlotControllers = [TextEditingController()];
   List<TextEditingController> _appointmentTypeControllers = [TextEditingController()];
-  XFile? _image;
-  XFile? _certificate;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
-
-  Future<void> _pickCertificate() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, maxWidth: 300, maxHeight: 300);
-    setState(() {
-      _certificate = pickedFile;
-    });
-  }
+  
+  File? _certificate;
+  final TherapistService _therapistService=TherapistService();
+  
+ Future<void> _editProfile() async{
+   String name = _nameController.text;
+   String specialization=_specializationController.text;
+              String qualification = _qualificationController.text;
+              String experience = _experienceController.text;
+              String description=_descriptionController.text;
+              List<String> timeSlots = _timeSlotControllers.map((controller) => controller.text).toList();
+              List<String> appointmentTypes = _appointmentTypeControllers.map((controller) => controller.text).toList();
+ 
+ Therapist data= Therapist(
+  name:name,
+  qualification:qualification,
+  experience:experience,
+  timeSlots:timeSlots,
+  appointmenttypes:appointmentTypes, 
+  description: description, specialization: specialization
+ );
+final authProvider = Provider.of<AuthProvider>(context, listen: false);
+ await _therapistService.addOrUpdateTherapistInfo(authProvider.uid,data);
+ 
+ }
+  // Future<void> _pickCertificate() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery, maxWidth: 300, maxHeight: 300);
+  //   setState(() {
+  //     _certificate = pickedFile;
+  //   });
+  // }
 
   void _addTimeSlotField() {
     setState(() {
@@ -235,16 +256,7 @@ class _ThEditProfileState extends State<ThEditProfile> {
           actions: [
           IconButton(
             icon: Icon(Icons.save,color:Colors.white),
-            onPressed: () {
-              // Save profile changes
-              String name = _nameController.text;
-              String email = _emailController.text;
-              String qualification = _qualificationController.text;
-              String experience = _experienceController.text;
-              List<String> timeSlots = _timeSlotControllers.map((controller) => controller.text).toList();
-              List<String> appointmentTypes = _appointmentTypeControllers.map((controller) => controller.text).toList();
-              // Perform actions with the entered data
-            },
+            onPressed: _editProfile
           ),
         ],
           backgroundColor: Colors.transparent, // Transparent background
@@ -261,16 +273,6 @@ class _ThEditProfileState extends State<ThEditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50.0,
-                backgroundImage: _image != null
-                    ? FileImage(File(_image!.path))
-                    : AssetImage('assets/images/user.png') as ImageProvider,
-                child: _image == null ? Icon(Icons.add_a_photo) : null,
-              ),
-            ),
             SizedBox(height: 20.0),
             TextField(
               controller: _nameController,
@@ -278,8 +280,8 @@ class _ThEditProfileState extends State<ThEditProfile> {
             ),
             SizedBox(height: 20.0),
             TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              controller: _specializationController,
+              decoration: InputDecoration(labelText: 'Specialization'),
             ),
             SizedBox(height: 20.0),
             TextField(
@@ -332,7 +334,8 @@ class _ThEditProfileState extends State<ThEditProfile> {
                 backgroundColor: Color(0xff881736),
                 minimumSize: Size(60, 50),
               ),
-                    onPressed: _pickCertificate,
+                    onPressed: (){}
+                    //_pickCertificate,
                     child: Text('Upload Certificate (PDF)',style:TextStyle(color:Colors.white)),
                   ),
                   SizedBox(height: 20.0),
@@ -486,3 +489,5 @@ class _ThEditProfileState extends State<ThEditProfile> {
     );
   }
 }
+
+

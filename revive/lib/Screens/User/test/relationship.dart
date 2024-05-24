@@ -55,7 +55,9 @@ class _relatioTestState extends State<relatioTest> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0,right:20,top: 10),
-            child: QuestionWidget(questions: [
+            child: QuestionWidget(
+              title: 'Relationship',
+              questions: [
              {
                 'question':'My partner makes me feel unsafe even in my own home',
                 'options':['Never','Sometimes','often','Almost always',]
@@ -92,7 +94,7 @@ class _relatioTestState extends State<relatioTest> {
                 'question':'I hide the truth from others because I am afraid not to',
                 'options':['Never','Sometimes','often','Almost always',]
               },
-            ],),
+            ], ),
           )
         )),
         // Padding(

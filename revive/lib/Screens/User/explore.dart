@@ -1,89 +1,118 @@
+
 import 'package:flutter/material.dart';
-import 'package:revive/Screens/User/navbar.dart';
+import 'package:revive/Models/videoModal.dart';
 import 'package:revive/Screens/constants/myAppbar.dart';
-class ExplorePage extends StatefulWidget {
+import 'package:revive/Services/videoService.dart';
+import 'package:revive/Screens/general/videoPlayer.dart';
+import 'package:revive/Screens/User/navbar.dart';
+class VideoListPage extends StatefulWidget {
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
+  _VideoListPageState createState() => _VideoListPageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> {
+class _VideoListPageState extends State<VideoListPage> {
   int _selectedIndex = 2;
+  final VideoService _videoService = VideoService();
+  List<VideoModel> _allVideos = [];
+  List<VideoModel> _filteredVideos = [];
+  TextEditingController _searchController = TextEditingController();
 
-  
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  _onSearchChanged() {
+    setState(() {
+      _filteredVideos = _allVideos
+          .where((video) =>
+              video.title.toLowerCase().contains(_searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title:'Explore'),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+      appBar: MyAppBar(
+        title: 'Explore',
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search videos...',
+                prefixIcon: Icon(Icons.search, color: Color(0xff281537)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff881736)),
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: Text(
-            //     'Mood Tracking',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: 10),
-            // MoodTracker(), // Emoji mood tracker
-            //SizedBox(height: 20),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Recommended Videos',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          ),
+          Expanded(
+            child: StreamBuilder<List<VideoModel>>(
+              stream: _videoService.getAllVideos(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No videos available.'));
+                }
+                _allVideos = snapshot.data!;
+                _filteredVideos = _searchController.text.isEmpty
+                    ? _allVideos
+                    : _filteredVideos;
+                return ListView.builder(
+                  itemCount: _filteredVideos.length,
+                  itemBuilder: (context, index) {
+                    VideoModel video = _filteredVideos[index];
+                    return Card(
+                    color: Color.fromARGB(255, 240, 220, 212),
+                     elevation: 10,
+                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        leading: Icon(Icons.video_library, size: 50, color: Color(0xff881736)),
+                        title: Text(
+                          video.title,
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff281537)),
+                        ),
+                        trailing: Icon(Icons.play_arrow, color: Color(0xff881736)),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VideoPlayerPage(videoUrl: video.url,),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-            SizedBox(height: 50),
-            //  Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: Text(
-            //     'Courses',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
-            SizedBox(height: 50),
-            //  Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: Text(
-            //     'Community',
-            //     style: TextStyle(
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: 10),
-            // // Scrollable row with video items goes here
-            // SizedBox(height: 20),
-        
-          ],
-        ),
+          ), 
+        ],
       ),
       bottomNavigationBar: NavBar(selectedIndex: _selectedIndex, userRole: UserRole.User,),
     );
   }
 }
+

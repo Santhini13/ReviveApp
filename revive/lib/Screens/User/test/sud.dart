@@ -57,7 +57,9 @@ class _SudTestState extends State<SudTest> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 20.0,right:20,top: 10),
-            child: SudQuestionWidget(questions: [
+            child: SudQuestionWidget(
+              title: 'Substance Use',
+              questions: [
               {
                 'question':'Have you used drugs other than those required for medical reasons?',
                 'options':['No','Yes']
@@ -99,7 +101,7 @@ class _SudTestState extends State<SudTest> {
                 'options':['No','Yes']
               },
             
-            ],),
+            ], ),
           )
         )),
         // Padding(

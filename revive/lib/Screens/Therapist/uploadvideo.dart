@@ -1,77 +1,62 @@
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-class VideoUploadScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; 
+import 'package:revive/Models/videoModal.dart';
+import 'package:revive/Services/authprovider.dart';
+import 'package:revive/Services/videoService.dart';
+
+class UploadVideoPage extends StatefulWidget {
   @override
-  _VideoUploadScreenState createState() => _VideoUploadScreenState();
+  _UploadVideoPageState createState() => _UploadVideoPageState();
 }
 
-class _VideoUploadScreenState extends State<VideoUploadScreen> {
-  final ImagePicker _picker = ImagePicker();
-  XFile? _video;
-  String? _uploadStatus;
-
-  Future<void> _pickVideo() async {
-    final XFile? pickedFile = await _picker.pickVideo(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        _video = pickedFile;
-      });
-    }
-  }
-
+class _UploadVideoPageState extends State<UploadVideoPage> {
+  final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final VideoService _videoService = VideoService();
   Future<void> _uploadVideo() async {
-    if (_video != null) {
-      try {
-        final File file = File(_video!.path);
-        final FirebaseStorage storage = FirebaseStorage.instance;
-        final Reference ref = storage.ref().child('videos/${_video!.name}');
-        final UploadTask uploadTask = ref.putFile(file);
-
-        final TaskSnapshot snapshot = await uploadTask;
-        final String downloadURL = await snapshot.ref.getDownloadURL();
-
-        setState(() {
-          _uploadStatus = 'Upload successful: $downloadURL';
-          print('-------------------');
-        });
-      } catch (e) {
-        setState(() {
-          _uploadStatus = 'Upload failed: $e';
-          print('upload failed');
-        });
-      }
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String uid = authProvider.uid!;
+    if (_urlController.text.isNotEmpty && _titleController.text.isNotEmpty) {
+      VideoModel video = VideoModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: _titleController.text,
+        url: _urlController.text, 
+        //userId:uid,
+      );
+      await _videoService.saveVideoData(uid,video);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Video Uploaded')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a title and a YouTube link.')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Video'),
-      ),
-      body: Center(
-        child: Column( 
-          mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(title: Text('Upload Video')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           children: [
-            if (_video != null) Text('Video selected: ${_video!.name}'),
-            ElevatedButton(
-              onPressed: _pickVideo,
-              child: Text('Select Video'),
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(labelText: 'Video Title'),
             ),
-            if (_video != null)
-              ElevatedButton(
-                onPressed: _uploadVideo,
-                child: Text('Upload Video'),
-              ),
-            if (_uploadStatus != null) Text(_uploadStatus!),
+            SizedBox(height: 10),
+            TextField(
+              controller: _urlController,
+              decoration: InputDecoration(labelText: 'YouTube Link'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _uploadVideo,
+              child: Text('Upload Video'),
+            ),
           ],
         ),
       ),
     );
   }
 }
+

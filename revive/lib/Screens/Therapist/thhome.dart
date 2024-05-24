@@ -17,6 +17,7 @@ class _TherapistHomeState extends State<TherapistHome>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
+  
 
   @override
   void initState() {
@@ -32,26 +33,6 @@ class _TherapistHomeState extends State<TherapistHome>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(kToolbarHeight),
-      //   child: AppBar(
-      //     backgroundColor: Colors.white,
-      //     automaticallyImplyLeading: false, // Removes the back button
-      //     flexibleSpace: Column(
-      //       mainAxisAlignment: MainAxisAlignment.end,
-      //       children: [
-      //         TabBar(
-      //           controller: _tabController,
-      //           tabs: [
-      //             Tab(text: 'Home'),
-      //             Tab(text: 'Dashboard'),
-      //             Tab(text: 'Profile'),
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
         child: AppBar(

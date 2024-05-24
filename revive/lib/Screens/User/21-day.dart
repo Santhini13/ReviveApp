@@ -232,6 +232,7 @@
 // }
 
 
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Models/activityModal.dart';
@@ -257,11 +258,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       String uid = authProvider.uid!;
-      //  List<Activity> activities = await _activityService.fetchActivities();
-      // setState(() {
-      //   _activities = activities;
-      // });
-      List<Activity> activities = await _activityService.fetchActivities(uid);
+      List<Activity> activities = await _activityService.getActivities();
       setState(() {
         _activities = activities;
       });
@@ -285,10 +282,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
   }
 
   bool _canOpenActivity(int index) {
-    if (_activities[index].completed) {
-      return DateTime.now().difference(_activities[index].completionTime).inDays >= 21;
-    }
-    return true;
+    return !_activities[index].completed;
   }
 
   @override
@@ -360,7 +354,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                       if (!_canOpenActivity(index)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('You need to wait 21 days before accessing this activity again.'),
+                            content: Text('You cannot access this activity again.'),
                           ),
                         );
                       } else {
@@ -420,7 +414,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                             right: 5,
                             top: 5,
                             child: Icon(
-                              _activities[index].completed ? Icons.lock_open : Icons.lock,
+                              _activities[index].completed ? Icons.lock : Icons.lock_open,
                               color: Colors.white,
                             ),
                           ),
@@ -437,213 +431,3 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     );
   }
 }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:revive/Models/activityModal.dart';
-// import 'package:revive/Services/activityService.dart';
-// import 'package:revive/Services/authprovider.dart';
-
-
-// class ChallengeScreen extends StatefulWidget {
-//   @override
-//   _ChallengeScreenState createState() => _ChallengeScreenState();
-// }
-
-// class _ChallengeScreenState extends State<ChallengeScreen> {
-//   final ActivityService _activityService = ActivityService();
-//   List<Activity> _activities = [];
-//    List<bool> _isDayCompleted = List.generate(21, (index) => false);
-//    List<DateTime> _lastCompletionTimes = List.generate(21, (index) => DateTime.fromMillisecondsSinceEpoch(0));
-
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _loadActivities();
-//   }
-
-//    Future<void> _loadActivities() async {
-//     try {
-//       List<Activity> activities = await _activityService.fetchActivities();
-//       setState(() {
-//         _activities = activities;
-//       });
-//     } catch (e) {
-//       print('Error loading activities: $e');
-//     }
-//   }
-
-
-//   Future<void> _markDayAsCompleted(int index) async {
-//     try {
-//       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-//       String uid =  authProvider.uid!; // Add logic to get user ID here
-//       await _activityService.markActivityAsCompleted(uid, index);
-//       setState(() {
-//         _activities[index].completed = true;
-//       });
-//     } catch (e) {
-//       print('Error marking day as completed: $e');
-//     }
-//   }
-
-//   bool _canOpenActivity(int index) {
-//     DateTime now = DateTime.now();
-//     return !_isDayCompleted[index] && now.difference(_lastCompletionTimes[index]).inHours >= 24;
-//   }
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: PreferredSize(
-//         preferredSize: Size.fromHeight(kToolbarHeight),
-//         child: AppBar(
-//           title: Text('21-Day Challenge', style: TextStyle(color: Colors.white)),
-//           backgroundColor: Colors.transparent,
-//           automaticallyImplyLeading: false,
-//           flexibleSpace: Container(
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 colors: [Color(0xff881736), Color(0xff281537)],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//       body: Stack(
-//         children: [
-//           Container(
-//             width: double.infinity,
-//             height: 200,
-//             decoration: BoxDecoration(
-//               gradient: LinearGradient(
-//                 colors: [Color(0xff881736), Color(0xff281537)],
-//               ),
-//             ),
-//             child: Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: [
-//                   Text(
-//                     'Do It for 21-Days\n Find A New You',
-//                     style: TextStyle(fontSize: 20, color: Colors.white),
-//                   ),
-//                   Image.asset(
-//                     'assets/icons/goals.png',
-//                     width: 150,
-//                     height: 150,
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Container(
-//             decoration: BoxDecoration(
-//               color: Colors.white,
-//               borderRadius: BorderRadius.only(
-//                 topLeft: Radius.circular(10),
-//                 topRight: Radius.circular(10),
-//               ),
-//             ),
-//             height: double.infinity,
-//             width: double.infinity,
-//             child: Padding(
-//               padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 20),
-//               child: GridView.builder(
-//                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                   crossAxisCount: 3,
-//                 ),
-//                 itemCount: _activities.length,
-//                 itemBuilder: (BuildContext context, int index) {
-//                   return GestureDetector(
-//                     onTap: () {
-//                       if (_isDayCompleted[index]) {
-//                         ScaffoldMessenger.of(context).showSnackBar(
-//                           SnackBar(
-//                             content: Text('This activity is already completed.'),
-//                           ),
-//                         );
-//                       } else if (_canOpenActivity(index)) {
-//                         showDialog(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return AlertDialog(
-//                               content: Container(
-//                                 height: 300,
-//                                 width: 200,
-//                                 child: Column(
-//                                   mainAxisAlignment: MainAxisAlignment.center,
-//                                   crossAxisAlignment: CrossAxisAlignment.center,
-//                                   children: [
-//                                     Text(_activities[index].name),
-//                                     SizedBox(height: 10),
-//                                     Image.asset(
-//                                       _activities[index].image,
-//                                       height: 100,
-//                                       width: 100,
-//                                     ),
-//                                     SizedBox(height: 15),
-//                                     ElevatedButton(
-//                                       onPressed: () {
-//                                         _markDayAsCompleted(index);
-//                                         Navigator.of(context).pop();
-//                                       },
-//                                       child: Text('Done'),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               ),
-//                             );
-//                           },
-//                         );
-//                       } else {
-//                         ScaffoldMessenger.of(context).showSnackBar(
-//                           SnackBar(
-//                             content: Text('You need to wait 24 hours before accessing this activity again.'),
-//                           ),
-//                         );
-//                       }
-//                     },
-//                     child: Container(
-//                       margin: EdgeInsets.all(5),
-//                       decoration: BoxDecoration(
-//                         color: _isDayCompleted[index]
-//                             ? Color(0xff881736).withOpacity(0.5)
-//                             : Color(0xff281537).withOpacity(0.5),
-//                         border: Border.all(
-//                           color: _isDayCompleted[index]
-//                               ? Color(0xff881736)
-//                               : Color(0xff281537),
-//                           width: 2,
-//                         ),
-//                       ),
-//                       child: Stack(
-//                         children: [
-//                           Center(
-//                             child: Text('Day ${index + 1}', style: TextStyle(color: Colors.white)),
-//                           ),
-//                           Positioned(
-//                             right: 5,
-//                             top: 5,
-//                             child: Icon(
-//                               _isDayCompleted[index] ? Icons.lock_open : Icons.lock,
-//                               color: Colors.white,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

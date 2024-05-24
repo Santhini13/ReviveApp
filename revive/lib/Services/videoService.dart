@@ -1,21 +1,37 @@
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:revive/Models/videoModal.dart';
 
-class VideoUploadService {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+class VideoService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadVideo(File videoFile, String fileName) async {
+  Future<void> saveVideoData(String uid,VideoModel video) async {
+    await _firestore.collection('users').doc(uid).collection('videos').doc(video.id).set(video.toMap());
+  }
+
+   Stream<List<VideoModel>> getVideos(String uid) {
+    return _firestore.collection('users').doc(uid).collection('videos').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => VideoModel.fromMap(doc.data())).toList();
+    });
+  }
+
+    Stream<List<VideoModel>> getAllVideos() {
+    return _firestore.collectionGroup('videos').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => VideoModel.fromMap(doc.data())).toList();
+    });
+  }
+
+  
+  Future<void> deleteVideo(VideoModel video, String uid) async {
     try {
-      final Reference ref = _storage.ref().child('videos/$fileName');
-      final UploadTask uploadTask = ref.putFile(videoFile);
-
-      final TaskSnapshot snapshot = await uploadTask;
-      final String downloadURL = await snapshot.ref.getDownloadURL();
-      
-      return downloadURL;
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('videos')
+          .doc(video.id)
+          .delete();
     } catch (e) {
-      print('Error uploading video: $e');
-      throw Exception('Failed to upload video');
+      throw Exception('Error deleting video: $e');
     }
   }
 }
+

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:revive/Models/UserModal.dart';
 
 class FirebaseService {
@@ -78,4 +81,10 @@ class FirebaseService {
       throw e;
     }
   }
+
+  Future<DocumentSnapshot> getUserData(String uid) async {
+    return await _firestore.collection('users').doc(uid).get();
+  }
+  // Method to upload an image to Firebase Storage
 }
+
