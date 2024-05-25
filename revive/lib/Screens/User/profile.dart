@@ -193,11 +193,18 @@
 //     );
 //   }
 // }
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Screens/User/navbar.dart';
 import 'package:revive/Screens/User/editprofile.dart';
 import 'package:revive/Services/UserService.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class userProfile extends StatefulWidget {
    final Users user;
@@ -207,13 +214,117 @@ class userProfile extends StatefulWidget {
 }
 
 class _userProfileState extends State<userProfile> {
+   File? _image;
+  final ImagePicker _picker = ImagePicker();
+  bool _isUploading = false;
+  String? _profileImageUrl;
+
+
+   @override
+  void initState() {
+    super.initState();
+    print('Initializing ThProfile state...');
+  _fetchUserProfileImage();
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _image = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking image: $e')),
+      );
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('uploads')
+            .child(user.uid)
+            .child('profile.jpg');
+
+        await storageRef.putFile(_image!);
+        final downloadUrl = await storageRef.getDownloadURL();
+
+        setState(() {
+          _profileImageUrl = downloadUrl;
+          _image = null;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Uploaded Image URL: $downloadUrl')),
+        );
+      } else {
+        print('No user is signed in.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No user is signed in.')),
+        );
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading image: $e')),
+      );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
+  }
+
+ 
+
+  Future<void> _fetchUserProfileImage() async {
+    try {
+
+    //    String dummyImageUrl = 'https://via.placeholder.com/150';
+
+
+    // setState(() {
+    //   _profileImageUrl = dummyImageUrl;
+    //   print('123');
+    // });
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        setState(() {
+          _profileImageUrl = doc.data()?['profileImageUrl'];
+         
+        });
+      }
+    } catch (e) {
+      print('Error fetching profile image: $e');
+    }
+  }
+  Future<ImageProvider<Object>?> _getImage() async {
+  if (_image != null) {
+    return FileImage(_image!);
+  } else if (_profileImageUrl != null) {
+    return NetworkImage(_profileImageUrl!);
+  } else {
+    return null; // Return null if no image is available
+  }
+}
+
   int _selectedIndex = 4;
 
   final FirebaseService _firebaseService = FirebaseService(); 
-     @override
- void initState(){
-    super.initState();
-  }
  // Initialize the FirebaseService
   @override
   Widget build(BuildContext context) {
@@ -222,7 +333,7 @@ class _userProfileState extends State<userProfile> {
         preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
         child: AppBar(
           title: Text(
-            'My Profile',
+            widget.user.username,
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.transparent, // Transparent background
@@ -241,20 +352,93 @@ class _userProfileState extends State<userProfile> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('assets/images/user.png'),
-              ),
+            children:<Widget> [
+              FutureBuilder(
+  future: _getImage(),
+  builder: (BuildContext context, AsyncSnapshot<ImageProvider<Object>?> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else if (snapshot.hasError) {
+      return Text('Error loading image');
+    } else {
+      return Stack(
+        children: <Widget>[
+          CircleAvatar(
+            radius: 80,
+            backgroundColor: Colors.grey[300],
+            backgroundImage: snapshot.data, // Use snapshot.data directly
+            child: _image == null && _profileImageUrl == null
+                ? GestureDetector(
+                    onTap: _pickImage,
+                    child: Icon(
+                      Icons.add_a_photo,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  )
+                : null,
+          ),
+          if (_image != null || _profileImageUrl != null) // Only show edit icon if image is present
+  Positioned(
+    bottom: 0,
+    right: 0,
+    child: PopupMenuButton<String>(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: 'add',
+          child: ListTile(
+            leading: Icon(Icons.add_a_photo),
+            title: Text('Add Image'),
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'remove',
+          child: ListTile(
+            leading: Icon(Icons.delete),
+            title: Text('Remove Image'),
+          ),
+        ),
+      ],
+      onSelected: (String action) {
+        if (action == 'add') {
+          _pickImage();
+        } else if (action == 'remove') {
+         setState(() {
+    _image = null; // Clear the local image file
+    _profileImageUrl = null; // Clear the profile image URL
+  });
+        }
+      },
+      child: CircleAvatar(
+        backgroundColor: Colors.blue,
+        radius: 25,
+        child: Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  ),
+
+        ],
+      );
+    }
+  },
+),SizedBox(height: 10),
+              _isUploading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _uploadImage,
+                      child: Text('Upload Image'),
+                    ),
               SizedBox(height: 10),
-              Text(
-                 widget.user.username,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 20),
+              // Text(
+              //    widget.user.username,
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
               ListView(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),

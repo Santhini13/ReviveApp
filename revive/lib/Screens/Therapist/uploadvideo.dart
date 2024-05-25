@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
 import 'package:revive/Models/videoModal.dart';
+import 'package:revive/Screens/constants/myAppbar.dart';
 import 'package:revive/Services/authprovider.dart';
 import 'package:revive/Services/videoService.dart';
 
@@ -34,26 +35,50 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Upload Video')),
+      appBar: MyAppBar(title: 'Upload Video'),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: 'Video Title'),
+        padding: const EdgeInsets.all(30.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [        
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Video Title', border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0), // Adjust the border radius
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff281537), width: 1.0), // Border color when TextField is not focused
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color:Color(0xff881736), width: 2.0), // Border color when TextField is focused
+              ),
             ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _urlController,
-              decoration: InputDecoration(labelText: 'YouTube Link'),
+                
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: _urlController,
+                decoration: InputDecoration(labelText: 'YouTube Link', border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0), // Adjust the border radius
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff281537), width: 1.0), // Border color when TextField is not focused
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color:Color(0xff881736), width: 2.0), // Border color when TextField is focused
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _uploadVideo,
-              child: Text('Upload Video'),
-            ),
-          ],
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _uploadVideo,
+                child: Text('Upload Video'),
+              ),
+               SizedBox(height: 10),
+               Text('To Delete your video visit more on dashboard long press on item',style: TextStyle(color:Colors.grey,fontSize: 8),),
+            ],
+          ),
         ),
       ),
     );

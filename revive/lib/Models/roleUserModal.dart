@@ -45,51 +45,26 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Therapist {
+class roleUser {
   final String name;
-  final String specialization;
-  final String description;
-  final String qualification;
-  final String experience;
-  final List<String> timeSlots;
-  final List<String> appointmenttypes;
+  
 
-  Therapist({
+  roleUser({
     required this.name,
-    required this.specialization,
-    required this.description,
-    required this.qualification,
-    required this.experience,
-    required this.timeSlots,
-    required this.appointmenttypes,
   });
 
   // Factory method to create a Therapist object from Firestore DocumentSnapshot
-  factory Therapist.fromFirestore(DocumentSnapshot doc) {
+  factory roleUser.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return Therapist(
+    return roleUser(
       name: data['name'] ?? '',
-      specialization: data['specialization'] ?? '',
-      description: data['description'] ?? '',
-      qualification: data['qualification'] ?? '',
-      experience: data['experience'] ?? '',
-      timeSlots: List<String>.from(data['timeSlots'] ?? []),
-      appointmenttypes: List<String>.from(data['appointmenttypes'] ?? []),
     );
   }
-
-  get profileImageUrl => null;
 
   // Method to convert a Therapist object to a map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'specialization':specialization,
-      'description': description,
-      'qualification': qualification,
-      'experience': experience,
-      'timeSlots': timeSlots,
-      'appointmenttypes': appointmenttypes,
     };
   }
 }

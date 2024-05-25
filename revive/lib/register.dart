@@ -18,6 +18,7 @@ class _UserRegisterState extends State<UserRegister> {
   //late String _selectedRole;
   bool isUser = false;
   bool isTherapist = false;
+   bool _isPasswordVisible = false;
   final FirebaseService _firebaseService=FirebaseService();
 
 
@@ -183,11 +184,23 @@ class _UserRegisterState extends State<UserRegister> {
                     ),
                     SizedBox(height: 20),
                     TextFormField(
+                      obscureText: !_isPasswordVisible,
                       controller: _passwordController,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.password),
                         hintText: 'Enter your password',
                         border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    // Update the state to toggle the password visibility
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -198,7 +211,7 @@ class _UserRegisterState extends State<UserRegister> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      
                     ),
                     SizedBox(height: 20),
 
@@ -262,26 +275,26 @@ class _UserRegisterState extends State<UserRegister> {
                             style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(
-                            width: 10,
+                            width: 5,
                           ),
-                          AppButton(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            child: Text('Login'),
-                          )
+                          TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, '/login');
+                                },
+                                child: Text('Login'),
+                              )
                         ],
                       ),
                     ),
                     SizedBox(height: 20),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        // Implement sign up with Google logic here
-                        print('Sign up with Google');
-                      },
-                      icon: Icon(Icons.g_mobiledata),
-                      label: Text('Sign Up with Google'),
-                    ),
+                    // OutlinedButton.icon(
+                    //   onPressed: () {
+                    //     // Implement sign up with Google logic here
+                    //     print('Sign up with Google');
+                    //   },
+                    //   icon: Icon(Icons.g_mobiledata),
+                    //   label: Text('Sign Up with Google'),
+                    // ),
                     SizedBox(
                       height: 30,
                     ),

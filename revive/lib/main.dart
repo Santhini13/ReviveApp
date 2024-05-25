@@ -9,7 +9,6 @@ import 'package:revive/Screens/User/21-day.dart';
 import 'package:revive/Screens/User/feedbackform.dart';
 import 'package:revive/Screens/features/notifications.dart';
 import 'package:revive/Services/authprovider.dart';
-import 'package:revive/screens/general/appointment.dart';
 import 'package:revive/screens/general/awareness.dart';
 import 'package:revive/Screens/Admin/adonboard.dart';
 import 'package:revive/Screens/Admin/adhome.dart';
@@ -97,7 +96,6 @@ class MyApp extends StatelessWidget {
           '/aware':(context)=>AwarenessScreen(),
           '/challenge':(context) =>ChallengeFirstScreen(),
           '/21day':(context)=>ChallengeScreen(),
-          '/schedules':(context)=>DoctorAppointmentsPage(),
           '/explore':(context) => VideoListPage(),
           '/therapist':(context) => TherapistListScreen(),
           '/diet':(context) => DietingScreen(),
@@ -110,7 +108,7 @@ class MyApp extends StatelessWidget {
           '/edituser':(context)=>EditProfileScreen(),
           '/userhistory':(context)=>UserHistory(),
           '/reportcard':(context)=>AssessmentReportScreen(),
-          '/favorite':(context)=>MyFavoritesScreen(),
+          // '/favorite':(context)=>MyFavoritesScreen(),
           //general 
           '/privacy':(context) => PrivacyPolicyScreen(),
           '/terms':(context) => TermsAndConditionsScreen(),
@@ -129,6 +127,7 @@ class MyApp extends StatelessWidget {
           '/notification':(context)=>NotificationScreen(),
           '/yourActivity':(context)=>YourActivity(),
           '/uploadVideo':(context)=>UploadVideoPage(),
+          '/therapistProfile': (context) => TherapistProfileScreen(),
           
          }, 
          

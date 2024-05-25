@@ -1,89 +1,148 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:revive/Screens/constants/myAppbar.dart';
+
+// class FeedbackForm extends StatefulWidget {
+//   @override
+//   _FeedbackFormState createState() => _FeedbackFormState();
+// }
+
+// class _FeedbackFormState extends State<FeedbackForm> {
+//   double _rating = 0.0;
+//   TextEditingController _feedbackController = TextEditingController();
+//   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+//   void _submitFeedback() {
+//     double rating = _rating;
+//     String feedbackMessage = _feedbackController.text;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       key: _scaffoldKey,
+//       appBar: MyAppBar(
+//         title: 'Feedback Form',
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(20.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: [
+//             TextField(
+//               controller: _feedbackController,
+//               decoration: InputDecoration(labelText: 'Feedback Message'),
+//             ),
+//             SizedBox(height: 20.0),
+//             RatingBar.builder(
+//               initialRating: _rating,
+//               minRating: 1,
+//               direction: Axis.horizontal,
+//               allowHalfRating: true,
+//               itemCount: 5,
+//               itemSize: 40.0,
+//               itemBuilder: (context, _) => Icon(
+//                 Icons.star,
+//                 color: Colors.amber,
+//               ),
+//               onRatingUpdate: (rating) {
+//                 setState(() {
+//                   _rating = rating;
+//                 });
+//               },
+//             ),
+//             SizedBox(height: 20.0),
+            
+//             ElevatedButton(
+//               onPressed: _submitFeedback,
+//               child: Text('Submit Feedback'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+// feedback_form.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:revive/Models/feedbackModal.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:revive/Screens/constants/myAppbar.dart';
 import 'package:revive/Services/feedbackservices.dart';
-import 'package:uuid/uuid.dart';
+
 
 class FeedbackForm extends StatefulWidget {
-  final String therapistId;
-
-  FeedbackForm({required this.therapistId});
-
   @override
   _FeedbackFormState createState() => _FeedbackFormState();
 }
 
 class _FeedbackFormState extends State<FeedbackForm> {
-  final _formKey = GlobalKey<FormState>();
+  double _rating = 0.0;
+  TextEditingController _feedbackController = TextEditingController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final FeedbackService _feedbackService = FeedbackService();
-  final TextEditingController _feedbackController = TextEditingController();
-  bool _isLoading = false;
 
-  Future<void> _submitFeedback() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+  void _submitFeedback() {
+    double rating = _rating;
+    String feedbackMessage = _feedbackController.text;
 
-      User? user = FirebaseAuth.instance.currentUser;
-      String feedbackId = Uuid().v4();
+    FeedbackModel feedback = FeedbackModel(
+      rating: rating,
+      feedbackMessage: feedbackMessage,
+    );
 
-     Feedbacks feedback = Feedbacks(
-        id: feedbackId,
-        userId: user!.uid,
-        therapistId: widget.therapistId,
-        feedbackText: _feedbackController.text,
-        date: DateTime.now(),
-      );
-
-      try {
-        await _feedbackService.addFeedback(feedback);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Feedback submitted successfully')));
-        Navigator.pop(context);
-      } catch (e) {
-        print('Error submitting feedback: $e');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error submitting feedback')));
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
+    _feedbackService.submitFeedback(feedback);
+    // _scaffoldKey.currentState?.showSnackBar(const SnackBar(
+    //   content: Text('Feedback submitted successfully!'),
+    // ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Submit Feedback'),
+      key: _scaffoldKey,
+      appBar: MyAppBar(
+        title: 'Feedback Form',
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _feedbackController,
-                      decoration: InputDecoration(labelText: 'Feedback'),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your feedback';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _submitFeedback,
-                      child: Text('Submit'),
-                    ),
-                  ],
-                ),
-              ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: _feedbackController,
+              decoration: InputDecoration(labelText: 'Feedback Message'),
             ),
+            SizedBox(height: 20.0),
+            RatingBar.builder(
+              initialRating: _rating,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 40.0,
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {
+                setState(() {
+                  _rating = rating;
+                });
+              },
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: _submitFeedback,
+              child: Text('Submit Feedback'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
+

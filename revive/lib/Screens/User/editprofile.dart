@@ -2,6 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:revive/Models/roleUserModal.dart';
+import 'package:revive/Services/authprovider.dart';
+import 'package:revive/Services/roleUserService.dart';
+import 'package:revive/Services/therapistService.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -13,15 +18,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
- XFile? _image;
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = pickedFile;
-    });
-  }
+  final roleUserService _roleUserService=roleUserService();
+  
+ Future<void> _editProfile() async{
+   String name = _nameController.text;
+ roleUser data= roleUser(
+  name:name,
+ );
+final authProvider = Provider.of<AuthProvider>(context, listen: false);
+ await _roleUserService.addOrUpdateroleUserInfo(authProvider.uid,data);
+ 
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +40,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           actions: [
             IconButton(
             icon: Icon(Icons.save,color:Colors.white),
-            onPressed: () {
-              // Save profile changes
-               String name = _nameController.text;
-              String email = _emailController.text;
-              String phone = _phoneController.text;
-              // Perform actions with the entered data
-            },
+             onPressed: _editProfile
+             //() {
+            //   // Save profile changes
+            //    String name = _nameController.text;
+            //   String email = _emailController.text;
+            //   String phone = _phoneController.text;
+            //   // Perform actions with the entered data
+            // },
           ),
         ],
           backgroundColor: Colors.transparent, // Transparent background
@@ -56,33 +64,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50.0,
-                backgroundImage: _image != null
-                    ? FileImage(File(_image!.path))
-                    : AssetImage('assets/images/user.png') as ImageProvider,
-                child: _image == null ? Icon(Icons.add_a_photo) : null,
-              ),
-            ),
             SizedBox(height: 20.0),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Name'),
             ),
             SizedBox(height: 20.0),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 20.0),
+            // TextField(
+            //   controller: _emailController,
+            //   decoration: InputDecoration(labelText: 'Email'),
+            // ),
+            // SizedBox(height: 20.0),
+            // TextField(
+            //   controller: _phoneController,
+            //   decoration: InputDecoration(labelText: 'Phone'),
+            //   keyboardType: TextInputType.phone,
+            // ),
+            // SizedBox(height: 20.0),
            ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff881736),

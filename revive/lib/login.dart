@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Services/authprovider.dart' as AuthenticationProvider;
+import 'package:revive/forgotPassword.dart';
 
 class UserLogin extends StatefulWidget {
   const UserLogin({Key? key}) : super(key: key);
@@ -15,19 +16,19 @@ class _UserLoginState extends State<UserLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _emailOrPhoneController;
   late TextEditingController _passwordController;
-
+  bool _isPasswordVisible = false;
 
   Future<void> handleLogin() async {
     if (_formKey.currentState!.validate()) {
       //Save form state
       _formKey.currentState!.save();
-      String email=_emailOrPhoneController.text;
-      String password=_passwordController.text;
-       try{
-         await Provider.of<AuthenticationProvider.AuthProvider>(context, listen: false)
+      String email = _emailOrPhoneController.text;
+      String password = _passwordController.text;
+      try {
+        await Provider.of<AuthenticationProvider.AuthProvider>(context,
+                listen: false)
             .login(_emailOrPhoneController.text, _passwordController.text);
-
-      }catch(e){
+      } catch (e) {
         print(e);
       }
     }
@@ -115,7 +116,7 @@ class _UserLoginState extends State<UserLogin> {
                             }
                             // Validate email or phone number format using regex
                             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value)) {
+                                .hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
@@ -124,11 +125,25 @@ class _UserLoginState extends State<UserLogin> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
+                          obscureText: !_isPasswordVisible,
                           controller: _passwordController,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.password),
                             hintText: 'Enter your password',
                             border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                // Update the state to toggle the password visibility
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -139,14 +154,17 @@ class _UserLoginState extends State<UserLogin> {
                             }
                             return null;
                           },
-                          obscureText: true,
                         ),
                         SizedBox(height: 1),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              // Implement forgot password logic here
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordPage()));
                               print('Forgot Password?');
                             },
                             child: Text(
@@ -157,7 +175,7 @@ class _UserLoginState extends State<UserLogin> {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed:handleLogin,
+                          onPressed: handleLogin,
                           child: Text(
                             'Login',
                             style: TextStyle(color: Colors.white),
@@ -187,16 +205,15 @@ class _UserLoginState extends State<UserLogin> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            // Implement sign up with Google logic here
-                            print('Sign up with Google');
-                          },
-                          icon: Icon(Icons.g_mobiledata),
-                          label: Text('Sign Up with Google'),
-                        ),
+                        // OutlinedButton.icon(
+                        //   onPressed: () {
+                        //     // Implement sign up with Google logic here
+                        //     print('Sign up with Google');
+                        //   },
+                        //   icon: Icon(Icons.g_mobiledata),
+                        //   label: Text('Sign Up with Google'),
+                        // ),
                         SizedBox(height: 20),
-
                       ],
                     ),
                   ),
@@ -209,4 +226,3 @@ class _UserLoginState extends State<UserLogin> {
     );
   }
 }
-

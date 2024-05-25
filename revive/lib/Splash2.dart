@@ -33,7 +33,7 @@ class _Splash2State extends State<Splash2> {
           SizedBox(height: 300,),
           AppButton(onTap: (){
             Navigator.pushNamed(context, '/login');
-          }, child: Text('Get Started',style: TextStyle(fontSize: 20,color: Colors.white),),height: 50,width:300,color:  Color.fromARGB(255, 0, 0, 0).withOpacity(0.4)),
+          }, child: Text('Get Started',style: TextStyle(fontSize: 20,color: Colors.black),),color: Colors.white,height: 50,width:200,),
          SizedBox(height: 20,),
         ],),
       )
