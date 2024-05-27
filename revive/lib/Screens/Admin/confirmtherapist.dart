@@ -15,36 +15,12 @@ class _ConfirmRequestScreenState extends State<ConfirmRequestScreen> {
 
   final List<String> acceptedRequests = [];
 
-  void _acceptRequest(String request) {
-    setState(() {
-      acceptedRequests.add(request);
-      confirmRequests.remove(request);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Request "$request" accepted'),
-      ),
-    );
-  }
-
-  void _rejectRequest(String request) {
-    setState(() {
-      confirmRequests.remove(request);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Request "$request" rejected'),
-      ),
-    );
-  }
-
- 
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Confirm Request'), 
+      appBar: MyAppBar(title: 'Therapist List'), 
       body: ListView(
         children: [
           _buildConfirmRequestsList(),
@@ -73,16 +49,9 @@ class _ConfirmRequestScreenState extends State<ConfirmRequestScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _acceptRequest(request);
+                    _delete();
                   },
-                  child: Text('Accept'),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    _rejectRequest(request);
-                  },
-                  child: Text('Reject'),
+                  child: Text('Delete'),
                 ),
               ],
             ),
@@ -90,6 +59,10 @@ class _ConfirmRequestScreenState extends State<ConfirmRequestScreen> {
         );
       },
     );
+  }
+
+  void _delete (){
+
   }
 
   void _showTherapistDetailsDialog(String request) {

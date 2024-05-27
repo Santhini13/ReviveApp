@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:revive/Models/bookingModal.dart';
 import 'package:revive/Models/therapistModal.dart';
 
 class TherapistService {
@@ -17,6 +18,19 @@ class TherapistService {
       }
     } catch (e) {
       print('Error fetching therapist info: $e');
+      throw e;
+    }
+  }
+Future<String?> fetchTherapistUid(String uid) async {
+    try {
+      DocumentSnapshot doc = await _firestore.collection('therapists').doc(uid).get();
+      if (doc.exists) {
+        return doc.id;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching therapist UID: $e');
       throw e;
     }
   }
@@ -53,6 +67,38 @@ class TherapistService {
       throw e;
     }
   }
+
+
+    // Add a booking for a therapist
+  Future<void> addBooking(String uid, Booking booking) async {
+    try {
+      await _firestore.collection('therapist').doc(uid).collection('bookings').add(booking.toMap());
+    } catch (e) {
+      print('Error adding booking: $e');
+      throw e;
+    }
+  }
+
+  // Fetch all bookings for a therapist
+  // Future<List<Booking>> fetchBookings(String therapistId) async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await _firestore.collection('therapist').doc(therapistId).collection('bookings').get();
+  //     return querySnapshot.docs.map((doc) => Booking.fromFirestore(doc)).toList();
+  //   } catch (e) {
+  //     print('Error fetching bookings: $e');
+  //     throw e;
+  //   }
+  // }
+
+  // // Update a specific booking
+  // Future<void> updateBooking(String therapistId, String bookingId, Map<String, dynamic> fields) async {
+  //   try {
+  //     await _firestore.collection('therapist').doc(therapistId).collection('bookings').doc(bookingId).update(fields);
+  //   } catch (e) {
+  //     print('Error updating booking: $e');
+  //     throw e;
+  //   }
+  // }
 }
 
 

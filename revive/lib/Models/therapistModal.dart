@@ -46,6 +46,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Therapist {
+  final String id;
   final String name;
   final String specialization;
   final String description;
@@ -55,6 +56,7 @@ class Therapist {
   final List<String> appointmenttypes;
 
   Therapist({
+    required this.id,
     required this.name,
     required this.specialization,
     required this.description,
@@ -68,6 +70,7 @@ class Therapist {
   factory Therapist.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Therapist(
+      id:data['id']??'',
       name: data['name'] ?? '',
       specialization: data['specialization'] ?? '',
       description: data['description'] ?? '',
@@ -83,6 +86,7 @@ class Therapist {
   // Method to convert a Therapist object to a map for Firestore
   Map<String, dynamic> toMap() {
     return {
+      'id':id,
       'name': name,
       'specialization':specialization,
       'description': description,

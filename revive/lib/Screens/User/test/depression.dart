@@ -66,6 +66,10 @@ class _depressionTestState extends State<depressionTest> {
                 'question':' Feeling down, depressed, or hopeless',
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
               },
+               {
+                'question':'Feeling tired or having little energy',
+                'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
+              },
               {
                 'question':'Trouble falling or staying asleep, or sleeping too much',
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]

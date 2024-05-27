@@ -84,6 +84,18 @@ class _AnxietyTestState extends State<AnxietyTest> {
                 'question':'Feeling afraid, as if something awful might happen',
                 'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
               },
+               {
+                'question':' How often do you have trouble falling asleep due to worrying thoughts?',
+                'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
+              },
+              {
+                'question':'How often do you experience sudden feelings of panic or fear?',
+                'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
+              },
+              {
+                'question':'How often do you experience physical symptoms such as sweating, trembling, or rapid heartbeat',
+                'options':['Not At All','Several Days','More than half of the day','Nearly Everyday',]
+              },
             
             ], ),
           )

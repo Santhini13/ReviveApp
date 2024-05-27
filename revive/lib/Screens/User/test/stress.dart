@@ -62,6 +62,10 @@ class _stressTestState extends State<stressTest> {
                 'options':['Never','Sometimes','often','Almost always',]
               },
               {
+                'question':'How often do you find it difficult to relax or unwind? ',
+                'options':['Never','Sometimes','often','Almost always',]
+              },
+               {
                 'question':'How often do you feel overwhelmed with your life? ',
                 'options':['Never','Sometimes','often','Almost always',]
               },

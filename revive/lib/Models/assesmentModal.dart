@@ -9,6 +9,7 @@ class Assessment {
     required this.title,
     required this.score,
      required this.date, 
+     this.id
   });
 
   factory Assessment.fromJson(Map<String, dynamic> json) {
@@ -16,6 +17,7 @@ class Assessment {
       title: json['title'],
       score: json['score'],
       date: json['date'],  
+      id:json['id']
      
     );
   }
@@ -24,7 +26,8 @@ class Assessment {
     return {
       'title': title,
       'score': score,
-      'date':date
+      'date':date,
+      'id':id
     };
   }
 }

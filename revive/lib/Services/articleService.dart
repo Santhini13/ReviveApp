@@ -26,70 +26,6 @@ class ArticleService {
       }).toList();
     });
   }
-//    Future<List<Article>> fetchallArticles() async {
-//     try {
-//       QuerySnapshot querySnapshot = await _firestore
-//           .collection('articles').get();
-// print('------------------------');
-// print(querySnapshot.docs.toList());
-//       if (querySnapshot.docs.isEmpty) {
-//         print('No articles found.');
-//         return [];
-//       } else {
-//         List<Article> articles = querySnapshot.docs.map((doc) {
-//           print('Document data: ${doc.data()}');
-//           return Article(
-//             title: doc['title'],
-//             content: doc['content'],
-//             category: doc['category'],
-//           );
-//         }).toList();
-//         print('Fetched ${articles.length} articles.');
-//         return articles;
-//       }
-//     } catch (e) {
-//       print('Error fetching Articles: $e');
-//       throw e;
-//     }
-//   }
-
-
-  // Future<List<Article>> fetchAllArticles() async {
-  //   try {
-  //     QuerySnapshot querySnapshot = await _firestore.collection('articles').get();
-
-  //     List<Article> articles = [];
-
-  //     for (DocumentSnapshot userDoc in querySnapshot.docs) {
-  //       QuerySnapshot articleSnapshot = await userDoc.reference.collection('article').get();
-        
-  //       for (DocumentSnapshot articleDoc in articleSnapshot.docs) {
-  //         articles.add(Article.fromMap(articleDoc.data() as Map<String, dynamic>));
-  //       }
-  //     }
-
-  //     return articles;
-  //   } catch (e) {
-  //     print('Error fetching articles: $e');
-  //     throw e;
-  //   }
-  // }
-
-
-
-  // Stream<List<Article>> getAllArticles() {
-  //   return _firestore.collection('articles').snapshots().asyncMap((snapshot) async {
-  //     List<Article> articles = [];
-  //     for (var doc in snapshot.docs) {
-  //       QuerySnapshot articleSnapshot = await doc.reference.collection('article').get();
-  //       for (var articleDoc in articleSnapshot.docs) {
-  //         articles.add(Article.fromMap(articleDoc.data() as Map<String, dynamic>));
-  //       }
-  //     }
-  //     return articles;
-  //   });
-  // }
-
 
      Future<List<Article>> fetchArticles(String? uid) async {
     try {
@@ -116,25 +52,48 @@ class ArticleService {
       throw e;
     }
   }
+Future<void> deleteArticle(Article article, String uid) async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('articles')
+        .doc(uid)
+        .collection('article')
+        .where('title', isEqualTo: article.title)
+        .where('content', isEqualTo: article.content)
+        .get();
 
-
-  Future<void> deleteArticle(Article article, String uid) async {
-    try {
-      await _firestore
-          .collection('articles')
-          .doc(uid)
-          .collection('article')  
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          doc.reference.delete();
-        });
-      });
-    } catch (e) {
-      print('Error deleting article: $e');
-      throw e;
+    if (querySnapshot.docs.isNotEmpty) {
+      // Assuming only one article should match the criteria
+      await querySnapshot.docs.first.reference.delete();
+      print('Article deleted successfully: ${article.title}');
+    } else {
+      print('Article not found.');
     }
+  } catch (e) {
+    print('Error deleting article: $e');
+    throw e;
   }
+}
+
+
+
+  // Future<void> deleteArticle(Article article, String uid) async {
+  //   try {
+  //     await _firestore
+  //         .collection('articles')
+  //         .doc(uid)
+  //         .collection('article')  
+  //         .get()
+  //         .then((querySnapshot) {
+  //       querySnapshot.docs.forEach((doc) {
+  //         doc.reference.delete();
+  //       });
+  //     });
+  //   } catch (e) {
+  //     print('Error deleting article: $e');
+  //     throw e;
+  //   }
+  // }
 }
 
 

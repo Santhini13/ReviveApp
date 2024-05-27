@@ -126,27 +126,27 @@ class _TherapistHomeState extends State<TherapistHome>
                                   ),
                                 ),
                                 SizedBox(width: 20),
-                                CustomContainer(
-                                  ontap: () {
-                                    Navigator.pushNamed(context, '/mycare');
-                                  },
-                                  height: 150,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Color(0xff281537).withOpacity(0.5)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset('assets/icons/girl.png'),
-                                        SizedBox(height: 5),
-                                        Text('Self-Care'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
+                                // CustomContainer(
+                                //   ontap: () {
+                                //     Navigator.pushNamed(context, '/mycare');
+                                //   },
+                                //   height: 150,
+                                //   width: 120,
+                                //   decoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(20),
+                                //       color: Color(0xff281537).withOpacity(0.5)),
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.all(10.0),
+                                //     child: Column(
+                                //       children: [
+                                //         Image.asset('assets/icons/girl.png'),
+                                //         SizedBox(height: 5),
+                                //         Text('Self-Care'),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                // SizedBox(width: 20),
                                 CustomContainer(
                                   ontap: () {
                                     Navigator.pushNamed(context, '/challenge');
@@ -155,7 +155,8 @@ class _TherapistHomeState extends State<TherapistHome>
                                   width: 120,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color(0xff881736).withOpacity(0.5)),
+                                       color: Color(0xff281537).withOpacity(0.5)),
+                                     
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Column(
@@ -176,7 +177,7 @@ class _TherapistHomeState extends State<TherapistHome>
                                   width: 120,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color(0xff281537).withOpacity(0.5)),
+                                      color: Color(0xff881736).withOpacity(0.5)),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Column(

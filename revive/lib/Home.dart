@@ -30,15 +30,19 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Hello ${widget.user.username}',style: TextStyle(fontSize: 24, color:Color(0xff881736)),),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(onPressed: (){
-              Navigator.pushNamed(context, '/notification');
-            }, icon: Icon(Icons.notifications,color:Color(0xff881736))),
-          )
-        ],
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('Hello ${widget.user.username}',style: TextStyle(fontSize: 26, color:Color(0xff881736)),),
+        ),
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: IconButton(onPressed: (){
+        //       Navigator.pushNamed(context, '/notification');
+        //     }, icon: Icon(Icons.notifications,color:Color(0xff881736))),
+        //   )
+        // ],
 
       ),
       //drawer: Drawer(),
@@ -99,30 +103,30 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                           CustomContainer(
-                              ontap: () {
-                                Navigator.pushNamed(context, '/mycare');
-                              }, 
-                              height: 150,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xff281537).withOpacity(0.5)
-                                ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  children: [
-                                    Image.asset('assets/icons/girl.png'),
-                                    SizedBox(height: 5,),
-                                    Text('Self-Care',)
-                                  ],
-                                ),
-                              ),
-                            ),
+                          //   SizedBox(
+                          //     width: 20,
+                          //   ),
+                          //  CustomContainer(
+                          //     ontap: () {
+                          //       Navigator.pushNamed(context, '/mycare');
+                          //     }, 
+                          //     height: 150,
+                          //     width: 120,
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(20),
+                          //         color: Color(0xff281537).withOpacity(0.5)
+                          //       ),
+                          //     child: Padding(
+                          //       padding: const EdgeInsets.all(10.0),
+                          //       child: Column(
+                          //         children: [
+                          //           Image.asset('assets/icons/girl.png'),
+                          //           SizedBox(height: 5,),
+                          //           Text('Self-Care',)
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
                             SizedBox(
                               width: 20,
                             ),
@@ -134,7 +138,7 @@ class _HomeState extends State<Home> {
                               width: 120,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color:  Color(0xff881736).withOpacity(0.5)
+                                  color: Color(0xff281537).withOpacity(0.5)
                                 ),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -158,7 +162,7 @@ class _HomeState extends State<Home> {
                               width: 120,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xff281537).withOpacity(0.5)
+                                  color:  Color(0xff881736).withOpacity(0.5)
                                 ),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),

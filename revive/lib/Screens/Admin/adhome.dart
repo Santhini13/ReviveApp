@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revive/Screens/Admin/viewtherapist.dart';
+import 'package:revive/Services/UserService.dart';
 
 class AdHome extends StatefulWidget {
   @override
@@ -182,8 +183,8 @@ class _AdHomeState extends State<AdHome> {
                 leading: Icon(Icons.logout),
                 title: Text('Logout'),
                 onTap: () {
-                  Navigator.pop(context);
-                  _performLogout(context);
+                  _showConfirmationDialog(context, 'Log Out',
+                          'Are you sure you want to log out?');
                 },
               ),
             ],
@@ -192,6 +193,39 @@ class _AdHomeState extends State<AdHome> {
       },
     );
   }
+
+  
+  void _showConfirmationDialog(
+      BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // if (title == 'Log Out') {
+                //   _signOut(context);
+                // } else if (title == 'Delete Account') {
+                //   _deleteAccount(context);
+                // }
+              },
+              child: Text(title),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   void _showChangePasswordDialog(BuildContext context) {
     showDialog(

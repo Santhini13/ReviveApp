@@ -14,7 +14,7 @@ class _AssessmentReportScreenState extends State<AssessmentReportScreen> {
   final AssesmentService _assesmentService = AssesmentService();
   List<Assessment> _assesmentScore = [];
   bool _isLoading = true;
-
+ String? uid;
   Future<void> _fetchAssesment() async {
     print('fetchAssesment');
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -156,7 +156,8 @@ class _AssessmentReportScreenState extends State<AssessmentReportScreen> {
             onPressed: () {
               _deleteAssessment(_assesmentScore[index]);
             },
-          ),)
+          ),
+          )
                                 
                               ),
                             );

@@ -90,10 +90,16 @@ class _relatioTestState extends State<relatioTest> {
                 'question':'My partner has a look that goes straight through me and terrifies me',
                 'options':['Never','Sometimes','often','Almost always',]
               }, 
+                           {
+  'question': 'I feel like I cannot express my true feelings or opinions around my partner',
+  'options': ['Never', 'Sometimes', 'Often', 'Almost always']
+},
               {
                 'question':'I hide the truth from others because I am afraid not to',
                 'options':['Never','Sometimes','often','Almost always',]
               },
+ 
+
             ], ),
           )
         )),

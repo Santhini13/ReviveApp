@@ -179,6 +179,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Models/therapistModal.dart';
@@ -202,8 +203,12 @@ class _ThEditProfileState extends State<ThEditProfile> {
   File? _certificate;
   final TherapistService _therapistService = TherapistService();
 
+   List<String> _timeSlots=[];
+
   Future<void> _editProfile() async {
     if (_formKey.currentState!.validate()) {
+      
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       String name = _nameController.text;
       String specialization = _specializationController.text;
       String qualification = _qualificationController.text;
@@ -220,6 +225,7 @@ class _ThEditProfileState extends State<ThEditProfile> {
 
       Therapist data = Therapist(
         name: name,
+        id:authProvider.uid.toString(),
         qualification: qualification,
         experience: experience,
         timeSlots: timeSlots,
@@ -228,7 +234,6 @@ class _ThEditProfileState extends State<ThEditProfile> {
         specialization: specialization,
       );
 
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       await _therapistService.addOrUpdateTherapistInfo(authProvider.uid, data);
       
       ScaffoldMessenger.of(context).showSnackBar(
@@ -247,6 +252,37 @@ class _ThEditProfileState extends State<ThEditProfile> {
     setState(() {
       _appointmentTypeControllers.add(TextEditingController());
     });
+  }
+
+ Therapist?  therapist;
+
+  Future<Therapist?> _fetchTherapistInfo(BuildContext context) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+final DocumentSnapshot doc=  await FirebaseFirestore.instance.collection('therapist').doc(authProvider.uid).get();
+   
+  therapist= Therapist.fromFirestore(doc);
+   print(therapist);
+   
+    return therapist;
+  }
+
+  setData() {
+    if(therapist!=null){
+      _nameController.text=therapist!.name;
+      _descriptionController.text=therapist!.description;
+      _experienceController.text=therapist!.experience;
+      _specializationController.text=therapist!.specialization;
+      _qualificationController.text=therapist!.qualification;
+      _timeSlots.addAll(therapist!.timeSlots);
+
+    }
+  }
+
+
+  @override
+  void initState() {
+_fetchTherapistInfo(context).then((value) => setData());
+    super.initState();
   }
 
   @override
@@ -339,6 +375,7 @@ class _ThEditProfileState extends State<ThEditProfile> {
               ),
               SizedBox(height: 20.0),
               _buildTimeSlots(),
+
               SizedBox(height: 20.0),
               _buildAppointmentTypes(),
               SizedBox(height: 20.0),
@@ -406,6 +443,33 @@ class _ThEditProfileState extends State<ThEditProfile> {
         Text(
           'Time Slots',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+
+        Container(
+          height:50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount:_timeSlots.length,
+            itemBuilder: (BuildContext context,int index){
+          
+              if(_timeSlots.length==0){
+                return Text("No slots added");
+              }
+          
+              else{
+          
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  width: 110,
+                  child: Card(child: Center(child: Text(_timeSlots[index])),),);
+              }
+           
+          
+          
+          
+          
+          
+          },),
         ),
         SizedBox(height: 10),
         Column(

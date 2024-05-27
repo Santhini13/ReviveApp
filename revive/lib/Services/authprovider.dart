@@ -14,6 +14,7 @@ String? _uid;
     _firebaseService.authStateChanges().listen((User? firebaseUser) {
       if (firebaseUser != null) {
         _loadUserDetails(firebaseUser.uid);
+          notifyListeners();
       } else {
         _user = null;
         notifyListeners();
@@ -31,13 +32,16 @@ String? _uid;
 
   Future<void> login(String email, String password) async {
     await _firebaseService.loginUser(email, password);
+    notifyListeners();
   }
 
   Future<void> register(Users user) async {
     await _firebaseService.registerUser(user);
+     notifyListeners();
   }
 
   Future<void> signOut() async {
     await _firebaseService.signOut();
+     notifyListeners();
   }
 }
