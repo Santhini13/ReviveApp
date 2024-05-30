@@ -22,7 +22,7 @@ String? _uid;
     });
   }
 
-  get firebaseUser => null;
+  //get firebaseUser => null;
 
   Future<void> _loadUserDetails(String uid) async {
     _user = await _firebaseService.getUserDetails(uid);

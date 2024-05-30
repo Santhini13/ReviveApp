@@ -48,6 +48,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Therapist {
   final String id;
   final String name;
+  final String rci;
   final String specialization;
   final String description;
   final String qualification;
@@ -58,6 +59,7 @@ class Therapist {
   Therapist({
     required this.id,
     required this.name,
+    required this.rci,
     required this.specialization,
     required this.description,
     required this.qualification,
@@ -72,6 +74,7 @@ class Therapist {
     return Therapist(
       id:data['id']??'',
       name: data['name'] ?? '',
+      rci: data['rci']??'',
       specialization: data['specialization'] ?? '',
       description: data['description'] ?? '',
       qualification: data['qualification'] ?? '',
@@ -87,6 +90,7 @@ class Therapist {
   Map<String, dynamic> toMap() {
     return {
       'id':id,
+      'rci':rci,
       'name': name,
       'specialization':specialization,
       'description': description,

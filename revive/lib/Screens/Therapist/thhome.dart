@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revive/Models/therapistModal.dart';
 import 'package:revive/Screens/Therapist/thdash.dart';
 import 'package:revive/Screens/Therapist/thprofile.dart';
 import 'package:revive/Screens/User/ads.dart';
@@ -17,7 +18,7 @@ class _TherapistHomeState extends State<TherapistHome>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
-  
+    
 
   @override
   void initState() {
@@ -262,6 +263,6 @@ class _TherapistHomeState extends State<TherapistHome>
           ThProfile(),
         ],
       ),
-    );
+    ); 
     }
     }

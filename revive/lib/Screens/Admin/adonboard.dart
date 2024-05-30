@@ -23,7 +23,7 @@ class AdminOnboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome Admin',
+                'Welcome ${user.username}',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,

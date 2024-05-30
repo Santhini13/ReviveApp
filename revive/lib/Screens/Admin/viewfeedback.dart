@@ -1,48 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:revive/Screens/constants/myAppbar.dart';
 
-class ViewFeedbackScreen extends StatefulWidget {
-  @override
-  _ViewFeedbackScreenState createState() => _ViewFeedbackScreenState();
-}
-
-class _ViewFeedbackScreenState extends State<ViewFeedbackScreen> {
-  final List<String> feedbacks = [
-    'Feedback 1 (Therapist)',
-    'Feedback 2 (Therapist)',
-    'Feedback 3 (Therapist)',
-    'Feedback 1 (App)',
-    'Feedback 2 (App)',
-    'Feedback 3 (App)',
-  ];
-
-  void _deleteFeedback(String feedback) {
-    setState(() {
-      feedbacks.remove(feedback);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Feedback "$feedback" deleted'),
-      ),
-    );
-  }
-
+class ViewFeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'View Feedback'), 
-      body: ListView.builder(
-        itemCount: feedbacks.length,
-        itemBuilder: (context, index) {
-          final feedback = feedbacks[index];
-          return ListTile(
-            title: Text(feedback),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                _deleteFeedback(feedback);
-              },
-            ),
+      
+        appBar: MyAppBar(title: 'View Therapist'),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('therapist').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No feedback available.'));
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var therapistData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(
+                      'Therapist: ${therapistData['name']}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    leading: Icon(Icons.person),
+                    tileColor: Colors.grey[200],
+                    onTap: () {
+                      // Add onTap functionality if needed
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('therapist')
+                        .doc(snapshot.data!.docs[index].id)
+                        .collection('feedbacks')
+                        .snapshots(),
+                    builder: (context, feedbackSnapshot) {
+                      if (feedbackSnapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      if (!feedbackSnapshot.hasData || feedbackSnapshot.data!.docs.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'No feedback',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        );
+                      }
+                      return Column(
+                        children: feedbackSnapshot.data!.docs.map((feedbackDoc) {
+                          var feedbackData = feedbackDoc.data() as Map<String, dynamic>;
+                          return Card(
+                            elevation: 2,
+                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            child: ListTile(
+                              title: Text(
+                                'Feedback: ${feedbackData['feedback']}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Icon(Icons.star, color: Colors.amber),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Rating: ${feedbackData['rating']}',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              tileColor: Colors.grey[100],
+                              onTap: () {
+                                // Add onTap functionality if needed
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
           );
         },
       ),

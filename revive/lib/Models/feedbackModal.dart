@@ -1,36 +1,27 @@
-// feedback_model.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Rating {
-  String? id;
-  String feedbackMessage;
-  double rating;
-  DateTime? date;
+class FeedbackData {
+  final String therapistName;
+  final String therapistId;
+  final String feedback;
+  final double rating;
+  final DateTime timestamp;
 
-  Rating({
-    this.id,
-    required this.feedbackMessage,
+  FeedbackData({
+    required this.therapistName,
+    required this.therapistId,
+    required this.feedback,
     required this.rating,
-    this.date,
+    required this.timestamp,
   });
 
-  factory Rating.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return Rating(
-      id: data['id'] ?? '',
-      feedbackMessage: data['feedbackMessage'] ?? '',
-       rating: data['rating'] ?? 0,
-      date: (data['date'] as Timestamp?)?.toDate(),
+  factory FeedbackData.fromMap(Map<String, dynamic> map) {
+    return FeedbackData(
+      therapistName: map['therapistName'],
+      therapistId: map['therapistId'],
+      feedback: map['feedback'],
+      rating: map['rating'].toDouble(),
+      timestamp: (map['timestamp'] as Timestamp).toDate(),
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'feedbackMessage': feedbackMessage,
-      'rating': rating,
-      'date': date != null ? Timestamp.fromDate(date!) : FieldValue.serverTimestamp(),
-    };
   }
 }

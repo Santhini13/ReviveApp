@@ -130,3 +130,109 @@ class ThDashboard extends StatelessWidget {
 }
 
 
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:revive/Models/therapistModal.dart';
+
+// class ThDashboard extends StatelessWidget {
+//   final Therapist therapist;
+
+//  ThDashboard({required this.therapist});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Bookings', style: TextStyle(color: Colors.white)),
+//         flexibleSpace: Container(
+//           decoration: BoxDecoration(
+//             gradient: LinearGradient(
+//               colors: [Color(0xff881736), Color(0xff281537)],
+//             ),
+//           ),
+//         ),
+//         automaticallyImplyLeading: false,
+//       ),
+//       body: StreamBuilder<QuerySnapshot>(
+//         stream: FirebaseFirestore.instance
+//             .collection('therapist')
+//             .doc(therapist.id)
+//             .collection('bookings')
+//             .snapshots(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           } else if (snapshot.hasError) {
+//             return Center(child: Text('Error: ${snapshot.error}'));
+//           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//             return Center(child: Text('No bookings available'));
+//           } else {
+//             final bookingDocs = snapshot.data!.docs;
+//             return ListView.builder(
+//               itemCount: bookingDocs.length,
+//               itemBuilder: (context, index) {
+//                 final bookingData = bookingDocs[index].data() as Map<String, dynamic>;
+//                 final appointmentType = bookingData['appointmentType'] ?? 'Unknown';
+//                 final timeSlot = bookingData['timeSlot'] ?? 'Unknown';
+//                 final day = bookingData['day'] != null ? (bookingData['day'] as Timestamp).toDate() : DateTime.now();
+//                 final userID = bookingData['userId'] ?? 'Unknown';
+
+//                 return FutureBuilder<DocumentSnapshot>(
+//                   future: FirebaseFirestore.instance.collection('users').doc(userID).get(),
+//                   builder: (context, userSnapshot) {
+//                     if (userSnapshot.connectionState == ConnectionState.waiting) {
+//                       return CircularProgressIndicator();
+//                     } else if (userSnapshot.hasError) {
+//                       return Text('Error: ${userSnapshot.error}');
+//                     } else if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+//                       return Text('User not found');
+//                     } else {
+//                       final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+//                       final userName = userData['username'] ?? 'Unknown';
+
+//                       return Padding(
+//                         padding: const EdgeInsets.all(20.0),
+//                         child: Card(
+//                           elevation: 4.0,
+//                           shape: RoundedRectangleBorder(
+//                             borderRadius: BorderRadius.circular(10.0),
+//                           ),
+//                           child: Padding(
+//                             padding: const EdgeInsets.all(16.0),
+//                             child: Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   'User: $userName',
+//                                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+//                                 ),
+//                                 SizedBox(height: 10),
+//                                 Text(
+//                                   'Appointment Type: $appointmentType',
+//                                   style: TextStyle(fontSize: 14.0),
+//                                 ),
+//                                 Text(
+//                                   'Time Slot: $timeSlot',
+//                                   style: TextStyle(fontSize: 14.0),
+//                                 ),
+//                                 // Text(
+//                                 //   'Day: ${DateFormat('yyyy-MM-dd').format(day)}',
+//                                 //   style: TextStyle(fontSize: 14.0),
+//                                 // ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       );
+//                     }
+//                   },
+//                 );
+//               },
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }

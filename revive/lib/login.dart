@@ -24,6 +24,8 @@ class _UserLoginState extends State<UserLogin> {
       _formKey.currentState!.save();
       String email = _emailOrPhoneController.text;
       String password = _passwordController.text;
+
+       print('Email: $email, Password: $password');
       try {
         await Provider.of<AuthenticationProvider.AuthProvider>(context,
                 listen: false)

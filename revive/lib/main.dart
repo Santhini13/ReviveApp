@@ -1,12 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:revive/Screens/Admin/advideo.dart';
 import 'package:revive/Screens/Therapist/uploadvideo.dart';
 import 'package:revive/Screens/Therapist/view.dart';
-import 'package:revive/Screens/Therapist/viewprofile.dart';
 import 'package:revive/Screens/Therapist/yourActivity.dart';
 import 'package:revive/Screens/User/21-day.dart';
-import 'package:revive/Screens/User/feedbackform.dart';
 import 'package:revive/Screens/features/notifications.dart';
 import 'package:revive/Services/authprovider.dart';
 import 'package:revive/screens/general/awareness.dart';
@@ -18,6 +17,7 @@ import 'package:revive/Screens/Admin/viewfeedback.dart';
 import 'package:revive/Screens/Admin/viewpayment.dart';
 import 'package:revive/Screens/Admin/viewtherapist.dart';
 import 'package:revive/Screens/Admin/viewuser.dart';
+import 'package:revive/Screens/Admin/addadmin.dart';
 import 'package:revive/Screens/Therapist/tharticles.dart';
 import 'package:revive/Screens/Therapist/thdash.dart';
 import 'package:revive/Screens/Therapist/thedit.dart';
@@ -30,7 +30,6 @@ import 'package:revive/Screens/User/assesmentreport.dart';
 import 'package:revive/Screens/User/editprofile.dart';
 import 'package:revive/Screens/User/exercise1.dart';
 import 'package:revive/Screens/User/explore.dart';
-import 'package:revive/Screens/User/favourite.dart';
 import 'package:revive/Screens/User/history.dart';
 import 'package:revive/Screens/User/userdashboard.dart';
 import 'package:revive/login.dart';
@@ -106,7 +105,7 @@ class MyApp extends StatelessWidget {
           '/thhome':(context)=>TherapistHome(),
           '/thprofile':(context)=>ThProfile(),
           '/userdash':(context)=>UserDashboard(),
-          '/thdash':(context)=>ThDashboard(),
+          '/thdash': (context) => ThDashboard(), 
           //userProfile
           '/edituser':(context)=>EditProfileScreen(),
           '/userhistory':(context)=>UserHistory(),
@@ -131,6 +130,8 @@ class MyApp extends StatelessWidget {
           '/yourActivity':(context)=>YourActivity(),
           '/uploadVideo':(context)=>UploadVideoPage(),
           '/therapistProfile': (context) => TherapistProfileScreen(),
+          '/addAdmin':(context)=>AddRegister(),
+          '/advideo':(context) => AdVideoListPage()
           
          }, 
          

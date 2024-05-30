@@ -309,6 +309,7 @@ class TherapistProfileScreen extends StatelessWidget {
             ),
           ),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<Therapist?>(
         future: _fetchTherapistInfo(context),
@@ -387,18 +388,11 @@ class TherapistProfileScreen extends StatelessWidget {
                     ),
                   ),
                   Divider(color: Colors.grey),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 4,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: therapist.timeSlots!.map((slot) => Text(slot)).toList(),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: therapist.timeSlots!.map((slot) => Text(slot)).toList(),
                     ),
                   ),
                 ],
@@ -413,18 +407,11 @@ class TherapistProfileScreen extends StatelessWidget {
                     ),
                   ),
                   Divider(color: Colors.grey),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 4,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: therapist.appointmenttypes!.map((type) => Text(type)).toList(),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: therapist.appointmenttypes!.map((type) => Text(type)).toList(),
                     ),
                   ),
                 ],

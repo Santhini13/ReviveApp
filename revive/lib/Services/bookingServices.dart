@@ -6,21 +6,69 @@ class BookingService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> registerBooking(String? uid, Booking booking) async {
-    try {
-      await _firestore.collection('Booking').doc(uid).collection('booking').add({
-        'userId':booking.userId,
-        'therapistId':booking.therapistId,
-        'status':booking.status,
-        'id': booking.id,
-        'appointmentType':booking.appointmentType,
-        'timeSlot': booking.timeSlot,
-        'day':booking.day,  // Ensure that the date is properly passed as DateTime
-      });
-    } catch (e) {
-      print('Error registering booking: $e');
-      throw e;
+  try {
+    // Check if the therapistId exists in the 'therapist' collection
+    var therapistDoc = await _firestore.collection('therapist').doc(booking.therapistId).get();
+    
+    if (!therapistDoc.exists) {
+      throw Exception('Therapist ID does not exist');
     }
+
+    // Register booking under the user's collection
+    await _firestore.collection('Booking').doc(uid).collection('booking').add({
+      'userName': booking.userName,
+      'therapistName': booking.therapistName,
+      'userId': booking.userId,
+      'therapistId': booking.therapistId,
+      'status': booking.status,
+      'id': booking.id,
+      'appointmentType': booking.appointmentType,
+      'timeSlot': booking.timeSlot,
+      'day': booking.day,  // Ensure that the date is properly passed as DateTime
+    });
+
+    // Register booking under the therapist's collection
+    await _firestore.collection('therapist').doc(booking.therapistId).collection('bookings').doc().set({
+      'userName': booking.userName,
+      'therapistName': booking.therapistName,
+      'userId': booking.userId,
+      'therapistId': booking.therapistId,
+      'status': booking.status,
+      'id': booking.id,
+      'appointmentType': booking.appointmentType,
+      'timeSlot': booking.timeSlot,
+      'day': booking.day,
+      'timestamp': DateTime.now(),
+    });
+
+    print('Registration Successful');
+  } catch (e) {
+    print('Error registering booking: $e');
+    throw e;
   }
+}
+
+
+  // Future<void> registerBooking(String? uid, Booking booking) async {
+  //   try {
+  //     await _firestore.collection('Booking').doc(uid).collection('booking').add({
+  //       'userName':booking.userName,
+  //       'therapistName':booking.therapistName,
+  //       'userId':booking.userId,
+  //       'therapistId':booking.therapistId,
+  //       'status':booking.status,
+  //       'id': booking.id,
+  //       'appointmentType':booking.appointmentType, 
+  //       'timeSlot': booking.timeSlot,
+  //       'day':booking.day,  // Ensure that the date is properly passed as DateTime
+  //     });
+  
+  //     print('registartion Successful');
+  //   } catch (e) {
+  //     print('Error registering booking: $e');
+  //     throw e;
+  //   }
+  // }
 
   Future<String?> fetchTherapistName(String? uid) async {
     try {
@@ -62,6 +110,8 @@ class BookingService {
         List<Booking> bookings = querySnapshot.docs.map((doc) {
           print('Document data: ${doc.data()}');
           return Booking(
+            userName:doc['userName'],
+            therapistName: doc['therapistName'],
             id: doc['id'],
             appointmentType: doc['appointmentType'],
             timeSlot: doc['timeSlot'],
@@ -78,6 +128,43 @@ class BookingService {
       }
     } catch (e) {
       print('Error fetching bookings: $e');
+      throw e;
+    }
+  }
+  Future<List<Booking>> fetchBookingsForTherapist(String therapistId) async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore
+        .collectionGroup('booking')
+        .where('therapistId', isEqualTo: therapistId)
+        .get();
+
+    List<Booking> bookings = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return Booking(
+        userId: data['userId'],
+        therapistId: data['therapistId'],
+        status: data['status'],
+        id: data['id'],
+        appointmentType: data['appointmentType'],
+        timeSlot: data['timeSlot'], 
+        day:data['day'], therapistName: data['therapistName'],
+        userName: data['userName'] 
+       // date: data['date'],
+      );
+    }).toList();
+
+    return bookings;
+  } catch (e) {
+    print('Error fetching bookings for therapist: $e');
+    throw e;
+  }
+}
+   Future<void> deleteBooking(String? uid, String bookingId) async {
+    try {
+      await _firestore.collection('Booking').doc(uid).collection('booking').doc(bookingId).delete();
+      print('Booking deleted successfully');
+    } catch (e) {
+      print('Error deleting booking: $e');
       throw e;
     }
   }
@@ -132,33 +219,7 @@ class BookingService {
 //   }
 // }
 
-// Future<List<Booking>> fetchBookingsForTherapist(String therapistId) async {
-//   try {
-//     QuerySnapshot querySnapshot = await _firestore
-//         .collectionGroup('booking')
-//         .where('therapistId', isEqualTo: therapistId)
-//         .get();
 
-//     List<Booking> bookings = querySnapshot.docs.map((doc) {
-//       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-//       return Booking(
-//         userId: data['userId'],
-//         therapistId: data['therapistId'],
-//         status: data['status'],
-//         id: data['id'],
-//         appointmentType: data['appointmentType'],
-//         timeSlot: data['timeSlot'], 
-//         day:data['day'], 
-//        // date: data['date'],
-//       );
-//     }).toList();
-
-//     return bookings;
-//   } catch (e) {
-//     print('Error fetching bookings for therapist: $e');
-//     throw e;
-//   }
-// }
 
 
 

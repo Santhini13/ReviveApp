@@ -181,6 +181,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:revive/Models/therapistModal.dart';
 import 'package:revive/Services/authprovider.dart';
@@ -194,13 +195,14 @@ class ThEditProfile extends StatefulWidget {
 class _ThEditProfileState extends State<ThEditProfile> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _rciController=TextEditingController();
   TextEditingController _specializationController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _qualificationController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
   List<TextEditingController> _timeSlotControllers = [TextEditingController()];
   List<TextEditingController> _appointmentTypeControllers = [TextEditingController()];
-  File? _certificate;
+
   final TherapistService _therapistService = TherapistService();
 
    List<String> _timeSlots=[];
@@ -210,6 +212,7 @@ class _ThEditProfileState extends State<ThEditProfile> {
       
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       String name = _nameController.text;
+      String rci=_rciController.text;
       String specialization = _specializationController.text;
       String qualification = _qualificationController.text;
       String experience = _experienceController.text;
@@ -225,6 +228,7 @@ class _ThEditProfileState extends State<ThEditProfile> {
 
       Therapist data = Therapist(
         name: name,
+        rci: rci,
         id:authProvider.uid.toString(),
         qualification: qualification,
         experience: experience,
@@ -269,6 +273,7 @@ final DocumentSnapshot doc=  await FirebaseFirestore.instance.collection('therap
   setData() {
     if(therapist!=null){
       _nameController.text=therapist!.name;
+      _rciController.text=therapist!.rci;
       _descriptionController.text=therapist!.description;
       _experienceController.text=therapist!.experience;
       _specializationController.text=therapist!.specialization;
@@ -328,6 +333,17 @@ _fetchTherapistInfo(context).then((value) => setData());
                 },
               ),
               SizedBox(height: 20.0),
+               TextFormField(
+                controller: _rciController,
+                decoration: InputDecoration(labelText: 'RCI No/Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your registered name/RCI number';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20.0),
               TextFormField(
                 controller: _specializationController,
                 decoration: InputDecoration(labelText: 'Specialization'),
@@ -379,56 +395,56 @@ _fetchTherapistInfo(context).then((value) => setData());
               SizedBox(height: 20.0),
               _buildAppointmentTypes(),
               SizedBox(height: 20.0),
-              _certificate != null
-                  ? Container(
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Certificate.pdf',
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.cancel),
-                            onPressed: () {
-                              setState(() {
-                                _certificate = null;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff881736),
-                        minimumSize: Size(60, 50),
-                      ),
-                      onPressed: () {},
-                      // _pickCertificate,
-                      child: Text(
-                        'Upload Certificate (PDF)',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff881736),
-                  minimumSize: Size(60, 50),
-                ),
-                onPressed: () => _showPasswordChangeDialog(context),
-                child: Text(
-                  'Update Password',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              //_certificate != null
+              //     ? Container(
+              //         padding: EdgeInsets.all(8.0),
+              //         decoration: BoxDecoration(
+              //           border: Border.all(color: Colors.grey),
+              //           borderRadius: BorderRadius.circular(8.0),
+              //         ),
+              //         child: Row(
+              //           children: [
+              //             Expanded(
+              //               child: Text(
+              //                 'Certificate.pdf',
+              //                 overflow: TextOverflow.ellipsis,
+              //               ),
+              //             ),
+              //             IconButton(
+              //               icon: Icon(Icons.cancel),
+              //               onPressed: () {
+              //                 setState(() {
+              //                   _certificate = null;
+              //                 });
+              //               },
+              //             ),
+              //           ],
+              //         ),
+              //       )
+              //     : ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Color(0xff881736),
+              //           minimumSize: Size(60, 50),
+              //         ),
+              //         onPressed: () {},
+              //         // _pickCertificate,
+              //         child: Text(
+              //           'Upload Certificate (PDF)',
+              //           style: TextStyle(color: Colors.white),
+              //         ),
+              //       ),
+              // SizedBox(height: 20.0),
+              // ElevatedButton(
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Color(0xff881736),
+              //     minimumSize: Size(60, 50),
+              //   ),
+              //   onPressed: () => _showPasswordChangeDialog(context),
+              //   child: Text(
+              //     'Update Password',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
             ],
           ),
         ),

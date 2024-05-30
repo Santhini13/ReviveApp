@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:revive/Screens/Admin/viewtherapist.dart';
+import 'package:revive/Models/UserModal.dart';
 import 'package:revive/Services/UserService.dart';
 
 class AdHome extends StatefulWidget {
@@ -9,50 +10,43 @@ class AdHome extends StatefulWidget {
 
 class _AdHomeState extends State<AdHome> {
   String _selectedOption = '';
+  final FirebaseService _firebaseService = FirebaseService();
+  late final Users user;
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff881736), Color(0xff281537)],
-              ),
+      appBar: AppBar(
+         title: Text('Admin', style: TextStyle(color: Colors.white)),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff881736), Color(0xff281537)],
             ),
-            width: double.infinity,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings,color: Colors.white,),
+            onPressed: () {
+              _showSettingsDialog(context);
+            },
+          ),
+        ],
+      ),
+      body: Container(
         child: Padding(
-          padding: const EdgeInsets.only(top :50.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
-            children: [ 
-              Padding(
-                padding: const EdgeInsets.only(left:25.0,right: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Admin', style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),),
-                    IconButton(
-                icon: Icon(Icons.settings,color: Colors.white,),
-                onPressed: () {
-                  _showSettingsDialog(context);
-                },
-                            ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildOptionCard('Users'),
-                  SizedBox(width: 10),
-                  _buildOptionCard('Therapists'),
-                  SizedBox(width: 10),
-                  _buildOptionCard('Activities'),
-                ],
-              ),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
               SizedBox(height: 20),
-              if (_selectedOption.isNotEmpty) _buildSelectedCard(),
+              _buildOptionTile('Users', '/viewuser'),
+              SizedBox(height: 10),
+              _buildOptionTile('Therapists', '/adtherapist'),
+              SizedBox(height: 10),
+              _buildOptionTile('Activities', ''),
             ],
           ),
         ),
@@ -60,95 +54,65 @@ class _AdHomeState extends State<AdHome> {
     );
   }
 
-  Widget _buildOptionCard(String option) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedOption = option;
-        });
-      },
-      child: Card(
-        color: _selectedOption == option ? Color(0xff881736): null,
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Text(
-            option,
-            style: TextStyle(
-              fontSize: 16,
-              color: _selectedOption == option ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
+  Widget _buildOptionTile(String option, String route) {
+    return ExpansionTile(
+      title: Text(
+        option,
+        style: TextStyle(color: Colors.white),
       ),
-    );
-  }
-
-  Widget _buildSelectedCard() {
-    switch (_selectedOption) {
-      case 'Users':
-        return _buildUserCard();
-      case 'Therapists':
-        return _buildTherapistCard();
-      case 'Activities':
-        return _buildActivityCard();
-      default:
-        return Container();
-    }
-  }
-
-  Widget _buildUserCard() {
-    return CardItem(
-      text: 'View Users',
-      onTap: () {
-        // Add logic for viewing users
-        Navigator.pushNamed(context, '/viewuser');
-      },
-    );
-  }
-
-  Widget _buildTherapistCard() {
-    return Column(
+      backgroundColor: Color(0xff881736),
+      collapsedBackgroundColor: Color(0xff881736),
+      childrenPadding: EdgeInsets.only(left: 20, bottom: 10),
       children: [
-        CardItem(
-          text: 'Confirm Request',
-          onTap: () {
-            Navigator.pushNamed(context, '/adconfirm');
-          },
-        ),
-        CardItem(
-          text: 'View Therapists',
-          onTap: () {
-             Navigator.pushNamed(context, '/adtherapist');
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActivityCard() {
-    return Column(
-      children: [
-        CardItem(
-          text: 'View Articles',
-          onTap: () {
-            // Add logic for viewing articles
-            Navigator.pushNamed(context, '/adarticle');
-          },
-        ),
-        CardItem(
-          text: 'View Feedback',
-          onTap: () {
-            // Add logic for viewing feedback
-             Navigator.pushNamed(context, '/adfeedback');
-          },
-        ),
-        CardItem(
-          text: 'View Payment',
-          onTap: () {
-            // Add logic for updating questionnaire
-            Navigator.pushNamed(context, '/viewPayment');
-          },
-        ),
+         if (option == 'Users')
+          ListTile(
+            title: Text(
+              'View Users',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/viewuser');
+            },
+          ),
+        if (option == 'Therapists')
+          ListTile(
+            title: Text(
+              'View Therapist',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/adtherapist');
+            },
+          ),
+        if (option == 'Activities') ...[
+          ListTile(
+            title: Text(
+              'View Videos',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/advideo');
+            },
+          ),
+          ListTile(
+            title: Text(
+              'View Articles',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/adarticle');
+            },
+          ),
+          ListTile(
+            title: Text(
+              'View Feedback',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/adfeedback');
+            },
+          ),
+        ],
       ],
     );
   }
@@ -158,15 +122,7 @@ class _AdHomeState extends State<AdHome> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Row(
-            children: [
-              CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-              SizedBox(width: 10),
-              Text('Admin'),
-            ],
-          ),
+          title: Text('Settings'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,11 +136,20 @@ class _AdHomeState extends State<AdHome> {
                 },
               ),
               ListTile(
+                leading: Icon(Icons.add),
+                title: Text('Add Admin'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/addAdmin');
+                },
+              ),
+              ListTile(
                 leading: Icon(Icons.logout),
                 title: Text('Logout'),
                 onTap: () {
+                  Navigator.pop(context);
                   _showConfirmationDialog(context, 'Log Out',
-                          'Are you sure you want to log out?');
+                      'Are you sure you want to log out?');
                 },
               ),
             ],
@@ -194,7 +159,6 @@ class _AdHomeState extends State<AdHome> {
     );
   }
 
-  
   void _showConfirmationDialog(
       BuildContext context, String title, String message) {
     showDialog(
@@ -212,11 +176,7 @@ class _AdHomeState extends State<AdHome> {
             ),
             TextButton(
               onPressed: () {
-                // if (title == 'Log Out') {
-                //   _signOut(context);
-                // } else if (title == 'Delete Account') {
-                //   _deleteAccount(context);
-                // }
+                _signOut(context);
               },
               child: Text(title),
             ),
@@ -226,6 +186,11 @@ class _AdHomeState extends State<AdHome> {
     );
   }
 
+  void _signOut(BuildContext context) async {
+    await _firebaseService.signOut();
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        '/login', (Route<dynamic> route) => false);
+  }
 
   void _showChangePasswordDialog(BuildContext context) {
     showDialog(
@@ -271,44 +236,8 @@ class _AdHomeState extends State<AdHome> {
   }
 
   void _performPasswordChange(BuildContext context) {
-    // Perform password change logic here
-    // Example: Call an API to update the password
-    // Once the password is successfully changed, show a message to the user
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Password changed successfully!'),
     ));
   }
-
-  void _performLogout(BuildContext context) {
-    // Perform logout logic here
-    // Example: Navigate to the login screen or clear user session
-    // After logout, you might want to navigate back to the login screen
-    Navigator.pushReplacementNamed(context, '/login');
-  }
 }
-
-class CardItem extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
-
-  const CardItem({
-    Key? key,
-    required this.text,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        child: ListTile(
-          title: Text(text),
-          onTap: onTap,
-        ),
-      ),
-    );
-  }
-}
-
-

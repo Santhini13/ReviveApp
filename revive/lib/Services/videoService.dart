@@ -19,7 +19,27 @@ class VideoService {
       return snapshot.docs.map((doc) => VideoModel.fromMap(doc.data())).toList();
     });
   }
+ 
+Stream<List<Map<String, dynamic>>> getAllVideosWithUsers() async* {
+    var userSnapshot = await _firestore.collection('users').get();
+    List<Map<String, dynamic>> videosWithUsers = [];
 
+    for (var userDoc in userSnapshot.docs) {
+      var userData = userDoc.data() as Map<String, dynamic>;
+      var videoSnapshot = await userDoc.reference.collection('videos').get();
+
+      for (var videoDoc in videoSnapshot.docs) {
+        var videoData = videoDoc.data() as Map<String, dynamic>;
+
+        videosWithUsers.add({
+          'video': VideoModel.fromMap(videoData),
+          'username': userData['username'],
+        });
+      }
+    }
+
+    yield videosWithUsers;
+  }
   
   Future<void> deleteVideo(VideoModel video, String uid) async {
     try {

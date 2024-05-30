@@ -1,90 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'package:firebase_database/firebase_database.dart';
 
-// class ViewUserScreen extends StatefulWidget {
-//   const ViewUserScreen({Key? key}) : super(key: key);
-
-//   @override
-//   _ViewUserScreenState createState() => _ViewUserScreenState();
-// }
-
-// class _ViewUserScreenState extends State<ViewUserScreen> {
-//   final DatabaseReference _userRef =
-//       FirebaseDatabase.instance.reference().child('users');
-
-//   late List<Map<dynamic, dynamic>> _users;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fetchUsers();
-//   }
-
-//   Future<void> _fetchUsers() async {
-//     DataSnapshot dataSnapshot = await _userRef.once();
-//     setState(() {
-//       _users = List<Map<dynamic, dynamic>>.from(dataSnapshot.value);
-//     });
-//   }
-
-//   Future<void> _removeUser(String userId) async {
-//     await _userRef.child(userId).remove();
-//     _fetchUsers();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('View Users'),
-//       ),
-//       body: _users != null
-//           ? ListView.builder(
-//               itemCount: _users.length,
-//               itemBuilder: (context, index) {
-//                 final user = _users[index];
-//                 final userId = user.keys.first;
-//                 final userName = user.values.first['name'];
-//                 return ListTile(
-//                   title: Text(userName),
-//                   trailing: IconButton(
-//                     icon: Icon(Icons.delete),
-//                     onPressed: () {
-//                       showDialog(
-//                         context: context,
-//                         builder: (context) {
-//                           return AlertDialog(
-//                             title: Text('Remove User?'),
-//                             content: Text('Are you sure you want to remove $userName?'),
-//                             actions: <Widget>[
-//                               TextButton(
-//                                 onPressed: () => Navigator.of(context).pop(),
-//                                 child: Text('Cancel'),
-//                               ),
-//                               TextButton(
-//                                 onPressed: () {
-//                                   _removeUser(userId);
-//                                   Navigator.of(context).pop();
-//                                 },
-//                                 child: Text('Remove'),
-//                               ),
-//                             ],
-//                           );
-//                         },
-//                       );
-//                     },
-//                   ),
-//                 );
-//               },
-//             )
-//           : Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//     );
-//   }
-// }
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:revive/Screens/constants/myAppbar.dart';
 
 class ViewUserScreen extends StatelessWidget {
@@ -94,18 +11,69 @@ class ViewUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(title: 'View User'), 
-      body: ListView.builder(
-        itemCount: 5, // Placeholder for user list
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('User ${index + 1}'), // Placeholder user name
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                // Add logic to remove user
-                print('Remove user ${index + 1}');
-              },
-            ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'User').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No users found'));
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var userData = snapshot.data!.docs[index];
+              var username = userData['username'];
+              var phoneNumber = userData['phoneNumber'];
+              var email = userData['email'];
+              var userId = userData.id;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Card(
+                  elevation:4,
+                  child: ListTile(
+                    title: Text(username),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('User Details'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Email: $email'),
+                              SizedBox(height: 8),
+                              Text('Phone Number: $phoneNumber'),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () async {
+                                // Delete the user data from Firestore
+                                await FirebaseFirestore.instance.collection('users').doc(userId).delete();
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Delete'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Close'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

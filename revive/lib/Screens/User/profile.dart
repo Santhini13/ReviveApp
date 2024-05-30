@@ -269,13 +269,13 @@ class _userProfileState extends State<userProfile> {
                   //     Navigator.pushNamed(context, '/favorite');
                   //   },
                   // ),
-                  ProfileOption(
-                    icon: Icons.history,
-                    label: 'Appointment History',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/userhistory');
-                    },
-                  ),
+                  // ProfileOption(
+                  //   icon: Icons.history,
+                  //   label: 'Appointment History',
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(context, '/userhistory');
+                  //   },
+                  // ),
                   ProfileOption(
                     icon: Icons.article_outlined,
                     label: 'Terms & Conditions',

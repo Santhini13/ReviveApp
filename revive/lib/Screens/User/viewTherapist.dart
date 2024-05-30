@@ -4,7 +4,6 @@
 // import 'package:revive/Services/therapistService.dart';
 // import 'package:revive/Models/therapistModal.dart';
 
-
 // class TherapistListScreen extends StatefulWidget {
 //   @override
 //   State<TherapistListScreen> createState() => _TherapistListScreenState();
@@ -28,7 +27,7 @@
 //         therapists=therapists;
 //        // filteredTherapists=therapists;
 //       });
-      
+
 //       return therapists;
 //     } catch (e) {
 //       print('Error fetching therapists: $e');
@@ -96,7 +95,7 @@
 //               icon: Icon(Icons.filter_list_sharp,color:Colors.white),
 //             ),
 //           ),
-          
+
 //         ],
 //           backgroundColor: Colors.transparent, // Transparent background
 //           automaticallyImplyLeading: false, // Removes the back button
@@ -234,7 +233,6 @@
 //   }
 // }
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:revive/Screens/User/therapistpage.dart';
@@ -258,7 +256,8 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
 
   Future<List<Therapist>> _fetchTherapists() async {
     try {
-      final QuerySnapshot<Map<String, dynamic>> therapistList = await _therapistService.fetchallTherapistinfo();
+      final QuerySnapshot<Map<String, dynamic>> therapistList =
+          await _therapistService.fetchallTherapistinfo();
       List<Therapist> therapists = therapistList.docs.map((doc) {
         return Therapist.fromFirestore(doc);
       }).toList();
@@ -273,9 +272,11 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight), // Increase the height of the app bar
+        preferredSize: Size.fromHeight(
+            kToolbarHeight), // Increase the height of the app bar
         child: AppBar(
-          title: Text('Find Your Therapist', style: TextStyle(color: Colors.white)),
+          title: Text('Find Your Therapist',
+              style: TextStyle(color: Colors.white)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
@@ -344,7 +345,8 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                   },
                   child: Card(
                     elevation: 5,
-                    margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -354,13 +356,18 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image.asset(
-                              'assets/images/user.png',
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors
+                                .grey[300], // Background color of the avatar
+                            child: Text(
+                              therapist.name.substring(
+                                  0, 1), // Get the first letter of the name
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff881736), // Color of the text
+                              ),
                             ),
                           ),
                           SizedBox(width: 16.0),
@@ -379,17 +386,20 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                                 SizedBox(height: 8.0),
                                 Text(
                                   therapist.qualification,
-                                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 SizedBox(height: 4.0),
                                 Text(
                                   therapist.specialization,
-                                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[600]),
                                 ),
                                 SizedBox(height: 4.0),
                                 Text(
                                   therapist.experience,
-                                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.grey[600]),
                                 ),
                               ],
                             ),
