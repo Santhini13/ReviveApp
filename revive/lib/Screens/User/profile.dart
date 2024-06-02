@@ -91,7 +91,7 @@ class _userProfileState extends State<userProfile> {
         _isUploading = false;
       });
     }
-  }
+  } 
 
  
 
@@ -158,84 +158,84 @@ class _userProfileState extends State<userProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children:<Widget> [
-              FutureBuilder(
-  future: _getImage(),
-  builder: (BuildContext context, AsyncSnapshot<ImageProvider<Object>?> snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
-    } else if (snapshot.hasError) {
-      return Text('Error loading image');
-    } else {
-      return Stack(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 80,
-            backgroundColor: Colors.grey[300],
-            backgroundImage: snapshot.data, // Use snapshot.data directly
-            child: _image == null && _profileImageUrl == null
-                ? GestureDetector(
-                    onTap: _pickImage,
-                    child: Icon(
-                      Icons.add_a_photo,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  )
-                : null,
-          ),
-          if (_image != null || _profileImageUrl != null) // Only show edit icon if image is present
-  Positioned(
-    bottom: 0,
-    right: 0,
-    child: PopupMenuButton<String>(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          value: 'add',
-          child: ListTile(
-            leading: Icon(Icons.add_a_photo),
-            title: Text('Add Image'),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'remove',
-          child: ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Remove Image'),
-          ),
-        ),
-      ],
-      onSelected: (String action) {
-        if (action == 'add') {
-          _pickImage();
-        } else if (action == 'remove') {
-         setState(() {
-    _image = null; // Clear the local image file
-    _profileImageUrl = null; // Clear the profile image URL
-  });
-        }
-      },
-      child: CircleAvatar(
-        backgroundColor: Colors.blue,
-        radius: 25,
-        child: Icon(
-          Icons.edit,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  ),
+//               FutureBuilder(
+//   future: _getImage(),
+//   builder: (BuildContext context, AsyncSnapshot<ImageProvider<Object>?> snapshot) {
+//     if (snapshot.connectionState == ConnectionState.waiting) {
+//       return CircularProgressIndicator();
+//     } else if (snapshot.hasError) {
+//       return Text('Error loading image');
+//     } else {
+//       return Stack(
+//         children: <Widget>[
+//           CircleAvatar(
+//             radius: 80,
+//             backgroundColor: Colors.grey[300],
+//             backgroundImage: snapshot.data, // Use snapshot.data directly
+//             child: _image == null && _profileImageUrl == null
+//                 ? GestureDetector(
+//                     onTap: _pickImage,
+//                     child: Icon(
+//                       Icons.add_a_photo,
+//                       size: 40,
+//                       color: Colors.white,
+//                     ),
+//                   )
+//                 : null,
+//           ),
+//           if (_image != null || _profileImageUrl != null) // Only show edit icon if image is present
+//   Positioned(
+//     bottom: 0,
+//     right: 0,
+//     child: PopupMenuButton<String>(
+//       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+//         PopupMenuItem<String>(
+//           value: 'add',
+//           child: ListTile(
+//             leading: Icon(Icons.add_a_photo),
+//             title: Text('Add Image'),
+//           ),
+//         ),
+//         PopupMenuItem<String>(
+//           value: 'remove',
+//           child: ListTile(
+//             leading: Icon(Icons.delete),
+//             title: Text('Remove Image'),
+//           ),
+//         ),
+//       ],
+//       onSelected: (String action) {
+//         if (action == 'add') {
+//           _pickImage();
+//         } else if (action == 'remove') {
+//          setState(() {
+//     _image = null; // Clear the local image file
+//     _profileImageUrl = null; // Clear the profile image URL
+//   });
+//         }
+//       },
+//       child: CircleAvatar(
+//         backgroundColor: Colors.blue,
+//         radius: 25,
+//         child: Icon(
+//           Icons.edit,
+//           color: Colors.white,
+//         ),
+//       ),
+//     ),
+//   ),
 
-        ],
-      );
-    }
-  },
-),SizedBox(height: 10),
-              _isUploading
-                  ? CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _uploadImage,
-                      child: Text('Upload Image'),
-                    ),
+//         ],
+//       );
+//     }
+//   },
+// ),SizedBox(height: 10),
+//               _isUploading
+//                   ? CircularProgressIndicator()
+//                   : ElevatedButton(
+//                       onPressed: _uploadImage,
+//                       child: Text('Upload Image'),
+//                     ),
               SizedBox(height: 10),
               // Text(
               //    widget.user.username,

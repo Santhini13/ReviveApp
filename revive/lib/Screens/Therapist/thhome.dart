@@ -18,6 +18,7 @@ class _TherapistHomeState extends State<TherapistHome>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
+  late final Therapist therapist;
     
 
   @override

@@ -12,6 +12,8 @@ class Booking {
   String timeSlot;
   DateTime day;
   DateTime? date;
+  String? phoneNumber;
+  String? email;
 
   Booking({
     required this.userId,
@@ -23,7 +25,7 @@ class Booking {
     required this.appointmentType,
     required this.timeSlot,
     required this.day, 
-   // required this.date,
+   // r//equired this.date,
   });
 
   factory Booking.fromMap(Map<String, dynamic> map) {
@@ -36,7 +38,7 @@ class Booking {
       appointmentType: map['appointmentType'],
       timeSlot: map['timeSlot'],
       //date: (map['date'] as Timestamp?)!.toDate(), 
-       day:map['day'],
+       day: (map['day'] as Timestamp).toDate(),
       status: map['status'].toInt(), 
     );
   }
@@ -52,6 +54,8 @@ class Booking {
       'timeSlot': timeSlot,
       'day':day,
       'date': date,
+      'phoneNumber':phoneNumber,
+      'email':email
     };
   }
 }

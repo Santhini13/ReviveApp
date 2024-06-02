@@ -329,15 +329,20 @@ class TherapistProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Color(0xff881736),
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child:  CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors
+                                .grey[300], // Background color of the avatar
+                            child: Text(
+                              therapist.name.substring(
+                                  0, 1), // Get the first letter of the name
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff881736), // Color of the text
+                              ),
+                            ),
+                          ),
                 ),
                 SizedBox(height: 20.0),
                 Text(

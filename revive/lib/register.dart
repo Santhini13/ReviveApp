@@ -21,30 +21,6 @@ class _UserRegisterState extends State<UserRegister> {
    bool _isPasswordVisible = false;
   final FirebaseService _firebaseService=FirebaseService();
 
-
-  // void handleLogin() {
-  //   if (_formKey.currentState!.validate()) {
-  //     //Save form state
-  //     _formKey.currentState!.save();
-      // if (isUser) {
-      //   // Navigate to user page
-      //   Navigator.pushNamed(context, '/uonboard');
-      //   // Navigator.push(
-      //   //   context,
-      //   //   MaterialPageRoute(builder: (context) => Home()),
-      //   // );
-      // } else if (isTherapist) {
-      //   Navigator.pushNamed(context, '/thonboard');
-      // } else {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //             SnackBar(
-      //               content: Text('Choose any one of the role'),
-      //             ),
-      //           );
-      // }
-  //   }
-  // } 
-
   @override
   void dispose() {
     _usernameController.dispose();
@@ -250,11 +226,6 @@ class _UserRegisterState extends State<UserRegister> {
                     AppButton(
                       onTap: () {
                         _register();
-                          // Validated successfully, handle registration logic here
-                          // For example, you can navigate to the next screen
-                          // print(
-                          //     'Username: ${_usernameController.text}, Phone: ${_phoneNumberController.text}, Email: ${_emailController.text}, Password: ${_passwordController.text}');
-                        
                       },
                       child: Text(
                         'Register',
@@ -279,7 +250,7 @@ class _UserRegisterState extends State<UserRegister> {
                           ),
                           TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/login');
+                                  Navigator.pushReplacementNamed(context, '/login');
                                 },
                                 child: Text('Login'),
                               )

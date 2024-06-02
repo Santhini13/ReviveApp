@@ -277,33 +277,6 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
         child: AppBar(
           title: Text('Find Your Therapist',
               style: TextStyle(color: Colors.white)),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Filter by'),
-                        content: Text('Add your filter options here'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Close'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                icon: Icon(Icons.filter_list_sharp, color: Colors.white),
-              ),
-            ),
-          ],
           backgroundColor: Colors.transparent, // Transparent background
           automaticallyImplyLeading: false, // Removes the back button
           flexibleSpace: Container(
@@ -357,7 +330,7 @@ class _TherapistListScreenState extends State<TherapistListScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            radius: 40,
+                            radius: 50,
                             backgroundColor: Colors
                                 .grey[300], // Background color of the avatar
                             child: Text(

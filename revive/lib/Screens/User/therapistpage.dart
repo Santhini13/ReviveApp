@@ -1,4 +1,3 @@
-
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:revive/Models/UserModal.dart';
 // import 'package:revive/Models/therapistModal.dart';
@@ -8,6 +7,7 @@
 // import 'package:calendar_timeline/calendar_timeline.dart';
 // import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 // class TherapistDetailScreen extends StatefulWidget {
 //   final Therapist therapist;
@@ -31,7 +31,7 @@
 //   String? selectedAppointmentType;
 //   bool isFavorite = false;
 //   late Therapist therapist;
-//   late final Users users;
+//   late Users users;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -50,19 +50,19 @@
 //           ),
 //         ),
 //         actions: <Widget>[
-//     IconButton(
-//       icon: Icon(Icons.feedback,color: Colors.white,), // Icon for feedback form
-//       onPressed: () {
-//         // Navigate to the feedback form screen and pass the therapist object
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => FeedbackFormScreen(therapist: widget.therapist),
+//           IconButton(
+//             icon: Icon(Icons.feedback, color: Colors.white), // Icon for feedback form
+//             onPressed: () {
+//               // Navigate to the feedback form screen and pass the therapist object
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => FeedbackFormScreen(therapist: widget.therapist),
+//                 ),
+//               );
+//             },
 //           ),
-//         );
-//       },
-//     ),
-//   ],
+//         ],
 //       ),
 //       body: SingleChildScrollView(
 //         child: Container(
@@ -72,19 +72,7 @@
 //               crossAxisAlignment: CrossAxisAlignment.start,
 //               children: [
 //                 SizedBox(height: 20),
-//                 Center(
-//                   child: CircleAvatar(
-//                     radius: 80,
-//                     backgroundColor: Colors.grey[200],
-//                     backgroundImage: widget.therapist.profileImageUrl != null
-//                         ? NetworkImage(widget.therapist.profileImageUrl!)
-//                         : null,
-//                     child: widget.therapist.profileImageUrl == null
-//                         ? Icon(Icons.person, size: 50, color: Color(0xff881736))
-//                         : null,
-//                   ),
-//                 ),
-//                 SizedBox(width: 30),
+//                 SizedBox(width: 40),
 //                 _buildProfileItem(Icons.medical_services, widget.therapist.specialization),
 //                 _buildProfileItem(Icons.school, widget.therapist.qualification),
 //                 _buildProfileItem(Icons.work, widget.therapist.experience),
@@ -132,7 +120,7 @@
 //                 if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null)
 //                   Center(
 //                     child: ElevatedButton(
-//                       onPressed: () => _showPaymentDialog(context, widget.therapist),
+//                       onPressed: () => _showConfirmationDialog(context, widget.therapist),
 //                       style: ElevatedButton.styleFrom(
 //                         backgroundColor: Color(0xff881736),
 //                         foregroundColor: Colors.white,
@@ -144,6 +132,69 @@
 //                       child: Text('Book Now', style: TextStyle(fontSize: 16)),
 //                     ),
 //                   ),
+//                 SizedBox(height: 20),
+//                 buildSectionTitle('Feedback'),
+//                 Divider(color: Colors.grey, thickness: 2),
+//                 SizedBox(height: 10),
+//                 StreamBuilder<QuerySnapshot>(
+//                   stream: FirebaseFirestore.instance
+//                       .collection('therapist')
+//                       .doc(widget.therapist.id)
+//                       .collection('feedbacks')
+//                       .orderBy('timestamp', descending: true)
+//                       .snapshots(),
+//                   builder: (context, snapshot) {
+//                     if (snapshot.connectionState == ConnectionState.waiting) {
+//                       return Center(child: CircularProgressIndicator());
+//                     } else if (snapshot.hasError) {
+//                       return Center(child: Text('Error: ${snapshot.error}'));
+//                     } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//                       return Center(child: Text('No feedback available.'));
+//                     } else {
+//                       return ListView.builder(
+//                         shrinkWrap: true,
+//                         physics: NeverScrollableScrollPhysics(),
+//                         itemCount: snapshot.data!.docs.length,
+//                         itemBuilder: (context, index) {
+//                           var feedback = snapshot.data!.docs[index];
+//                           return Card(
+//                             shape: RoundedRectangleBorder(
+//                               borderRadius: BorderRadius.circular(10.0),
+//                             ),
+//                             elevation: 4,
+//                             margin: EdgeInsets.symmetric(vertical: 10),
+//                             child: Padding(
+//                               padding: const EdgeInsets.all(16.0),
+//                               child: Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Text(
+//                                     feedback['feedback'],
+//                                     style: TextStyle(fontSize: 16),
+//                                   ),
+//                                   SizedBox(height: 10),
+//                                   Row(
+//                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                     children: [
+//                                       Text(
+//                                         'Rating: ${feedback['rating']}',
+//                                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                                       ),
+//                                       Text(
+//                                         DateFormat('dd MMM yyyy, hh:mm a').format((feedback['timestamp'] as Timestamp).toDate()),
+//                                         style: TextStyle(fontSize: 12, color: Colors.grey),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                           );
+//                         },
+//                       );
+//                     }
+//                   },
+//                 ),
 //               ],
 //             ),
 //           ),
@@ -258,49 +309,103 @@
 //     );
 //   }
 
-//   void _showPaymentDialog(BuildContext context, Therapist therapist) {
-//     if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null) {
+//   // void _showConfirmationDialog(BuildContext context, Therapist therapist) {
+//   //   if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null) {
+//   //     showDialog(
+//   //       context: context,
+//   //       builder: (BuildContext context) {
+//   //         return AlertDialog(
+//   //           title: Text("Book Now"),
+//   //           content: Text("Confirm Your Appointment!"),
+//   //           actions: <Widget>[
+//   //             TextButton(
+//   //               child: Text("OK"),
+//   //               onPressed: () {
+//   //                 Navigator.of(context).pop();
+//   //                 ScaffoldMessenger.of(context).showSnackBar(
+//   //     SnackBar(
+//   //       content: Text('Booking Successful!'),
+//   //       backgroundColor: Color(0xff881736),
+//   //     ),
+//   //   );
+//   //               },
+//   //             ),
+//   //           ],
+//   //         );
+//   //       },
+//   //     );
+
+//   //     _performBooking(context, therapist);
+//   //   } else {
+//   //     ScaffoldMessenger.of(context).showSnackBar(
+//   //       SnackBar(
+//   //         content: Text('Please select date, time slot, and appointment type.'),
+//   //         backgroundColor: Colors.red,
+//   //       ),
+//   //     );
+//   //   }
+//   // }
+
+
+// Future<void> _showConfirmationDialog(BuildContext context, Therapist therapist) async {
+//   if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null) {
+//     // Perform a check if the selected timeslot for the selected date is available
+//     // You can do this by querying the database to see if any booking exists for the selected date and timeslot
+//     BookingService bookingService = BookingService();
+//     bool isSlotAvailable = await bookingService.isTimeSlotAvailable(selectedDate!, selectedTimeSlot!);
+    
+//     if (isSlotAvailable) {
 //       showDialog(
 //         context: context,
 //         builder: (BuildContext context) {
 //           return AlertDialog(
 //             title: Text("Book Now"),
-//             content: Text("It will be an one hour session.\nIt is ok to be not Ok!"),
+//             content: Text("Confirm Your Appointment!"),
 //             actions: <Widget>[
 //               TextButton(
-//                 child: Text("Cancel"),
+//                 child: Text("OK"),
 //                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//               TextButton(
-//                 child: Text("Book"),
-//                 onPressed: () {
-//                   _performPayment(context, therapist, users);
 //                   Navigator.pop(context);
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(
+//                       content: Text('Booking Successful!'),
+//                       backgroundColor: Color(0xff881736),
+//                     ),
+//                   );
 //                 },
 //               ),
 //             ],
 //           );
 //         },
 //       );
+
+//       _performBooking(context, therapist);
 //     } else {
+//       // Show a message indicating that the selected timeslot is not available
 //       ScaffoldMessenger.of(context).showSnackBar(
 //         SnackBar(
-//           content: Text('Please select date, time slot, and appointment type.'),
+//           content: Text('The selected timeslot is not available. Please choose another one.'),
 //           backgroundColor: Colors.red,
 //         ),
 //       );
 //     }
+//   } else {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(
+//         content: Text('Please select date, time slot, and appointment type.'),
+//         backgroundColor: Colors.red,
+//       ),
+//     );
 //   }
+// }
 
-//   void _performPayment(BuildContext context, Therapist therapist,Users users) async {
+//   void _performBooking(BuildContext context, Therapist therapist) async {
 //     final user = FirebaseAuth.instance.currentUser;
 //     String userId = user!.uid;
 //     String therapistId = therapist.id; // replace with actual therapist id
 //     Booking booking = Booking(
 //       therapistName: therapist.name,
-//       userName: users.username,
+//       userName: '',
 //       userId: userId,
 //       therapistId: therapistId,
 //       day: selectedDate!,
@@ -313,7 +418,6 @@
 //     BookingService bookingService = BookingService();
 //     try {
 //       await bookingService.registerBooking(userId, booking);
-//       _showConfirmationMessage(context);
 //     } catch (e) {
 //       ScaffoldMessenger.of(context).showSnackBar(
 //         SnackBar(
@@ -323,20 +427,7 @@
 //       );
 //     }
 //   }
-
-//   void _showConfirmationMessage(BuildContext context) {
-//     String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate!);
-//     String confirmationMessage = 'Appointment booked for $formattedDate, $selectedTimeSlot, $selectedAppointmentType';
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text(confirmationMessage),
-//         backgroundColor: Colors.blue,
-//       ),
-//     );
-//   }
 // }
-
-
 
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -372,7 +463,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
   String? selectedAppointmentType;
   bool isFavorite = false;
   late Therapist therapist;
-  late final Users users;
+  late Users users;
 
   @override
   Widget build(BuildContext context) {
@@ -413,23 +504,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Center(
-                  child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors
-                                .grey[300], // Background color of the avatar
-                            child: Text(
-                              therapist.name.substring(
-                                  0, 1), // Get the first letter of the name
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff881736), // Color of the text
-                              ),
-                            ),
-                          ),
-                ),
-                SizedBox(width: 30),
+                SizedBox(width: 40),
                 _buildProfileItem(Icons.medical_services, widget.therapist.specialization),
                 _buildProfileItem(Icons.school, widget.therapist.qualification),
                 _buildProfileItem(Icons.work, widget.therapist.experience),
@@ -477,7 +552,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                 if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null)
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => _showPaymentDialog(context, widget.therapist),
+                      onPressed: () => _showConfirmationDialog(context, widget.therapist),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff881736),
                         foregroundColor: Colors.white,
@@ -503,8 +578,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (snapshot.hasError) {                      return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return Center(child: Text('No feedback available.'));
                     } else {
@@ -592,6 +666,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
       onDateSelected: (date) {
         setState(() {
           selectedDate = DateTime(date.year, date.month, date.day);
+          selectedTimeSlot = null; // Reset selected time slot when date changes
         });
       },
       leftMargin: 20,
@@ -666,26 +741,26 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
     );
   }
 
-  void _showPaymentDialog(BuildContext context, Therapist therapist) {
+  void _showConfirmationDialog(BuildContext context, Therapist therapist) {
     if (selectedDate != null && selectedTimeSlot != null && selectedAppointmentType != null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Book Now"),
-            content: Text("It will be a one-hour session.\nIt is ok to be not Ok!"),
+            content: Text("Confirm Your Appointment!"),
             actions: <Widget>[
               TextButton(
-                child: Text("Cancel"),
+                child: Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("Book"),
-                onPressed: () {
-                  _performPayment(context, therapist, users);
-                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Booking Successful!'),
+                      backgroundColor: Color(0xff881736),
+                    ),
+                  );
+                  _performBooking(context, therapist);
                 },
               ),
             ],
@@ -702,13 +777,13 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
     }
   }
 
-  void _performPayment(BuildContext context, Therapist therapist, Users users) async {
+  void _performBooking(BuildContext context, Therapist therapist) async {
     final user = FirebaseAuth.instance.currentUser;
     String userId = user!.uid;
     String therapistId = therapist.id; // replace with actual therapist id
     Booking booking = Booking(
       therapistName: therapist.name,
-      userName: users.username,
+      userName: '',
       userId: userId,
       therapistId: therapistId,
       day: selectedDate!,
@@ -720,8 +795,18 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
 
     BookingService bookingService = BookingService();
     try {
-      await bookingService.registerBooking(userId, booking);
-      _showConfirmationMessage(context);
+      // Check if the slot is available
+      bool isSlotAvailable = await bookingService.checkSlotAvailability(therapistId, selectedDate!, selectedTimeSlot!);
+      if (isSlotAvailable) {
+        await bookingService.registerBooking(userId, booking);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sorry, the selected time slot is already booked.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -731,15 +816,6 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
       );
     }
   }
-
-  void _showConfirmationMessage(BuildContext context) {
-    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate!);
-    String confirmationMessage = 'Appointment booked for $formattedDate, $selectedTimeSlot, $selectedAppointmentType';
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(confirmationMessage),
-        backgroundColor: Colors.blue,
-      ),
-    );
-  }
 }
+
+

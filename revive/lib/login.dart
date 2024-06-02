@@ -18,24 +18,70 @@ class _UserLoginState extends State<UserLogin> {
   late TextEditingController _passwordController;
   bool _isPasswordVisible = false;
 
-  Future<void> handleLogin() async {
-    if (_formKey.currentState!.validate()) {
-      //Save form state
-      _formKey.currentState!.save();
-      String email = _emailOrPhoneController.text;
-      String password = _passwordController.text;
+  // Future<void> handleLogin() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     //Save form state
+  //     _formKey.currentState!.save();
+  //     String email = _emailOrPhoneController.text;
+  //     String password = _passwordController.text;
 
-       print('Email: $email, Password: $password');
-      try {
-        await Provider.of<AuthenticationProvider.AuthProvider>(context,
-                listen: false)
-            .login(_emailOrPhoneController.text, _passwordController.text);
-      } catch (e) {
-        print(e);
+  //      print('Email: $email, Password: $password');
+  //     try {
+  //       await Provider.of<AuthenticationProvider.AuthProvider>(context,
+  //               listen: false)
+  //           .login(_emailOrPhoneController.text, _passwordController.text);
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   }
+  // }
+
+Future<void> handleLogin() async {
+  if (_formKey.currentState!.validate()) {
+    // Save form state
+    _formKey.currentState!.save();
+    String email = _emailOrPhoneController.text;
+    String password = _passwordController.text;
+
+    try {
+      // Perform login operation
+      await Provider.of<AuthenticationProvider.AuthProvider>(context, listen: false)
+          .login(email, password);
+
+      // Navigate to the appropriate screen based on user's role
+      final authProvider = Provider.of<AuthenticationProvider.AuthProvider>(context, listen: false);
+      switch (authProvider.user!.role) {
+        case 'User':
+          Navigator.pushReplacementNamed(context, '/uonboard');
+          break;
+        case 'Therapist':
+          Navigator.pushReplacementNamed(context,  '/thonboard');
+          break;
+        case 'Admin':
+          Navigator.pushReplacementNamed(context, '/adboard');
+          break;
+        default:
+          // Navigate to a default screen if user role is not recognized
+          Navigator.pushReplacementNamed(context, '/Splash2');
       }
+    } catch (e) {
+      print(e);
+      // Handle login error
+       showErrorMessage('Invalid email or password');
     }
   }
-
+}
+ void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff881736),
+      ),
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -199,7 +245,7 @@ class _UserLoginState extends State<UserLogin> {
                               SizedBox(width: 10),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/register');
+                                  Navigator.pushReplacementNamed(context, '/register');
                                 },
                                 child: Text('Register'),
                               )
