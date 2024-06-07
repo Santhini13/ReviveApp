@@ -14,7 +14,7 @@
     <application
         android:label="Revive"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo.png">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

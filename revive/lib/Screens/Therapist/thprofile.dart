@@ -504,7 +504,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:revive/Models/feedbackModal.dart';
 import 'package:revive/Models/therapistModal.dart';
 import 'package:revive/Screens/Therapist/thfeedback.dart';
@@ -516,7 +515,6 @@ class ThProfile extends StatefulWidget {
 
 class _ThProfileState extends State<ThProfile> {
   File? _image;
-  final ImagePicker _picker = ImagePicker();
   bool _isUploading = false;
   String? _profileImageUrl;
   Therapist? therapist;
@@ -560,21 +558,6 @@ class _ThProfileState extends State<ThProfile> {
     }
   }
 
-  Future<void> _pickImage() async {
-    try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          _image = File(pickedFile.path);
-        });
-      }
-    } catch (e) {
-      print('Error picking image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error picking image: $e')),
-      );
-    }
-  }
 
   Future<void> _uploadImage() async {
     if (_image == null) return;
@@ -772,6 +755,12 @@ class _ThProfileState extends State<ThProfile> {
                       MaterialPageRoute(builder: (context) => FeedbackListScreen(therapist: therapist!)),
                     );
                   } else {
+                     ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No feedbacks Yet'),
+          backgroundColor:  Color(0xff881736),
+        ),
+      );
                     print('Therapist data is null.');
                   }
                 },

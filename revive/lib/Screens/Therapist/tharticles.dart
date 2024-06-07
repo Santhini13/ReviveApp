@@ -38,6 +38,8 @@ class _AddArticleScreenState extends State<AddArticleScreen> {
       );
       await _articleService.registerArticle(user,article);
       Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Article Uploaded'),backgroundColor: Color(0xff881736),));
+    
     } catch (e) {
       print('Error saving article: $e');
       ScaffoldMessenger.of(context).showSnackBar(

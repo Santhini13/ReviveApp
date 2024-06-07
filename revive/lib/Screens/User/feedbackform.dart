@@ -92,6 +92,7 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Thank you for the feedback'),
+            backgroundColor:Color(0xff881736)
           ),
         );
         Navigator.pop(context); // Optionally, navigate back to the previous screen

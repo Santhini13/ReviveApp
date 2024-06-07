@@ -42,7 +42,11 @@ class Booking {
       status: map['status'].toInt(), 
     );
   }
-
+DateTime get endTime {
+    // Assume each appointment has a duration of 1 hour
+    // You can adjust this based on your actual requirement
+    return day.add(Duration(hours: 1));
+  }
   Map<String, dynamic> toMap() {
     return {
       'therapistName':therapistName,

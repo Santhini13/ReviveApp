@@ -127,14 +127,6 @@ class _AdHomeState extends State<AdHome> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ListTile(
-              //   leading: Icon(Icons.lock),
-              //   title: Text('Change Password'),
-              //   onTap: () {
-              //     Navigator.pop(context);
-              //     _showChangePasswordDialog(context);
-              //   },
-              // ),
               ListTile(
                 leading: Icon(Icons.add),
                 title: Text('Add Admin'),

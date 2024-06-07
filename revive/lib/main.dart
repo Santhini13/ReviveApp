@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
           '/edituser':(context)=>EditProfileScreen(),
           '/userhistory':(context)=>UserHistory(),
           '/reportcard':(context)=>AssessmentReportScreen(),
-          // '/favorite':(context)=>MyFavoritesScreen(),
+          // '/favorite':(context)=>MyFavoritesScreen(), 
           //general 
           '/privacy':(context) => PrivacyPolicyScreen(),
           '/terms':(context) => TermsAndConditionsScreen(),
@@ -160,21 +160,3 @@ class AuthWrapper extends StatelessWidget {
 }
 
 
-// class AuthWrapper extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final authProvider = Provider.of<AuthProvider>(context);
-
-//     if (authProvider.user == null) {
-//       return Splash2();
-//     } else if (authProvider.user!.email == 'admin1@gmail.com' && authProvider.user!.password == 'Admin@123') {
-//       return AdminOnboard(user: authProvider.user!);
-//     } else if (authProvider.user!.role == 'User') {
-//       return UserOnboard(user: authProvider.user!);
-//     } else if (authProvider.user!.role == 'Therapist') {
-//       return TherapistOnboardingScreen(user: authProvider.user!);
-//     } else {
-//       return Home(user: authProvider.user!);
-//     }
-//   }
-// }

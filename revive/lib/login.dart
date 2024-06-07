@@ -253,14 +253,6 @@ Future<void> handleLogin() async {
                           ),
                         ),
                         SizedBox(height: 20),
-                        // OutlinedButton.icon(
-                        //   onPressed: () {
-                        //     // Implement sign up with Google logic here
-                        //     print('Sign up with Google');
-                        //   },
-                        //   icon: Icon(Icons.g_mobiledata),
-                        //   label: Text('Sign Up with Google'),
-                        // ),
                         SizedBox(height: 20),
                       ],
                     ),

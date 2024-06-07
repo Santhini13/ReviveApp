@@ -26,9 +26,10 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
         //userId:uid,
       );
       await _videoService.saveVideoData(uid,video);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Video Uploaded')));
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Video Uploaded'),backgroundColor: Color(0xff881736),));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a title and a YouTube link.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter a title and a YouTube link.'),backgroundColor: Color(0xff881736)));
     }
   }
 

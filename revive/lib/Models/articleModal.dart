@@ -46,7 +46,7 @@ class Article {
   DateTime? date;
 
   Article({
-    
+
     required this.title,
     required this.content,
     required this.category,

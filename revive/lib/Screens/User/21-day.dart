@@ -666,16 +666,46 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     });
   }
 
+  // Future<void> _markDayAsCompleted(String activityId) async {
+  //   try {
+  //     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //     String uid = authProvider.uid!;
+  //     await _activityService.markActivityAsCompleted(uid, activityId);
+  //     _loadActivities();  // Reload activities to refresh the UI
+  //   } catch (e) {
+  //     print('Error marking day as completed: $e');
+  //   }
+  // }
+
+
   Future<void> _markDayAsCompleted(String activityId) async {
-    try {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      String uid = authProvider.uid!;
-      await _activityService.markActivityAsCompleted(uid, activityId);
-      _loadActivities();  // Reload activities to refresh the UI
-    } catch (e) {
-      print('Error marking day as completed: $e');
+  try {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    String uid = authProvider.uid!;
+    await _activityService.markActivityAsCompleted(uid, activityId);
+    
+    // Reload activities to refresh the UI
+    _loadActivities();  
+    
+    // Check if 21 items are marked as completed
+    final activities = await futureActivities;
+    final completedCount = activities.where((activity) => activity.completed).length;
+    
+    if (completedCount >= 21) {
+      // If 21 items are marked as completed, unmark everything and clear all activities
+      await _activityService.unmarkAllActivities(uid);
+      await _activityService.clearAllActivities(uid);
+      
+      // Show success message or navigate to another screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Congratulations! You have completed the challenge.')),
+      );
     }
+  } catch (e) {
+    print('Error marking day as completed: $e');
   }
+}
+
 
   bool _canOpenActivity(Activity activity) {
     return !activity.completed;
@@ -762,6 +792,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text('You cannot access this activity again.'),
+                                  backgroundColor: Color(0xff881736),
                                 ),
                               );
                             } else {

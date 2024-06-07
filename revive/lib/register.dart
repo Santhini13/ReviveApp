@@ -48,8 +48,21 @@ class _UserRegisterState extends State<UserRegister> {
       } 
       catch(e){
         print('Error user: $e');
+        showErrorMessage('email is already in use');
       }
     }
+  }
+
+  void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xff881736),
+      ),
+    );
   }
 
   @override

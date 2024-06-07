@@ -102,51 +102,30 @@ Future<void> deleteArticle(Article article, String uid) async {
     throw e;
   }
 }
+
+
+// Future<void> deleteArticle(Article article, String uid) async {
+//   try {
+//     QuerySnapshot querySnapshot = await _firestore
+//         .collection('articles')
+//         .doc(uid)
+//         .collection('article')
+//         .where('title', isEqualTo: article.title)
+//         .where('content', isEqualTo: article.content)
+//         .get();
+
+//     if (querySnapshot.docs.isNotEmpty) {
+//       // Assuming only one article should match the criteria
+//       await querySnapshot.docs.first.reference.delete();
+//       print('Article deleted successfully: ${article.title}');
+//     } else {
+//       print('Article not found.');
+//     }
+//   } catch (e) {
+//     print('Error deleting article: $e');
+//     throw e;
+//   }
+// }
 }
 
 
-  // Future<void> deleteArticle(Article article, String uid) async {
-  //   try {
-  //     await _firestore
-  //         .collection('articles')
-  //         .doc(uid)
-  //         .collection('article')  
-  //         .get()
-  //         .then((querySnapshot) {
-  //       querySnapshot.docs.forEach((doc) {
-  //         doc.reference.delete();
-  //       });
-  //     });
-  //   } catch (e) {
-  //     print('Error deleting article: $e');
-  //     throw e;
-  //   }
-  // }
-//}
-
-
-  // Future<List<Article>> fetchArticles(String category) async {
-  //   try {
-  //     QuerySnapshot querySnapshot = await _firestore
-  //         .collection('articles')
-  //         .orderBy('date', descending: true)
-  //         .get();
-
-  //     // Filter articles by category in code since we don't have an index
-  //     List<Article> filteredArticles = querySnapshot.docs
-  //         .map((doc) => Article(
-  //               title: doc['title'],
-  //               content: doc['content'],
-  //               category: doc['category'],
-  //               date: (doc['date'] as Timestamp).toDate(),
-  //             ))
-  //         .where((article) => article.category == category)
-  //         .toList();
-
-  //     return filteredArticles;
-  //   } catch (e) {
-  //     print('Error fetching articles: $e');
-  //     throw e;
-  //   }
-  // }
-//}
