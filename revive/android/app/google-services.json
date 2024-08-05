@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135450583677",
+    "project_id": "revive-3825c",
+    "storage_bucket": "revive-3825c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135450583677:android:9a30e94a8d4db1675fc714",
+        "android_client_info": {
+          "package_name": "com.example.revive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAotlCjjhiaAKpr4rN9g8Cj-Tr2lpJYJd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
